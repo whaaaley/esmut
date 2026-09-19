@@ -4,157 +4,157 @@
   "mutations": [
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safe'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement",
-      "was": "return { data: fn(), error: null }",
+      "shape": "682461cf",
       "op": "remove",
       "name": "safe returns nothing where the callback succeeded"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safe'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement > ObjectExpression",
-      "was": "{ data: fn(), error: null }",
+      "shape": "985b9828",
       "op": "remove",
       "name": "a success returns bare, carrying neither data nor error"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safe'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement > ObjectExpression > Property[key.name='data']",
-      "was": "data: fn()",
+      "shape": "d27bb1c4",
       "op": "value",
       "to": "data: undefined",
       "name": "safe never calls the callback it was handed"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safe'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement > ObjectExpression > Property[key.name='error']",
-      "was": "error: null",
+      "shape": "2e572f2f",
       "op": "value",
       "to": "error: undefined",
       "name": "a success carries undefined where it promises a null error"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] Property[key.name='error'] Literal",
-      "was": "null",
+      "shape": "1d644784",
       "op": "value",
       "to": "undefined",
       "name": "the null marking a success reads as undefined"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] CatchClause ReturnStatement",
-      "was": "return { data: null, error: error instanceof Error ? error : new Error(String(error)) }",
+      "shape": "6b24a9f7",
       "op": "remove",
       "name": "safe returns nothing where the callback threw"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] CatchClause ObjectExpression",
-      "was": "{ data: null, error: error instanceof Error ? error : new Error(String(error)) }",
+      "shape": "10cbb830",
       "op": "remove",
       "name": "a failure returns bare, so the throw is swallowed with no error beside it"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] CatchClause Property[key.name='data']",
-      "was": "data: null",
+      "shape": "f47aa1c1",
       "op": "value",
       "to": "data: undefined",
       "name": "a failure carries undefined where it promises a null data"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] CatchClause Literal",
-      "was": "null",
+      "shape": "1d644784",
       "op": "value",
       "to": "undefined",
       "name": "the null marking a failure reads as undefined"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] CatchClause Property[key.name='error']",
-      "was": "error: error instanceof Error ? error : new Error(String(error))",
+      "shape": "0ee65686",
       "op": "value",
       "to": "error: new Error('failed')",
       "name": "a failure reports a fixed message rather than what was thrown"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] ConditionalExpression",
-      "was": "error instanceof Error ? error : new Error(String(error))",
+      "shape": "92e53e3d",
       "op": "invert",
       "name": "safe wraps a thrown Error and passes a thrown non-Error through"
     },
     {
       "at": "VariableDeclarator[id.name='safe'] BinaryExpression",
-      "was": "error instanceof Error",
+      "shape": "d0b29490",
       "op": "drop-right",
       "name": "safe treats every thrown value as an Error already"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safeAsync'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement",
-      "was": "return { data: await fn(), error: null }",
+      "shape": "2599a1eb",
       "op": "remove",
       "name": "safeAsync returns nothing where the promise resolved"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safeAsync'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement > ObjectExpression",
-      "was": "{ data: await fn(), error: null }",
+      "shape": "98941b2c",
       "op": "remove",
       "name": "a resolved call returns bare, carrying neither data nor error"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safeAsync'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement > ObjectExpression > Property[key.name='data']",
-      "was": "data: await fn()",
+      "shape": "7bd8e1cc",
       "op": "value",
       "to": "data: undefined",
       "name": "safeAsync never calls the callback it was handed"
     },
     {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safeAsync'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement > ObjectExpression > Property[key.name='error']",
-      "was": "error: null",
+      "shape": "2e572f2f",
       "op": "value",
       "to": "error: undefined",
       "name": "a resolved result carries undefined where it promises a null error"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] Property[key.name='error'] Literal",
-      "was": "null",
+      "shape": "1d644784",
       "op": "value",
       "to": "undefined",
       "name": "the null marking a resolved call reads as undefined"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] CatchClause ReturnStatement",
-      "was": "return { data: null, error: error instanceof Error ? error : new Error(String(error)) }",
+      "shape": "6b24a9f7",
       "op": "remove",
       "name": "safeAsync returns nothing where the promise rejected"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] CatchClause ObjectExpression",
-      "was": "{ data: null, error: error instanceof Error ? error : new Error(String(error)) }",
+      "shape": "10cbb830",
       "op": "remove",
       "name": "a rejection returns bare, so the rejection is swallowed with no error beside it"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] CatchClause Property[key.name='data']",
-      "was": "data: null",
+      "shape": "f47aa1c1",
       "op": "value",
       "to": "data: undefined",
       "name": "a rejection carries undefined where it promises a null data"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] CatchClause Literal",
-      "was": "null",
+      "shape": "1d644784",
       "op": "value",
       "to": "undefined",
       "name": "the null marking a rejection reads as undefined"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] CatchClause Property[key.name='error']",
-      "was": "error: error instanceof Error ? error : new Error(String(error))",
+      "shape": "0ee65686",
       "op": "value",
       "to": "error: new Error('failed')",
       "name": "a rejection reports a fixed message rather than what was thrown"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] ConditionalExpression",
-      "was": "error instanceof Error ? error : new Error(String(error))",
+      "shape": "92e53e3d",
       "op": "invert",
       "name": "safeAsync wraps a rejected Error and passes a rejected non-Error through"
     },
     {
       "at": "VariableDeclarator[id.name='safeAsync'] BinaryExpression",
-      "was": "error instanceof Error",
+      "shape": "d0b29490",
       "op": "drop-right",
       "name": "safeAsync treats every rejected value as an Error already"
     }

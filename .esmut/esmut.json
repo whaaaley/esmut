@@ -5,183 +5,183 @@
   "mutations": [
     {
       "at": "ArrayExpression Literal[value='help']",
-      "was": "'help'",
+      "shape": "9ffe899b",
       "op": "empty"
     },
     {
       "at": "Property[key.name='h'] Literal",
-      "was": "'help'",
+      "shape": "9ffe899b",
       "op": "empty"
     },
     {
       "at": "Literal[value='Usage: esmut <command> [args]']",
-      "was": "'Usage: esmut <command> [args]'",
+      "shape": "216260bf",
       "op": "empty"
     },
     {
       "at": "Literal[value='Commands:']",
-      "was": "'Commands:'",
+      "shape": "4f0250a4",
       "op": "empty"
     },
     {
       "at": "Literal[value='Options:']",
-      "was": "'Options:'",
+      "shape": "64856b84",
       "op": "empty"
     },
     {
       "at": "Literal[value='a mutation survived.']",
-      "was": "'a mutation survived.'",
+      "shape": "c320f84e",
       "op": "empty"
     },
     {
       "at": "Literal[value='.ts']",
-      "was": "'.ts'",
+      "shape": "a1105113",
       "op": "empty"
     },
     {
       "at": "Literal[value='.tsx']",
-      "was": "'.tsx'",
+      "shape": "f7b02b71",
       "op": "empty"
     },
     {
       "at": "Literal[value='.mts']",
-      "was": "'.mts'",
+      "shape": "a01dafd8",
       "op": "empty"
     },
     {
       "at": "Literal[value='.cts']",
-      "was": "'.cts'",
+      "shape": "a3942012",
       "op": "empty"
     },
     {
       "at": "Literal[value='.js']",
-      "was": "'.js'",
+      "shape": "b13d89e1",
       "op": "empty"
     },
     {
       "at": "Literal[value='.jsx']",
-      "was": "'.jsx'",
+      "shape": "9cdf9bdb",
       "op": "empty"
     },
     {
       "at": "Literal[value='.mjs']",
-      "was": "'.mjs'",
+      "shape": "97f083a2",
       "op": "empty"
     },
     {
       "at": "Literal[value='.cjs']",
-      "was": "'.cjs'",
+      "shape": "ab719a68",
       "op": "empty"
     },
     {
       "at": "Literal[value='/']",
-      "was": "'/'",
+      "shape": "919f7285",
       "op": "empty"
     },
     {
       "at": "BlockStatement:has(Literal[value='query']) IfStatement:nth-child(1)",
-      "was": "if (verb === undefined) {\n    throw new CliError('Missing command', [\n      'Name a file or directory to run, or a command',\n      'Run with --help for usage',\n    ])\n  }",
+      "shape": "aae3c0ab",
       "op": "invert"
     },
     {
       "at": "Literal[value='query']",
-      "was": "'query'",
+      "shape": "9173f14c",
       "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='query']) IfStatement:nth-child(2)",
-      "was": "if (!file) {\n      throw new CliError('query requires a file', [\n        'Usage: esmut query <file> \"<selector>\"',\n      ])\n    }",
+      "shape": "3a97ea06",
       "op": "invert"
     },
     {
       "at": "IfStatement IfStatement:nth-child(3)",
-      "was": "if (!selector) {\n      throw new CliError('query requires a selector', [\n        'Usage: esmut query <file> \"<selector>\"',\n        'Quote the selector so the shell keeps it whole',\n      ])\n    }",
+      "shape": "c1150d08",
       "op": "invert"
     },
     {
       "at": "IfStatement:has(Literal[value='query']) ReturnStatement",
-      "was": "return query(file, selector)",
+      "shape": "bda7ace3",
       "op": "remove"
     },
     {
       "at": "Literal[value='stub']",
-      "was": "'stub'",
+      "shape": "9b2896e4",
       "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='stub']) IfStatement",
-      "was": "if (!file) {\n      throw new CliError('stub requires a file', [\n        'Usage: esmut stub <file>',\n      ])\n    }",
+      "shape": "aeda7797",
       "op": "invert"
     },
     {
       "at": "IfStatement:has(Literal[value='stub']) UnaryExpression",
-      "was": "!file",
+      "shape": "d58f3825",
       "op": "invert"
     },
     {
       "at": "IfStatement:has(Literal[value='stub']) ReturnStatement",
-      "was": "return stub(file)",
+      "shape": "999d8663",
       "op": "remove"
     },
     {
       "at": "BlockStatement:has(Literal[value='query']) IfStatement:nth-child(4)",
-      "was": "if (verb === 'check') {\n    const [target] = rest\n    if (!target) {\n      throw new CliError('check requires a file or directory', [\n        'Usage: esmut check <file|dir>',\n      ])\n    }\n\n    return check(target)\n  }",
+      "shape": "940055b8",
       "op": "invert"
     },
     {
       "at": "Literal[value='check']",
-      "was": "'check'",
+      "shape": "93883ad0",
       "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='check']) IfStatement",
-      "was": "if (!target) {\n      throw new CliError('check requires a file or directory', [\n        'Usage: esmut check <file|dir>',\n      ])\n    }",
+      "shape": "84e5cce1",
       "op": "invert"
     },
     {
       "at": "IfStatement:has(Literal[value='check']) UnaryExpression",
-      "was": "!target",
+      "shape": "b12dc53a",
       "op": "invert"
     },
     {
       "at": "IfStatement:has(Literal[value='check']) ReturnStatement",
-      "was": "return check(target)",
+      "shape": "f9b0963c",
       "op": "remove"
     },
     {
       "at": "BlockStatement IfStatement:nth-child(5)",
-      "was": "if (isTarget(verb)) return run(verb)",
+      "shape": "07bd9f85",
       "op": "invert"
     },
     {
       "at": "IfStatement > ReturnStatement:has(Identifier[name='run'])",
-      "was": "return run(verb)",
+      "shape": "bb2f0b5b",
       "op": "remove"
     },
     {
       "at": "Program > IfStatement",
-      "was": "if (import.meta.main) {\n  if (args.help) {\n    printHelp()\n    Deno.exit(0)\n  }\n\n  const [verb, ...rest] = args._.map(String)\n\n  const { error } = await safeAsync(() => dispatch(verb, rest))\n  if (error) handleCliError(error)\n\n  Deno.exit(0)\n}",
+      "shape": "48ef7619",
       "op": "invert"
     },
     {
       "at": "IfStatement IfStatement:nth-child(1)",
-      "was": "if (args.help) {\n    printHelp()\n    Deno.exit(0)\n  }",
+      "shape": "ca51580e",
       "op": "invert"
     },
     {
       "at": "IfStatement IfStatement Literal[value=0]",
-      "was": "0",
+      "shape": "a29f8d48",
       "op": "value",
       "to": "1"
     },
     {
       "at": "IfStatement IfStatement:nth-child(4)",
-      "was": "if (error) handleCliError(error)",
+      "shape": "bc42fbb6",
       "op": "invert"
     },
     {
       "at": "Program > IfStatement > BlockStatement > ExpressionStatement > CallExpression > Literal",
-      "was": "0",
+      "shape": "a29f8d48",
       "op": "value",
       "to": "1"
     }

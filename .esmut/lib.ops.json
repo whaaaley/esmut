@@ -5,814 +5,814 @@
   "mutations": [
     {
       "at": "ArrowFunctionExpression > ConditionalExpression",
-      "was": "isNode(node) ? node[key] : undefined",
+      "shape": "240933d8",
       "op": "invert"
     },
     {
       "at": "VariableDeclarator[id.name='child'] ReturnStatement",
-      "was": "return isNode(value) ? value : undefined",
+      "shape": "be61edf3",
       "op": "remove"
     },
     {
       "at": "ReturnStatement ConditionalExpression",
-      "was": "isNode(value) ? value : undefined",
+      "shape": "51b525ac",
       "op": "invert"
     },
     {
       "at": "VariableDeclarator[id.name='slice'] Literal[value=0]",
-      "was": "0",
+      "shape": "a29f8d48",
       "op": "value",
       "to": "1"
     },
     {
       "at": "VariableDeclarator[id.name='slice'] Literal[value=1]",
-      "was": "1",
+      "shape": "a39f8edb",
       "op": "value",
       "to": "0"
     },
     {
       "at": "VariableDeclarator[id.name='condition'] IfStatement",
-      "was": "if (node.type === 'IfStatement' || node.type === 'ConditionalExpression') return child(node, 'test')",
+      "shape": "b0963b0a",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='IfStatement']) LogicalExpression",
-      "was": "node.type === 'IfStatement' || node.type === 'ConditionalExpression'",
+      "shape": "37f13ca4",
       "op": "drop-left"
     },
     {
       "at": "Literal[value='IfStatement']",
-      "was": "'IfStatement'",
+      "shape": "5346aef4",
       "op": "value",
       "to": "'WhileStatement'"
     },
     {
       "at": "Literal[value='ConditionalExpression']",
-      "was": "'ConditionalExpression'",
+      "shape": "5b737e9a",
       "op": "value",
       "to": "'WhileStatement'"
     },
     {
       "at": "IfStatement:has(Literal[value='IfStatement']) ReturnStatement",
-      "was": "return child(node, 'test')",
+      "shape": "dcbadd24",
       "op": "remove"
     },
     {
       "at": "Literal[value='test']",
-      "was": "'test'",
+      "shape": "87dcd3cc",
       "op": "value",
       "to": "'consequent'"
     },
     {
       "at": "VariableDeclarator[id.name='condition'] BlockStatement > ReturnStatement",
-      "was": "return node",
+      "shape": "a5d55261",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] IfStatement:nth-child(2)",
-      "was": "if (!target) {\n    throw new CliError(`A ${node.type} carries no condition to invert`, [\n      'invert applies to a guard or a boolean expression',\n    ])\n  }",
+      "shape": "6cce4e28",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] UnaryExpression",
-      "was": "!target",
+      "shape": "b12dc53a",
       "op": "invert"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] ThrowStatement",
-      "was": "throw new CliError(`A ${node.type} carries no condition to invert`, [\n      'invert applies to a guard or a boolean expression',\n    ])",
+      "shape": "35b8fcc2",
       "op": "remove"
     },
     {
       "at": "Literal[value='UnaryExpression']",
-      "was": "'UnaryExpression'",
+      "shape": "bafeece9",
       "op": "value",
       "to": "'BinaryExpression'"
     },
     {
       "at": "LogicalExpression:has(Literal[value='UnaryExpression']) Literal[value='operator']",
-      "was": "'operator'",
+      "shape": "3e46e5d8",
       "op": "value",
       "to": "'type'"
     },
     {
       "at": "Literal[value='!']",
-      "was": "'!'",
+      "shape": "939f75ab",
       "op": "value",
       "to": "'-'"
     },
     {
       "at": "Literal[value='argument']",
-      "was": "'argument'",
+      "shape": "db39dcf7",
       "op": "value",
       "to": "'test'"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] IfStatement:nth-child(5)",
-      "was": "if (negated && argument) return { at: target, text: slice(source, argument) }",
+      "shape": "40705f0f",
       "op": "remove"
     },
     {
       "at": "LogicalExpression[left.name='negated']",
-      "was": "negated && argument",
+      "shape": "9057e2d1",
       "op": "drop-left"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] IfStatement ReturnStatement",
-      "was": "return { at: target, text: slice(source, argument) }",
+      "shape": "f845f4f6",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] IfStatement ObjectExpression",
-      "was": "{ at: target, text: slice(source, argument) }",
+      "shape": "62bb150f",
       "op": "value",
       "to": "{ at: target, text: slice(source, target) }"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] IfStatement Property[key.name='at']",
-      "was": "at: target",
+      "shape": "d764ff45",
       "op": "value",
       "to": "at: node"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] IfStatement Property[key.name='text']",
-      "was": "text: slice(source, argument)",
+      "shape": "7ae7e0f1",
       "op": "value",
       "to": "text: slice(source, target)"
     },
     {
       "at": "VariableDeclarator[id.name='invert'] BlockStatement > ReturnStatement",
-      "was": "return { at: target, text: `!(${slice(source, target)})` }",
+      "shape": "b097ce62",
       "op": "remove"
     },
     {
       "at": "Program > VariableDeclaration > VariableDeclarator[id.name='invert'] > ArrowFunctionExpression > BlockStatement > ReturnStatement > ObjectExpression",
-      "was": "{ at: target, text: `!(${slice(source, target)})` }",
+      "shape": "201341db",
       "op": "value",
       "to": "{ at: target, text: slice(source, target) }"
     },
     {
       "at": "Program > VariableDeclaration > VariableDeclarator[id.name='invert'] > ArrowFunctionExpression > BlockStatement > ReturnStatement > ObjectExpression > Property[key.name='at']",
-      "was": "at: target",
+      "shape": "d764ff45",
       "op": "value",
       "to": "at: node"
     },
     {
       "at": "Program > VariableDeclaration > VariableDeclarator[id.name='invert'] > ArrowFunctionExpression > BlockStatement > ReturnStatement > ObjectExpression > Property[key.name='text']",
-      "was": "text: `!(${slice(source, target)})`",
+      "shape": "f7dc126f",
       "op": "value",
       "to": "text: slice(source, target)"
     },
     {
       "at": "CallExpression ConditionalExpression",
-      "was": "key === 'left' ? 'right' : 'left'",
+      "shape": "71feb386",
       "op": "invert"
     },
     {
       "at": "BinaryExpression[left.name='key']",
-      "was": "key === 'left'",
+      "shape": "fbfc724f",
       "op": "operator",
       "to": "!=="
     },
     {
       "at": "BinaryExpression Literal[value='left']",
-      "was": "'left'",
+      "shape": "8c570b19",
       "op": "value",
       "to": "'right'"
     },
     {
       "at": "ConditionalExpression Literal[value='right']",
-      "was": "'right'",
+      "shape": "efa74bfa",
       "op": "value",
       "to": "'left'"
     },
     {
       "at": "ConditionalExpression > Literal[value='left']",
-      "was": "'left'",
+      "shape": "8c570b19",
       "op": "value",
       "to": "'right'"
     },
     {
       "at": "VariableDeclarator[id.name='operand'] IfStatement:nth-child(3)",
-      "was": "if (!side || !other) {\n    throw new CliError(`A ${node.type} carries no ${key} to keep`, [\n      'drop-left and drop-right apply to && and ||',\n    ])\n  }",
+      "shape": "a221cf94",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='operand'] LogicalExpression",
-      "was": "!side || !other",
+      "shape": "797c083d",
       "op": "drop-left"
     },
     {
       "at": "VariableDeclarator[id.name='operand'] IfStatement:nth-child(4)",
-      "was": "if (slice(source, side).trim() === slice(source, other).trim()) {\n    throw new NoOpError(`Both sides of the ${node.type} read the same`, [\n      `Dropping either leaves ${slice(source, side).trim()}, so a suite passing on it would report survived`,\n    ])\n  }",
+      "shape": "ae2fbdd2",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='operand'] IfStatement BinaryExpression",
-      "was": "slice(source, side).trim() === slice(source, other).trim()",
+      "shape": "d0b5ee02",
       "op": "operator",
       "to": "!=="
     },
     {
       "at": "VariableDeclarator[id.name='operand'] ReturnStatement",
-      "was": "return slice(source, side)",
+      "shape": "cf77a994",
       "op": "value",
       "to": "return slice(source, other)"
     },
     {
       "at": "Property[key.name='ArrayExpression']",
-      "was": "ArrayExpression: '[]'",
+      "shape": "29fbf5e6",
       "op": "value",
       "to": "ArrayExpression: '{}'"
     },
     {
       "at": "Literal[value='[]']",
-      "was": "'[]'",
+      "shape": "170d61bc",
       "op": "value",
       "to": "'{}'"
     },
     {
       "at": "Property[key.name='ObjectExpression']",
-      "was": "ObjectExpression: '{}'",
+      "shape": "23cb3530",
       "op": "value",
       "to": "ObjectExpression: '[]'"
     },
     {
       "at": "Literal[value='{}']",
-      "was": "'{}'",
+      "shape": "36bde23c",
       "op": "value",
       "to": "'[]'"
     },
     {
       "at": "Property[key.name='TemplateLiteral']",
-      "was": "TemplateLiteral: '``'",
+      "shape": "ebbc2bb0",
       "op": "value",
       "to": "TemplateLiteral: \"''\""
     },
     {
       "at": "Literal[value='``']",
-      "was": "'``'",
+      "shape": "49a229a8",
       "op": "value",
       "to": "\"''\""
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) > BinaryExpression",
-      "was": "node.type === 'Literal'",
+      "shape": "4d4425c5",
       "op": "invert"
     },
     {
       "at": "Literal[value='Literal']",
-      "was": "'Literal'",
+      "shape": "8427d1e7",
       "op": "value",
       "to": "'TemplateLiteral'"
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) IfStatement",
-      "was": "if (typeof field(node, 'value') === 'string') return \"''\"",
+      "shape": "7db59172",
       "op": "remove"
     },
     {
       "at": "BlockStatement:has(Literal[value='Literal']) BlockStatement BinaryExpression",
-      "was": "typeof field(node, 'value') === 'string'",
+      "shape": "db97dda9",
       "op": "invert"
     },
     {
       "at": "BinaryExpression:has(Literal[value='string']) Literal[value='value']",
-      "was": "'value'",
+      "shape": "f31c9b19",
       "op": "value",
       "to": "'type'"
     },
     {
       "at": "BinaryExpression:has(Literal[value='value']) Literal[value='string']",
-      "was": "'string'",
+      "shape": "15f34111",
       "op": "value",
       "to": "'number'"
     },
     {
       "at": "IfStatement:has(Literal[value='string']) > ReturnStatement",
-      "was": "return \"''\"",
+      "shape": "a524ed09",
       "op": "value",
       "to": "return '``'"
     },
     {
       "at": "Literal[value='\\'\\'']",
-      "was": "\"''\"",
+      "shape": "1015484e",
       "op": "value",
       "to": "'``'"
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) ThrowStatement",
-      "was": "throw new CliError(`empty does not apply to a ${node.type} holding ${typeof field(node, 'value')}`, [\n      'empty applies to an array, an object, or a string literal',\n    ])",
+      "shape": "2205e317",
       "op": "value",
       "to": "return \"''\""
     },
     {
       "at": "BlockStatement:has(Literal[value='Literal']) UnaryExpression[operator='!']",
-      "was": "!form",
+      "shape": "0610d195",
       "op": "invert"
     },
     {
       "at": "BlockStatement:has(Literal[value='Literal']) ThrowStatement:nth-child(1)",
-      "was": "throw new CliError(`empty does not apply to a ${node.type}`, [\n      'empty applies to an array, an object, or a string literal',\n    ])",
+      "shape": "aa1870f5",
       "op": "value",
       "to": "return \"''\""
     },
     {
       "at": "BlockStatement:has(Literal[value='Literal']) > ReturnStatement",
-      "was": "return form",
+      "shape": "9742319b",
       "op": "value",
       "to": "return \"''\""
     },
     {
       "at": "IfStatement:has(Literal[value='invert']) BinaryExpression",
-      "was": "op === 'invert'",
+      "shape": "6ee99b62",
       "op": "invert"
     },
     {
       "at": "Literal[value='invert']",
-      "was": "'invert'",
+      "shape": "307d509c",
       "op": "value",
       "to": "'remove'"
     },
     {
       "at": "IfStatement:has(Literal[value='invert']) ReturnStatement",
-      "was": "return invert(source, node)",
+      "shape": "8c98bbc1",
       "op": "remove"
     },
     {
       "at": "BlockStatement:has(Literal[value='invert']) IfStatement:nth-child(3)",
-      "was": "if (op === 'drop-left') return { at: node, text: operand(source, node, 'right') }",
+      "shape": "8123bcd3",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='drop-left']) BinaryExpression",
-      "was": "op === 'drop-left'",
+      "shape": "5273d7e1",
       "op": "invert"
     },
     {
       "at": "Literal[value='drop-left']",
-      "was": "'drop-left'",
+      "shape": "12338089",
       "op": "value",
       "to": "'drop-right'"
     },
     {
       "at": "IfStatement:has(Literal[value='drop-left']) ReturnStatement",
-      "was": "return { at: node, text: operand(source, node, 'right') }",
+      "shape": "249b3fde",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='drop-left']) ObjectExpression",
-      "was": "{ at: node, text: operand(source, node, 'right') }",
+      "shape": "a6826b87",
       "op": "value",
       "to": "{ at: node, text: operand(source, node, 'left') }"
     },
     {
       "at": "ObjectExpression:has(Literal[value='right']) Property[key.name='at']",
-      "was": "at: node",
+      "shape": "28d9b1b2",
       "op": "value",
       "to": "at: node.parent"
     },
     {
       "at": "ObjectExpression:has(Literal[value='right']) Property[key.name='text']",
-      "was": "text: operand(source, node, 'right')",
+      "shape": "e953cc2a",
       "op": "value",
       "to": "text: operand(source, node, 'left')"
     },
     {
       "at": "Property[key.name='text'] Literal[value='right']",
-      "was": "'right'",
+      "shape": "efa74bfa",
       "op": "value",
       "to": "'left'"
     },
     {
       "at": "BlockStatement:has(Literal[value='invert']) IfStatement:nth-child(4)",
-      "was": "if (op === 'drop-right') return { at: node, text: operand(source, node, 'left') }",
+      "shape": "59eb8965",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='drop-right']) BinaryExpression",
-      "was": "op === 'drop-right'",
+      "shape": "53f1550c",
       "op": "invert"
     },
     {
       "at": "Literal[value='drop-right']",
-      "was": "'drop-right'",
+      "shape": "0984292a",
       "op": "value",
       "to": "'drop-left'"
     },
     {
       "at": "IfStatement:has(Literal[value='drop-right']) ReturnStatement",
-      "was": "return { at: node, text: operand(source, node, 'left') }",
+      "shape": "4b0ae8bf",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='drop-right']) ObjectExpression",
-      "was": "{ at: node, text: operand(source, node, 'left') }",
+      "shape": "e609f938",
       "op": "value",
       "to": "{ at: node, text: operand(source, node, 'right') }"
     },
     {
       "at": "ObjectExpression:has(Literal[value='left']) Property[key.name='at']",
-      "was": "at: node",
+      "shape": "28d9b1b2",
       "op": "value",
       "to": "at: node.parent"
     },
     {
       "at": "ObjectExpression:has(Literal[value='left']) Property[key.name='text']",
-      "was": "text: operand(source, node, 'left')",
+      "shape": "886df297",
       "op": "value",
       "to": "text: operand(source, node, 'right')"
     },
     {
       "at": "Property[key.name='text'] Literal[value='left']",
-      "was": "'left'",
+      "shape": "8c570b19",
       "op": "value",
       "to": "'right'"
     },
     {
       "at": "BlockStatement:has(Literal[value='invert']) IfStatement:nth-child(5)",
-      "was": "if (op === 'empty') return { at: node, text: emptied(node) }",
+      "shape": "40f6c641",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='empty']) BinaryExpression",
-      "was": "op === 'empty'",
+      "shape": "1be3c2a1",
       "op": "invert"
     },
     {
       "at": "Literal[value='empty']",
-      "was": "'empty'",
+      "shape": "9aa23389",
       "op": "value",
       "to": "'remove'"
     },
     {
       "at": "IfStatement:has(Literal[value='empty']) ReturnStatement",
-      "was": "return { at: node, text: emptied(node) }",
+      "shape": "3f2d97ac",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='empty']) ObjectExpression",
-      "was": "{ at: node, text: emptied(node) }",
+      "shape": "6fa8dc99",
       "op": "value",
       "to": "{ at: node, text: slice(source, node) }"
     },
     {
       "at": "IfStatement:has(Literal[value='empty']) Property[key.name='at']",
-      "was": "at: node",
+      "shape": "28d9b1b2",
       "op": "value",
       "to": "at: node.parent"
     },
     {
       "at": "IfStatement:has(Literal[value='empty']) Property[key.name='text']",
-      "was": "text: emptied(node)",
+      "shape": "ccebdb90",
       "op": "value",
       "to": "text: slice(source, node)"
     },
     {
       "at": "IfStatement:has(Literal[value='remove']) BinaryExpression",
-      "was": "op === 'remove'",
+      "shape": "6bcad1a6",
       "op": "invert"
     },
     {
       "at": "Literal[value='remove']",
-      "was": "'remove'",
+      "shape": "ff5818d0",
       "op": "value",
       "to": "'empty'"
     },
     {
       "at": "IfStatement:has(Literal[value='remove']) ReturnStatement",
-      "was": "return { at: node, text: '' }",
+      "shape": "7dc84dfe",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='remove']) ObjectExpression",
-      "was": "{ at: node, text: '' }",
+      "shape": "bf69ffa7",
       "op": "value",
       "to": "{ at: node, text: ' ' }"
     },
     {
       "at": "IfStatement:has(Literal[value='remove']) Property[key.name='at']",
-      "was": "at: node",
+      "shape": "28d9b1b2",
       "op": "value",
       "to": "at: node.parent"
     },
     {
       "at": "IfStatement:has(Literal[value='remove']) Property[key.name='text']",
-      "was": "text: ''",
+      "shape": "b477ff72",
       "op": "value",
       "to": "text: ' '"
     },
     {
       "at": "Literal[value='']",
-      "was": "''",
+      "shape": "d801aaa8",
       "op": "value",
       "to": "' '"
     },
     {
       "at": "BlockStatement IfStatement:nth-child(7)",
-      "was": "if (op === 'operator' || op === 'value') {\n    if (to === undefined) {\n      throw new CliError(`${op} needs a replacement`, [\n        `The mutation at ${mutation.at} names no to`,\n      ])\n    }\n\n    if (op === 'value') return { at: node, text: to }\n\n    const original = field(node, 'operator')\n    const left = child(node, 'left')\n    const right = child(node, 'right')\n\n    if (typeof original !== 'string' || !left || !right) {\n      throw new CliError(`operator does not apply to a ${node.type}`, [\n        'operator applies to a binary or logical expression',\n      ])\n    }\n\n    // The operator is spliced between the operands rather than found by text.\n    // Its characters also occur in a literal, where a text match would corrupt the literal and leave the operator.\n    const between = source.slice(left.range[1], right.range[0])\n    const swapped = between.replace(original, to)\n\n    return { at: node, text: slice(source, left) + swapped + slice(source, right) }\n  }",
+      "shape": "ad6ee42a",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='operator']) > LogicalExpression",
-      "was": "op === 'operator' || op === 'value'",
+      "shape": "0fbd107f",
       "op": "drop-left"
     },
     {
       "at": "BinaryExpression > Literal[value='operator']",
-      "was": "'operator'",
+      "shape": "3e46e5d8",
       "op": "value",
       "to": "'value'"
     },
     {
       "at": "LogicalExpression Literal[value='value']",
-      "was": "'value'",
+      "shape": "f31c9b19",
       "op": "value",
       "to": "'operator'"
     },
     {
       "at": "IfStatement:has(Literal[value='operator']) IfStatement:nth-child(1)",
-      "was": "if (to === undefined) {\n      throw new CliError(`${op} needs a replacement`, [\n        `The mutation at ${mutation.at} names no to`,\n      ])\n    }",
+      "shape": "cb249870",
       "op": "remove"
     },
     {
       "at": "BinaryExpression[left.name='to']",
-      "was": "to === undefined",
+      "shape": "432ed136",
       "op": "operator",
       "to": "!=="
     },
     {
       "at": "IfStatement IfStatement:nth-child(2)",
-      "was": "if (op === 'value') return { at: node, text: to }",
+      "shape": "fd366804",
       "op": "remove"
     },
     {
       "at": "IfStatement:has(Literal[value='value']) > BinaryExpression[left.name='op']",
-      "was": "op === 'value'",
+      "shape": "2cb08f69",
       "op": "invert"
     },
     {
       "at": "BlockStatement:has(Literal[value='drop-right']) BlockStatement Literal[value='value']",
-      "was": "'value'",
+      "shape": "f31c9b19",
       "op": "value",
       "to": "'operator'"
     },
     {
       "at": "VariableDeclarator[id.name='replacement'] IfStatement:has(Literal[value='value']) > ReturnStatement",
-      "was": "return { at: node, text: to }",
+      "shape": "3bdf6607",
       "op": "value",
       "to": "return { at: node, text: to + to }"
     },
     {
       "at": "IfStatement:has(Literal[value='value']) IfStatement ObjectExpression",
-      "was": "{ at: node, text: to }",
+      "shape": "f157ffd8",
       "op": "value",
       "to": "{ at: node, text: slice(source, node) }"
     },
     {
       "at": "IfStatement:has(Literal[value='value']) IfStatement Property[key.name='at']",
-      "was": "at: node",
+      "shape": "28d9b1b2",
       "op": "value",
       "to": "at: node.parent"
     },
     {
       "at": "IfStatement:has(Literal[value='value']) IfStatement Property[key.name='text']",
-      "was": "text: to",
+      "shape": "72643903",
       "op": "value",
       "to": "text: slice(source, node)"
     },
     {
       "at": "VariableDeclarator[id.name='original'] Literal",
-      "was": "'operator'",
+      "shape": "3e46e5d8",
       "op": "value",
       "to": "'type'"
     },
     {
       "at": "VariableDeclarator[id.name='left'] Literal",
-      "was": "'left'",
+      "shape": "8c570b19",
       "op": "value",
       "to": "'right'"
     },
     {
       "at": "VariableDeclarator[id.name='right'] Literal",
-      "was": "'right'",
+      "shape": "efa74bfa",
       "op": "value",
       "to": "'left'"
     },
     {
       "at": "IfStatement:has(Literal[value='value']) IfStatement > LogicalExpression",
-      "was": "typeof original !== 'string' || !left || !right",
+      "shape": "6ec1ff3f",
       "op": "drop-right"
     },
     {
       "at": "LogicalExpression LogicalExpression",
-      "was": "typeof original !== 'string' || !left",
+      "shape": "6ec1ff3f",
       "op": "drop-right"
     },
     {
       "at": "LogicalExpression:has(Literal[value='string']) LogicalExpression > UnaryExpression",
-      "was": "!left",
+      "shape": "60abe8c2",
       "op": "invert"
     },
     {
       "at": "IfStatement > LogicalExpression:has(Literal[value='string']) > UnaryExpression",
-      "was": "!right",
+      "shape": "92b9ea69",
       "op": "invert"
     },
     {
       "at": "VariableDeclarator[id.name='between'] Literal[value=1]",
-      "was": "1",
+      "shape": "a39f8edb",
       "op": "value",
       "to": "0"
     },
     {
       "at": "VariableDeclarator[id.name='between'] Literal[value=0]",
-      "was": "0",
+      "shape": "a29f8d48",
       "op": "value",
       "to": "1"
     },
     {
       "at": "VariableDeclarator[id.name='replacement'] BlockStatement > ReturnStatement",
-      "was": "return { at: node, text: slice(source, left) + swapped + slice(source, right) }",
+      "shape": "35e89bfd",
       "op": "value",
       "to": "return { at: node, text: between }"
     },
     {
       "at": "BlockStatement:has(Literal[value='value']) > ReturnStatement ObjectExpression",
-      "was": "{ at: node, text: slice(source, left) + swapped + slice(source, right) }",
+      "shape": "d9309272",
       "op": "value",
       "to": "{ at: node, text: slice(source, left) + between + slice(source, right) }"
     },
     {
       "at": "BlockStatement:has(Literal[value='value']) > ReturnStatement Property[key.name='at']",
-      "was": "at: node",
+      "shape": "28d9b1b2",
       "op": "value",
       "to": "at: left"
     },
     {
       "at": "BlockStatement:has(Literal[value='value']) > ReturnStatement Property[key.name='text']",
-      "was": "text: slice(source, left) + swapped + slice(source, right)",
+      "shape": "a200f0f1",
       "op": "value",
       "to": "text: slice(source, left) + between + slice(source, right)"
     },
     {
       "at": "Property[key.name='text'] > BinaryExpression",
-      "was": "slice(source, left) + swapped + slice(source, right)",
+      "shape": "288bd685",
       "op": "value",
       "to": "slice(source, left) + between + slice(source, right)"
     },
     {
       "at": "BinaryExpression[right.name='swapped']",
-      "was": "slice(source, left) + swapped",
+      "shape": "288bd685",
       "op": "drop-left"
     },
     {
       "at": "BlockStatement:has(Literal[value='invert']) > ThrowStatement",
-      "was": "throw new CliError(`Unknown op: ${String(op)}`, [\n    'The ops are invert, drop-left, drop-right, operator, value, empty, and remove',\n  ])",
+      "shape": "ae21ed7d",
       "op": "value",
       "to": "return { at: node, text: '' }"
     },
     {
       "at": "VariableDeclarator[id.name='mutated'] > BinaryExpression",
-      "was": "source.slice(0, at.range[0]) + text + source.slice(at.range[1])",
+      "shape": "5d00f197",
       "op": "value",
       "to": "source.slice(0, at.range[0]) + text"
     },
     {
       "at": "BinaryExpression[right.name='text']",
-      "was": "source.slice(0, at.range[0]) + text",
+      "shape": "5d00f197",
       "op": "drop-right"
     },
     {
       "at": "CallExpression > Literal[value=0]",
-      "was": "0",
+      "shape": "a29f8d48",
       "op": "value",
       "to": "1"
     },
     {
       "at": "ExportNamedDeclaration MemberExpression Literal[value=0]",
-      "was": "0",
+      "shape": "a29f8d48",
       "op": "value",
       "to": "1"
     },
     {
       "at": "BinaryExpression Literal[value=1]",
-      "was": "1",
+      "shape": "a39f8edb",
       "op": "value",
       "to": "0"
     },
     {
       "at": "VariableDeclarator[id.name='applyOp'] IfStatement",
-      "was": "if (mutated.trim() === source.trim()) {\n    throw new NoOpError(`The ${mutation.op} at ${mutation.at} leaves the source unchanged`, [\n      `It reads ${was.trim()} either way, so a suite passing on it would report survived`,\n      'Name a different site, or an op that changes this one',\n    ])\n  }",
+      "shape": "2c681a54",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='applyOp'] BinaryExpression[operator='===']",
-      "was": "mutated.trim() === source.trim()",
+      "shape": "cd6d5faa",
       "op": "operator",
       "to": "!=="
     },
     {
       "at": "VariableDeclarator[id.name='applyOp'] ThrowStatement",
-      "was": "throw new NoOpError(`The ${mutation.op} at ${mutation.at} leaves the source unchanged`, [\n      `It reads ${was.trim()} either way, so a suite passing on it would report survived`,\n      'Name a different site, or an op that changes this one',\n    ])",
+      "shape": "e942d91a",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='applyOp'] ReturnStatement",
-      "was": "return mutated",
+      "shape": "ad6c3947",
       "op": "value",
       "to": "return source"
     },
     {
       "at": "Property[key.name='text'] TemplateLiteral",
-      "was": "`!(${slice(source, target)})`",
+      "shape": "a50400a3",
       "op": "value",
       "to": "`${slice(source, target)}`"
     },
     {
       "at": "VariableDeclarator[id.name='operand'] IfStatement Literal",
-      "was": "'drop-left and drop-right apply to && and ||'",
+      "shape": "f43c38ac",
       "op": "empty"
     },
     {
       "at": "VariableDeclarator[id.name='operand'] ArrayExpression TemplateLiteral",
-      "was": "`Dropping either leaves ${slice(source, side).trim()}, so a suite passing on it would report survived`",
+      "shape": "f3b8f0db",
       "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) TemplateLiteral",
-      "was": "`empty does not apply to a ${node.type} holding ${typeof field(node, 'value')}`",
+      "shape": "d2063cdf",
       "op": "empty"
     },
     {
       "at": "TemplateLiteral Literal",
-      "was": "'value'",
+      "shape": "f31c9b19",
       "op": "value",
       "to": "'type'"
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) ArrayExpression",
-      "was": "[\n      'empty applies to an array, an object, or a string literal',\n    ]",
+      "shape": "0098c5e6",
       "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) ArrayExpression Literal",
-      "was": "'empty applies to an array, an object, or a string literal'",
+      "shape": "f1690d02",
       "op": "empty"
     },
     {
       "at": "VariableDeclarator[id.name='forms'] ObjectExpression",
-      "was": "{\n    ArrayExpression: '[]',\n    ObjectExpression: '{}',\n    TemplateLiteral: '``',\n  }",
+      "shape": "76f499b6",
       "op": "empty"
     },
     {
       "at": "BlockStatement:has(Literal[value='Literal']) IfStatement:nth-child(4)",
-      "was": "if (!form) {\n    throw new CliError(`empty does not apply to a ${node.type}`, [\n      'empty applies to an array, an object, or a string literal',\n    ])\n  }",
+      "shape": "15fa6318",
       "op": "remove"
     },
     {
       "at": "VariableDeclarator[id.name='replacement'] ArrayExpression TemplateLiteral",
-      "was": "`The mutation at ${mutation.at} names no to`",
+      "shape": "66f56d8d",
       "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='operator']) ThrowStatement Literal",
-      "was": "'operator applies to a binary or logical expression'",
+      "shape": "452c3b57",
       "op": "empty"
     },
     {
       "at": "BlockStatement:has(Literal[value='drop-right']) > ThrowStatement TemplateLiteral",
-      "was": "`Unknown op: ${String(op)}`",
+      "shape": "63364eea",
       "op": "empty"
     },
     {
       "at": "BlockStatement:has(Literal[value='drop-right']) > ThrowStatement ArrayExpression",
-      "was": "[\n    'The ops are invert, drop-left, drop-right, operator, value, empty, and remove',\n  ]",
+      "shape": "e249aabd",
       "op": "empty"
     },
     {
       "at": "BlockStatement:has(Literal[value='drop-right']) > ThrowStatement Literal",
-      "was": "'The ops are invert, drop-left, drop-right, operator, value, empty, and remove'",
+      "shape": "f21ea373",
       "op": "empty"
     },
     {
       "at": "ExportNamedDeclaration NewExpression > TemplateLiteral",
-      "was": "`The ${mutation.op} at ${mutation.at} leaves the source unchanged`",
+      "shape": "dc8bb1bd",
       "op": "empty"
     },
     {
       "at": "VariableDeclarator[id.name='applyOp'] ArrayExpression",
-      "was": "[\n      `It reads ${was.trim()} either way, so a suite passing on it would report survived`,\n      'Name a different site, or an op that changes this one',\n    ]",
+      "shape": "393a5d1f",
       "op": "empty"
     },
     {
       "at": "ExportNamedDeclaration ArrayExpression TemplateLiteral",
-      "was": "`It reads ${was.trim()} either way, so a suite passing on it would report survived`",
+      "shape": "4b6e522d",
       "op": "empty"
     },
     {
       "at": "ExportNamedDeclaration IfStatement Literal",
-      "was": "'Name a different site, or an op that changes this one'",
+      "shape": "803d7b17",
       "op": "empty"
     }
   ]
