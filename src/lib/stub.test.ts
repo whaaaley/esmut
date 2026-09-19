@@ -7,6 +7,7 @@ import { matchAll } from './query.ts'
 import { parseSelector, select } from './select.ts'
 import type { Op } from './schema.ts'
 import { pin } from './pin.ts'
+import { shapeHash } from './shape.ts'
 import { opsFor, sites, stubPlan } from './stub.ts'
 
 const FIXTURES = fromFileUrl(new URL('../../tests/fixtures/', import.meta.url))
@@ -377,15 +378,19 @@ describe('All Stub Tests', () => {
       assertEquals(mutations.map((mutation) => mutation.op), [null])
     })
 
-    it('records what the node read as, so a later stale report can name it', () => {
+    // The structure is recorded rather than the source, so a later drift report names a real change.
+    it('records the structure of the node it addressed', () => {
       // Arrange
       const found = fixture('14-single-expression.ts')
+      const { indexed } = parse('14-single-expression.ts')
+      const [literal] = indexed.byType.get('Literal') ?? []
 
       // Act
       const { mutations } = stubPlan(found.source, found.path)
 
       // Assert
-      assertEquals(mutations[0]?.was, '42')
+      assertExists(literal)
+      assertEquals(mutations[0]?.shape, shapeHash(literal))
     })
 
     // Every site gets an address, so a plan never carries an empty selector or leaves a site out.
@@ -420,8 +425,8 @@ describe('All Stub Tests', () => {
       // Act
       const { mutations } = stubPlan(found.source, found.path)
 
-      // Assert: an unreachable node reads as stale, so every site here must be addressed.
-      const reached = mutations.some((mutation) => mutation.was === "'over the ceiling'")
+      // Assert: the literal inside the generic is named, which no default visitor key reaches.
+      const reached = mutations.some((mutation) => mutation.at.includes("'over the ceiling'"))
       assert(reached, 'a site inside a generic is reachable')
     })
 
@@ -433,7 +438,7 @@ describe('All Stub Tests', () => {
       const { mutations } = stubPlan(found.source, found.path)
 
       // Assert
-      assert(mutations.some((mutation) => mutation.was === "'active'"), 'a jsx attribute value is a site')
+      assert(mutations.some((mutation) => mutation.at.includes("'active'")), 'a jsx attribute value is a site')
     })
   })
 })

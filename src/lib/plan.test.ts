@@ -36,10 +36,10 @@ describe('All Plan Tests', () => {
     it('keeps the op an author chose, which is the judgment a fresh stub cannot derive', () => {
       // Arrange
       const name = 'the boundary is never tested'
-      const existing = plan([{ at: 'Literal[value=1]', was: '1', op: 'value', to: '2', name }])
+      const existing = plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '2', name }])
 
       // Act
-      const merged = mergePlan(existing, stubbed([{ at: 'Literal[value=1]', was: '1', op: null }]), 'src/a.ts')
+      const merged = mergePlan(existing, stubbed([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: null }]), 'src/a.ts')
 
       // Assert: op, to, and name are the only fields carrying human judgment.
       assertEquals(merged.plan.mutations[0]?.op, 'value')
@@ -48,23 +48,23 @@ describe('All Plan Tests', () => {
       assertEquals(merged.kept, 1)
     })
 
-    it('refreshes what the node read as, so a later stale report is honest about it', () => {
+    it('refreshes the structure it recorded, so a later drift report is honest about it', () => {
       // Arrange
-      const existing = plan([{ at: 'Literal[value=1]', was: 'stale text', op: 'value', to: '2' }])
+      const existing = plan([{ at: 'Literal[value=1]', shape: 'deadbeef', op: 'value', to: '2' }])
 
       // Act
-      const merged = mergePlan(existing, stubbed([{ at: 'Literal[value=1]', was: '1', op: null }]), 'src/a.ts')
+      const merged = mergePlan(existing, stubbed([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: null }]), 'src/a.ts')
 
       // Assert
-      assertEquals(merged.plan.mutations[0]?.was, '1')
+      assertEquals(merged.plan.mutations[0]?.shape, 'aaaa1111')
     })
 
     it('appends a site the stub newly found, after the entries already written', () => {
       // Arrange
-      const existing = plan([{ at: 'Literal[value=1]', was: '1', op: 'value', to: '2' }])
+      const existing = plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '2' }])
       const found = stubbed([
-        { at: 'Literal[value=1]', was: '1', op: null },
-        { at: 'Literal[value=9]', was: '9', op: null },
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: null },
+        { at: 'Literal[value=9]', shape: 'cccc9999', op: null },
       ])
 
       // Act
@@ -78,10 +78,10 @@ describe('All Plan Tests', () => {
     it('preserves an entry whose selector no longer resolves and reports it as stale', () => {
       // Arrange
       const name = 'the retry cap is never tested'
-      const existing = plan([{ at: 'Literal[value=7]', was: '7', op: 'value', to: '8', name }])
+      const existing = plan([{ at: 'Literal[value=7]', shape: 'bbbb7777', op: 'value', to: '8', name }])
 
       // Act
-      const merged = mergePlan(existing, stubbed([{ at: 'Literal[value=1]', was: '1', op: null }]), 'src/a.ts')
+      const merged = mergePlan(existing, stubbed([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: null }]), 'src/a.ts')
 
       // Assert: a stale address means the source moved, not that the behavior stopped mattering.
       assertEquals(merged.stale.map((mutation) => mutation.at), ['Literal[value=7]'])
@@ -93,12 +93,12 @@ describe('All Plan Tests', () => {
     it('orders the plan kept, then stale, then added, so a re-stub does not reshuffle it', () => {
       // Arrange
       const existing = plan([
-        { at: 'Literal[value=1]', was: '1', op: 'value', to: '2' },
-        { at: 'Literal[value=7]', was: '7', op: 'value', to: '8' },
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '2' },
+        { at: 'Literal[value=7]', shape: 'bbbb7777', op: 'value', to: '8' },
       ])
       const found = stubbed([
-        { at: 'Literal[value=1]', was: '1', op: null },
-        { at: 'Literal[value=9]', was: '9', op: null },
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: null },
+        { at: 'Literal[value=9]', shape: 'cccc9999', op: null },
       ])
 
       // Act
@@ -122,7 +122,7 @@ describe('All Plan Tests', () => {
 
     it('leaves cmd empty on a first stub, since a command that cannot run reports every mutation as caught', () => {
       // Act
-      const merged = mergePlan(null, stubbed([{ at: 'Literal', was: '1', op: null }]), 'src/a.ts')
+      const merged = mergePlan(null, stubbed([{ at: 'Literal', shape: 'aaaa1111', op: null }]), 'src/a.ts')
 
       // Assert
       assertEquals(merged.plan.cmd, '')
@@ -131,29 +131,29 @@ describe('All Plan Tests', () => {
   })
 
   describe('mergePlan drift', () => {
-    // A selector resolving to a node that reads differently means the op may have changed meaning.
-    // Overwriting was silently hides that, and keeping the old one makes a later stale report lie.
-    it('writes the new source and reports what the node used to read', () => {
+    // A selector resolving to a node of a different structure means the op may have changed meaning.
+    // Overwriting the shape silently hides that, and keeping the old one makes a later report lie.
+    it('writes the new structure and reports the one the node used to carry', () => {
       // Arrange
-      const existing = plan([{ at: 'IfStatement', was: 'if (kept > 0)', op: 'invert', name: 'the guard' }])
-      const found = stubbed([{ at: 'IfStatement', was: 'if (kept >= 0)', op: null }])
+      const existing = plan([{ at: 'IfStatement', shape: 'b78119ea', op: 'invert', name: 'the guard' }])
+      const found = stubbed([{ at: 'IfStatement', shape: 'fc94fba2', op: null }])
 
       // Act
       const merged = mergePlan(existing, found, 'report.ts')
 
       // Assert
-      assertEquals(merged.drifted, [{ at: 'IfStatement', was: 'if (kept > 0)', now: 'if (kept >= 0)' }])
-      assertEquals(merged.plan.mutations[0]?.was, 'if (kept >= 0)')
+      assertEquals(merged.drifted, [{ at: 'IfStatement', before: 'b78119ea', after: 'fc94fba2' }])
+      assertEquals(merged.plan.mutations[0]?.shape, 'fc94fba2')
       assertEquals(merged.plan.mutations[0]?.op, 'invert')
       assertEquals(merged.plan.mutations[0]?.name, 'the guard')
     })
 
-    it('reports no drift where the node reads as the plan recorded', () => {
+    it('reports no drift where the node carries the structure the plan recorded', () => {
       // Arrange
-      const same = [{ at: 'IfStatement', was: 'if (kept > 0)', op: 'invert' as const }]
+      const same = [{ at: 'IfStatement', shape: 'b78119ea', op: 'invert' as const }]
 
       // Act
-      const found = stubbed([{ at: 'IfStatement', was: 'if (kept > 0)', op: null }])
+      const found = stubbed([{ at: 'IfStatement', shape: 'b78119ea', op: null }])
       const merged = mergePlan(plan(same), found, 'report.ts')
 
       // Assert
@@ -165,7 +165,7 @@ describe('All Plan Tests', () => {
     const runnable = (over: Partial<Plan> = {}): Plan => ({
       source: 'redact.ts',
       cmd: 'deno test',
-      mutations: [{ at: 'Literal', was: '400', op: 'value', to: '200' }],
+      mutations: [{ at: 'Literal', shape: '400a400a', op: 'value', to: '200' }],
       ...over,
     })
 
@@ -183,7 +183,7 @@ describe('All Plan Tests', () => {
     // stub leaves op null for a person, so a run reaching one means the plan was never finished.
     it('refuses a mutation still awaiting an op', () => {
       // Arrange
-      const unfilled = runnable({ mutations: [{ at: 'Literal', was: '400', op: null }] })
+      const unfilled = runnable({ mutations: [{ at: 'Literal', shape: '400a400a', op: null }] })
 
       // Act & Assert
       assertThrows(() => assertRunnable(unfilled, 'redact.mut.json'), CliError)
@@ -192,8 +192,8 @@ describe('All Plan Tests', () => {
     // operator and value name what replaces the node, and neither can be carried out without it.
     it('refuses an operator or a value naming no replacement', () => {
       // Arrange
-      const noOperator = runnable({ mutations: [{ at: 'B', was: 'a === b', op: 'operator' }] })
-      const noValue = runnable({ mutations: [{ at: 'L', was: '400', op: 'value' }] })
+      const noOperator = runnable({ mutations: [{ at: 'B', shape: 'eeee0001', op: 'operator' }] })
+      const noValue = runnable({ mutations: [{ at: 'L', shape: '400a400a', op: 'value' }] })
 
       // Act & Assert
       assertThrows(() => assertRunnable(noOperator, 'redact.mut.json'), CliError)
@@ -203,7 +203,7 @@ describe('All Plan Tests', () => {
     // The five other ops are complete alone, so demanding a replacement refuses a valid plan.
     it('accepts an op that needs no replacement', () => {
       // Arrange
-      const dropping = runnable({ mutations: [{ at: 'L', was: 'a && b', op: 'drop-left' }] })
+      const dropping = runnable({ mutations: [{ at: 'L', shape: 'eeee0002', op: 'drop-left' }] })
 
       // Act & Assert
       assertRunnable(dropping, 'redact.mut.json')
@@ -215,7 +215,7 @@ describe('All Plan Tests', () => {
 
     it('accepts a plan whose every selector names one node', () => {
       // Arrange
-      const resolving = plan([{ at: 'Literal[value=400]', was: '400', op: 'value', to: '500' }])
+      const resolving = plan([{ at: 'Literal[value=400]', shape: '400a400a', op: 'value', to: '500' }])
 
       // Act & Assert
       assertResolves(resolving, SOURCE, 'status.ts', 'status.mut.json')
@@ -225,7 +225,7 @@ describe('All Plan Tests', () => {
     // It also reads as a verdict beside the real ones, making a survivor count untrustworthy.
     it('refuses a plan naming a node that is no longer there', () => {
       // Arrange
-      const stale = plan([{ at: 'Literal[value=999]', was: '999', op: 'value', to: '1' }])
+      const stale = plan([{ at: 'Literal[value=999]', shape: 'dddd9990', op: 'value', to: '1' }])
 
       // Act & Assert
       assertThrows(() => assertResolves(stale, SOURCE, 'status.ts', 'status.mut.json'), CliError)
@@ -234,7 +234,7 @@ describe('All Plan Tests', () => {
     // A selector matching two nodes mutates a site nobody named, which is the ambiguous verdict.
     it('refuses a plan naming more than one node', () => {
       // Arrange
-      const ambiguous = plan([{ at: 'Literal', was: '400', op: 'value', to: '500' }])
+      const ambiguous = plan([{ at: 'Literal', shape: '400a400a', op: 'value', to: '500' }])
 
       // Act & Assert
       assertThrows(() => assertResolves(ambiguous, SOURCE, 'status.ts', 'status.mut.json'), CliError)
@@ -257,7 +257,7 @@ describe('All Plan Tests', () => {
       // Arrange
       const directory = Deno.makeTempDirSync()
       const target = `${directory}/redact.mut.json`
-      const written = plan([{ at: 'Literal', was: '400', op: 'value', to: '200' }])
+      const written = plan([{ at: 'Literal', shape: '400a400a', op: 'value', to: '200' }])
 
       // Act
       await writePlan(target, written)
@@ -273,7 +273,7 @@ describe('All Plan Tests', () => {
     it('creates the plans directory, since the first stub writes into one that is not there', async () => {
       // Arrange
       const target = `${Deno.makeTempDirSync()}/nested/.esmut/lib.redact.json`
-      const written = plan([{ at: 'Literal', was: '400', op: 'value', to: '200' }])
+      const written = plan([{ at: 'Literal', shape: '400a400a', op: 'value', to: '200' }])
 
       // Act
       await writePlan(target, written)
@@ -289,7 +289,7 @@ describe('All Plan Tests', () => {
       const target = `${directory}/lib.redact.json`
 
       // Act
-      await writePlan(target, plan([{ at: 'Literal', was: '400', op: 'value', to: '200' }]))
+      await writePlan(target, plan([{ at: 'Literal', shape: '400a400a', op: 'value', to: '200' }]))
       const left = [...Deno.readDirSync(directory)].map((entry) => entry.name)
 
       // Assert

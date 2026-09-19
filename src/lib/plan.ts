@@ -132,12 +132,12 @@ export const writePlan = async (path: string, plan: Plan): Promise<void> => {
   }
 }
 
-// A selector that still resolves to a node reading differently than the plan recorded.
+// A selector that still resolves, to a node whose structure differs from the one the plan recorded.
 // The op an author chose may no longer mean what they meant, so the change is reported.
 export type Drift = {
   at: string
-  was: string
-  now: string
+  before: string
+  after: string
 }
 
 export type Merged = {
@@ -167,11 +167,11 @@ export const mergePlan = (existing: Plan | null, stubbed: Stubbed, source: strin
       continue
     }
 
-    // The selector resolves but the node reads differently, so the op may have shifted meaning.
-    // The new source is written and the old reported, since the plan records and the report tells.
-    if (match.was !== mutation.was) drifted.push({ at: mutation.at, was: mutation.was, now: match.was })
+    // The selector resolves but the node changed, so the op may have shifted meaning.
+    // The new structure is written and the old reported, since the plan records and the report tells.
+    if (match.shape !== mutation.shape) drifted.push({ at: mutation.at, before: mutation.shape, after: match.shape })
 
-    kept.push({ ...mutation, was: match.was })
+    kept.push({ ...mutation, shape: match.shape })
     found.delete(mutation.at)
   }
 

@@ -1,8 +1,9 @@
-import { assert, assertEquals } from '@std/assert'
+import { assert, assertEquals, assertExists } from '@std/assert'
 import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
 import { indexSource, matchesUniquely } from '../src/lib/walk.ts'
 import { parseSelector, select } from '../src/lib/select.ts'
+import { shapeHash } from '../src/lib/shape.ts'
 import { stubPlan } from '../src/lib/stub.ts'
 
 const FIXTURES = fromFileUrl(new URL('./fixtures/', import.meta.url))
@@ -92,11 +93,20 @@ describe('All Corpus Tests', () => {
         const found = fixture(name)
         const { mutations } = stubbed(name)
 
+        const indexed = indexSource(found.source, found.path)
+
         for (const mutation of mutations) {
           const matches = select(found.source, found.path, mutation.at)
+          const [first] = matches
 
           assertEquals(matches.length, 1, `${mutation.at} matched ${matches.length}`)
-          assertEquals(matches[0]?.text, mutation.was, `${mutation.at} named a different node`)
+
+          // The node the selector reaches must be the one the shape was taken from, not merely one
+          // node, so the structure at that range is what the recorded shape is compared against.
+          const reached = (indexed.byType.get(first?.type ?? '') ?? []).find((node) => node.range[0] === first?.range[0])
+
+          assertExists(reached, `${mutation.at} reached no indexed node`)
+          assertEquals(shapeHash(reached), mutation.shape, `${mutation.at} named a different node`)
         }
       })
     }

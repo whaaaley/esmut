@@ -11,7 +11,7 @@ const READY = prepare(SOURCE, 'status.ts')
 
 const mutation = (over: Partial<Mutation> = {}): Mutation => ({
   at: 'Literal[value=400]',
-  was: '400',
+  shape: '400a400a',
   op: 'value',
   to: '500',
   ...over,

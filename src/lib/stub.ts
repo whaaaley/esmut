@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { type Indexed, indexSource, isNode } from './walk.ts'
 import { pin } from './pin.ts'
 import { matchAll } from './query.ts'
+import { shapeHash } from './shape.ts'
 import { parseSelector } from './select.ts'
 import type { Mutation, Op } from './schema.ts'
 
@@ -127,10 +128,9 @@ export const stubPlan = (source: string, path: string): Stubbed => {
 
   for (const site of sites(indexed)) {
     const { node } = site
-    const was = source.slice(node.range[0], node.range[1])
     const { at } = pin(indexed, node, count)
 
-    mutations.push({ at, was, op: null })
+    mutations.push({ at, shape: shapeHash(node), op: null })
   }
 
   return { mutations }

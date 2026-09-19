@@ -13,7 +13,7 @@ const mutate = (source: string, type: string, op: Op | null, to?: string): strin
 
   if (!node) throw new Error(`No ${type} in the source`)
 
-  const mutation: Mutation = { at: type, was: '', op, ...(to === undefined ? {} : { to }) }
+  const mutation: Mutation = { at: type, shape: '00000000', op, ...(to === undefined ? {} : { to }) }
 
   return applyOp(source, node, mutation).trim()
 }

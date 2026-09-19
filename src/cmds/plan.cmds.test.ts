@@ -102,7 +102,7 @@ describe('All Plan Command Tests', () => {
 
       const target = planPath(path)
       const plan = await readPlan(target)
-      const stale = { at: 'Literal[value=999]', was: '999', op: null }
+      const stale = { at: 'Literal[value=999]', shape: 'dddd9990', op: null }
       Deno.writeTextFileSync(target, JSON.stringify({ ...plan, mutations: [stale] }, null, 2))
 
       // Act

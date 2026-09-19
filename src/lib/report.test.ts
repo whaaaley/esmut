@@ -141,8 +141,8 @@ describe('All Report Tests', () => {
     // An unfilled op is the one thing a stub leaves for a person, so the line counts them.
     it('counts the mutations still awaiting an op', () => {
       // Arrange
-      const waiting = merge({ mutations: [{ at: 'Literal', was: '400', op: null }] })
-      const filled = merge({ mutations: [{ at: 'Literal', was: '400', op: 'value', to: '200' }] })
+      const waiting = merge({ mutations: [{ at: 'Literal', shape: '400a400a', op: null }] })
+      const filled = merge({ mutations: [{ at: 'Literal', shape: '400a400a', op: 'value', to: '200' }] })
 
       // Act & Assert
       assertStringIncludes(formatStub('plan.json', waiting), '1 awaiting an op')
@@ -161,8 +161,8 @@ describe('All Report Tests', () => {
     // A killed mutation is expected, so the report names the survivors and tallies the rest.
     it('names a survivor and leaves a killed mutation to the tally', () => {
       // Arrange
-      const killed: Verdict = { mutation: { at: 'Literal', was: '1', op: 'value', to: '2' }, outcome: 'killed' }
-      const guard = { at: 'IfStatement', was: 'if (a)', op: 'invert' as const, name: 'the guard' }
+      const killed: Verdict = { mutation: { at: 'Literal', shape: 'aaaa1111', op: 'value', to: '2' }, outcome: 'killed' }
+      const guard = { at: 'IfStatement', shape: 'b78119ea', op: 'invert' as const, name: 'the guard' }
       const survived: Verdict = { mutation: guard, outcome: 'survived' }
 
       // Act
@@ -179,7 +179,7 @@ describe('All Report Tests', () => {
     it('says why an invalid mutant was refused', () => {
       // Arrange
       const invalid: Verdict = {
-        mutation: { at: 'ReturnStatement', was: 'return a', op: 'remove' },
+        mutation: { at: 'ReturnStatement', shape: 'eeee0003', op: 'remove' },
         outcome: 'invalid',
         because: "Cannot find name 'a'.",
       }
@@ -194,9 +194,9 @@ describe('All Report Tests', () => {
     it('names a stale and an ambiguous selector and counts what resolved', () => {
       // Arrange
       const resolved = [
-        { mutation: { at: 'Literal[value=1]', was: '1', op: null }, matches: 1 },
-        { mutation: { at: 'Gone', was: 'x', op: null }, matches: 0 },
-        { mutation: { at: 'Literal', was: 'y', op: null }, matches: 3 },
+        { mutation: { at: 'Literal[value=1]', shape: 'aaaa1111', op: null }, matches: 1 },
+        { mutation: { at: 'Gone', shape: 'eeee0004', op: null }, matches: 0 },
+        { mutation: { at: 'Literal', shape: 'eeee0005', op: null }, matches: 3 },
       ]
 
       // Act

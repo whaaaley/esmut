@@ -10,8 +10,9 @@ const mutationSchema = z.strictObject({
   // An ESQuery selector naming one node, which is stale at 0 matches and ambiguous above 1.
   // An empty selector parses and matches everything, so it is refused here rather than at the run.
   at: z.string().min(1),
-  // The matched node's source when the plan was written, never used to find the node.
-  was: z.string(),
+  // The matched node's structure when the plan was written, never used to find the node.
+  // A formatter rewriting a line leaves this alone, so a reflow is not reported as a change.
+  shape: z.string(),
   // Null until an author picks one, since the tool locates sites but cannot judge them.
   op: opSchema.nullable(),
   to: z.string().optional(),

@@ -1,6 +1,4 @@
-import { buildMessage, diffStr, stripAnsiCode } from '@std/internal'
 import { basename } from '@std/path'
-import { safe } from '../utils/safe.utils.ts'
 import type { Merged } from './plan.ts'
 import type { Match } from './select.ts'
 import type { Verdict } from './run.ts'
@@ -24,43 +22,6 @@ const asLines = (text: string, indent: string): string[] => {
   for (const line of rest) kept.push(`${indent}${line.trimEnd()}`)
 
   return kept
-}
-
-// The configured command is handed the two sides as files, the way git diff and delta expect them.
-const externalDiff = (command: string, was: string, now: string): string[] => {
-  const before = Deno.makeTempFileSync({ suffix: '.was' })
-  const after = Deno.makeTempFileSync({ suffix: '.now' })
-
-  const { data, error } = safe(() => {
-    Deno.writeTextFileSync(before, `${was}\n`)
-    Deno.writeTextFileSync(after, `${now}\n`)
-
-    const [bin, ...rest] = command.split(' ')
-    if (!bin) return ''
-
-    const { stdout } = new Deno.Command(bin, { args: [...rest, before, after], stderr: 'null' }).outputSync()
-    return new TextDecoder().decode(stdout)
-  })
-
-  safe(() => Deno.removeSync(before))
-  safe(() => Deno.removeSync(after))
-
-  // A diff command that cannot run should not lose the drift, so the two sides are named instead.
-  if (error) return [`- ${was}`, `+ ${now}`]
-
-  return data.split('\n').map((line) => line.trimEnd()).filter((line) => line !== '')
-}
-
-// Deno's own diff, the one @std/assert prints, rather than one written here.
-// ESMUT_DIFF names an external command instead, so git diff or delta can be used.
-const diffLines = (was: string, now: string): string[] => {
-  const command = Deno.env.get('ESMUT_DIFF')
-
-  if (command) return externalDiff(command, was, now)
-
-  return buildMessage(diffStr(was, now))
-    .map((line) => stripAnsiCode(line).trim())
-    .filter((line) => line !== '' && !line.startsWith('[Diff]'))
 }
 
 // Leads with the count because that is the signal: 0 is stale, 1 is usable, more is ambiguous.
@@ -100,12 +61,11 @@ export const formatStub = (path: string, merged: Merged): string => {
     lines.push(`    stale  ${mutation.at}`)
   }
 
+  // The structures are named rather than diffed, since a hash has no lines to show.
+  // The selector is what a reader opens to judge whether the op still means what they meant.
   for (const drift of merged.drifted) {
     lines.push(`    drifted  ${drift.at}`)
-
-    for (const line of diffLines(drift.was, drift.now)) {
-      lines.push(`      ${line}`)
-    }
+    lines.push(`      ${drift.before} became ${drift.after}`)
   }
 
   if (!plan.cmd) lines.push(`    name a cmd before running, since a plan with none cannot run`)
