@@ -24,6 +24,7 @@ const CORPUS = [
   '13-types-only.ts',
   '14-single-expression.ts',
   '15-empty.ts',
+  '16-operand-shapes.ts',
 ] as const
 
 type Fixture = {
@@ -63,7 +64,7 @@ const stubbed = (name: string): ReturnType<typeof stubPlan> => {
 // Today's measured split per fixture, so a regression fails while understood gaps do not block.
 // addressed is a floor and skipped a ceiling, letting a generator fix pass without editing numbers.
 const BASELINE: Record<string, { sites: number; addressed: number; skipped: number }> = {
-  '01-distinct-ops.ts': { sites: 33, addressed: 32, skipped: 1 },
+  '01-distinct-ops.ts': { sites: 33, addressed: 33, skipped: 0 },
   '02-excluded-sites.ts': { sites: 11, addressed: 11, skipped: 0 },
   '03-awkward-literals.ts': { sites: 15, addressed: 15, skipped: 0 },
   '04-typescript-kinds.ts': { sites: 23, addressed: 23, skipped: 0 },
@@ -78,6 +79,7 @@ const BASELINE: Record<string, { sites: number; addressed: number; skipped: numb
   '13-types-only.ts': { sites: 0, addressed: 0, skipped: 0 },
   '14-single-expression.ts': { sites: 1, addressed: 1, skipped: 0 },
   '15-empty.ts': { sites: 0, addressed: 0, skipped: 0 },
+  '16-operand-shapes.ts': { sites: 16, addressed: 16, skipped: 0 },
 }
 
 describe('All Corpus Tests', () => {

@@ -137,6 +137,20 @@ const attributes = (node: TSESTree.Node): string[] => {
   const rightName = named(child(node, 'right'))
   if (rightName) found.push(`[right.name='${quote(rightName)}']`)
 
+  // An operand that reads a property or compares against a literal carries no name of its own,
+  // so a comparison between two of them has nothing above to separate it from its neighbour.
+  for (const side of ['left', 'right']) {
+    const operand = child(node, side)
+
+    const property = named(child(operand, 'property'))
+    if (property) found.push(`[${side}.property.name='${quote(property)}']`)
+
+    const literal = field(operand, 'value')
+
+    if (typeof literal === 'string' && literal.length <= 40) found.push(`[${side}.value='${quote(literal)}']`)
+    if (typeof literal === 'number' || typeof literal === 'boolean') found.push(`[${side}.value=${String(literal)}]`)
+  }
+
   return found
 }
 

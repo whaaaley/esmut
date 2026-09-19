@@ -26,6 +26,7 @@ const CORPUS = [
   '13-types-only.ts',
   '14-single-expression.ts',
   '15-empty.ts',
+  '16-operand-shapes.ts',
 ] as const
 
 type Fixture = { path: string; source: string }
@@ -462,21 +463,20 @@ describe('All Stub Tests', () => {
       assertEquals(select(found.source, found.path, at ?? '').length, 1)
     })
 
-    // KNOWN GAP: a selector that resolves does exist, at candidate 22795, far past the 1000 budget.
-    // The two- and three-scope tiers come before the full chain, which is unique by construction.
-    it('leaves a deeply nested node unaddressed although the full chain would resolve it', () => {
+    // A node this deep once exhausted the budget inside the scope tiers, since every scope above it
+    // repeats. The literal it compares against sits on the node itself, so no scope is needed at all.
+    it('addresses a deeply nested comparison by its own operand rather than by the scopes above it', () => {
       // Arrange
       const { fixture: found, indexed } = parse('11-deep-nesting.ts')
       const binaries = indexed.byType.get('BinaryExpression') ?? []
       const node = binaries.find((binary) => text(found, binary) === 'depth > 9')
-      const chain = [...(indexed.ancestry.get(node ?? indexed.ast) ?? [])].reverse().map((parent) => parent.type)
 
       // Act
-      const full = [...chain, "BinaryExpression[operator='>']"].join(' > ')
+      const at = node ? address(indexed, node) : null
 
-      // Assert: null rather than an ambiguous selector is the honest answer for an unreached tier.
-      assertEquals(select(found.source, found.path, full).length, 1)
-      assertEquals(node && address(indexed, node), null)
+      // Assert
+      assertEquals(at, 'BinaryExpression[right.value=9]')
+      assertEquals(select(found.source, found.path, at ?? '').length, 1)
     })
 
     // Two comparisons under one declarator at one depth share operator, depth, and bait literal.
@@ -493,6 +493,37 @@ describe('All Stub Tests', () => {
       // Assert
       assertEquals(found_at, "BinaryExpression[left.name='name']")
       assertEquals(select(found.source, found.path, "BinaryExpression[left.name='name']").length, 1)
+    })
+
+    // An operand that is a member expression carries no name, so the name attributes describe nothing.
+    // The property it reads is the separating fact, and without it two comparisons go unaddressed.
+    it('names the property an operand reads where the operand is not a bare binding', () => {
+      // Arrange
+      const { fixture: found, indexed } = parse('16-operand-shapes.ts')
+      const binaries = indexed.byType.get('BinaryExpression') ?? []
+      const node = binaries.find((binary) => text(found, binary) === "target.type === 'UnaryExpression'")
+
+      // Act
+      const at = node ? address(indexed, node) : null
+
+      // Assert
+      assertExists(at, 'a comparison reading target.type must be addressable')
+      assertEquals(select(found.source, found.path, at).length, 1)
+    })
+
+    // The right operand is a literal, which carries a value rather than a name or a property.
+    it('names the literal an operand compares against where the other side repeats', () => {
+      // Arrange
+      const { fixture: found, indexed } = parse('16-operand-shapes.ts')
+      const binaries = indexed.byType.get('BinaryExpression') ?? []
+      const node = binaries.find((binary) => text(found, binary) === "target.operator === '!'")
+
+      // Act
+      const at = node ? address(indexed, node) : null
+
+      // Assert
+      assertExists(at, 'a comparison reading target.operator must be addressable')
+      assertEquals(select(found.source, found.path, at).length, 1)
     })
   })
 
