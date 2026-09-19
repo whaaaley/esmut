@@ -158,6 +158,5 @@
       "op": "drop-right",
       "name": "safeAsync treats every rejected value as an Error already"
     }
-  ],
-  "skipped": []
+  ]
 }

@@ -4,6 +4,28 @@
   "filledBy": "sweep",
   "mutations": [
     {
+      "at": "Literal[value=' ']",
+      "was": "' '",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "2"
+    },
+    {
+      "at": "Literal[value=130]",
+      "was": "130",
+      "op": "value",
+      "to": "131"
+    },
+    {
+      "at": "Literal[value='verdict']",
+      "was": "'verdict'",
+      "op": "empty"
+    },
+    {
       "at": "TSLiteralType Literal[value='killed']",
       "was": "'killed'",
       "op": "empty"
@@ -26,11 +48,6 @@
     {
       "at": "TSLiteralType Literal[value='ambiguous']",
       "was": "'ambiguous'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value=' ']",
-      "was": "' '",
       "op": "empty"
     },
     {
@@ -58,22 +75,6 @@
       "was": "0",
       "op": "value",
       "to": "1"
-    },
-    {
-      "at": "VariableDeclarator[id.name='judge'] IfStatement:nth-child(2)",
-      "was": "if (matches.length === 0) return { verdict: { mutation, outcome: 'stale' } }",
-      "op": "invert"
-    },
-    {
-      "at": "BlockStatement IfStatement:nth-child(3)",
-      "was": "if (matches.length > 1) return { verdict: { mutation, outcome: 'ambiguous' } }",
-      "op": "invert"
-    },
-    {
-      "at": "Literal[value=1]",
-      "was": "1",
-      "op": "value",
-      "to": "2"
     },
     {
       "at": "Property[key.name='outcome'] Literal[value='ambiguous']",
@@ -111,12 +112,6 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value=130]",
-      "was": "130",
-      "op": "value",
-      "to": "131"
-    },
-    {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='runPlan'] > ArrowFunctionExpression > BlockStatement > ExpressionStatement > CallExpression > Literal[value='SIGINT']",
       "was": "'SIGINT'",
       "op": "empty"
@@ -130,11 +125,6 @@
       "at": "ForOfStatement IfStatement",
       "was": "if ('verdict' in judged) {\n        verdicts.push(judged.verdict)\n        continue\n      }",
       "op": "invert"
-    },
-    {
-      "at": "Literal[value='verdict']",
-      "was": "'verdict'",
-      "op": "empty"
     },
     {
       "at": "BinaryExpression[operator='in']",
@@ -160,260 +150,566 @@
       "at": "TryStatement Literal[value='SIGTERM']",
       "was": "'SIGTERM'",
       "op": "empty"
-    }
-  ],
-  "skipped": [
-    {
-      "was": "0",
-      "line": 38,
-      "column": 25,
-      "ops": [
-        "value"
-      ]
     },
     {
-      "was": "return { verdict: { mutation, outcome: 'stale' } }",
-      "line": 38,
-      "column": 28,
-      "ops": [
-        "remove"
-      ]
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > TSTypeAliasDeclaration.declaration > TSTypeLiteral.typeAnnotation > TSPropertySignature:nth-child(2) > TSTypeAnnotation.typeAnnotation > TSUnionType.typeAnnotation > TSLiteralType:nth-child(1) > Literal.literal",
+      "was": "'killed'",
+      "op": null
     },
     {
-      "was": "{ verdict: { mutation, outcome: 'stale' } }",
-      "line": 38,
-      "column": 35,
-      "ops": [
-        "empty"
-      ]
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > TSTypeAliasDeclaration.declaration > TSTypeLiteral.typeAnnotation > TSPropertySignature:nth-child(2) > TSTypeAnnotation.typeAnnotation > TSUnionType.typeAnnotation > TSLiteralType:nth-child(2) > Literal.literal",
+      "was": "'survived'",
+      "op": null
     },
     {
-      "was": "verdict: { mutation, outcome: 'stale' }",
-      "line": 38,
-      "column": 37,
-      "ops": [
-        "remove"
-      ]
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > TSTypeAliasDeclaration.declaration > TSTypeLiteral.typeAnnotation > TSPropertySignature:nth-child(2) > TSTypeAnnotation.typeAnnotation > TSUnionType.typeAnnotation > TSLiteralType:nth-child(3) > Literal.literal",
+      "was": "'invalid'",
+      "op": null
     },
     {
-      "was": "{ mutation, outcome: 'stale' }",
-      "line": 38,
-      "column": 46,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "mutation",
-      "line": 38,
-      "column": 48,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "outcome: 'stale'",
-      "line": 38,
-      "column": 58,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > TSTypeAliasDeclaration.declaration > TSTypeLiteral.typeAnnotation > TSPropertySignature:nth-child(2) > TSTypeAnnotation.typeAnnotation > TSUnionType.typeAnnotation > TSLiteralType:nth-child(4) > Literal.literal",
       "was": "'stale'",
-      "line": 38,
-      "column": 67,
-      "ops": [
-        "value",
-        "empty"
-      ]
+      "op": null
     },
     {
-      "was": "matches.length > 1",
-      "line": 39,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > TSTypeAliasDeclaration.declaration > TSTypeLiteral.typeAnnotation > TSPropertySignature:nth-child(2) > TSTypeAnnotation.typeAnnotation > TSUnionType.typeAnnotation > TSLiteralType:nth-child(5) > Literal.literal",
+      "was": "'ambiguous'",
+      "op": null
     },
     {
+      "at": "IfStatement[test.argument.name='bin']",
+      "was": "if (!bin) {\n    throw new CliError('The plan names an empty cmd', [\n      'Name the test command the suite runs',\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "UnaryExpression[argument.name='bin']",
+      "was": "!bin",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
+      "was": "throw new CliError('The plan names an empty cmd', [\n      'Name the test command the suite runs',\n    ])",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > NewExpression.init > ObjectExpression:nth-child(2)",
+      "was": "{ args: rest, stdout: 'null', stderr: 'null' }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='args']",
+      "was": "args: rest",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='stdout']",
+      "was": "stdout: 'null'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > NewExpression.init > ObjectExpression:nth-child(2) > Property:nth-child(2) > Literal.value",
+      "was": "'null'",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='stderr']",
+      "was": "stderr: 'null'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > NewExpression.init > ObjectExpression:nth-child(2) > Property:nth-child(3) > Literal.value",
+      "was": "'null'",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='code']",
+      "was": "code",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.left.name='code']",
+      "was": "return code !== 0",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.name='code']",
+      "was": "code !== 0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(5) > BinaryExpression.argument > Literal.right",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3)",
+      "was": "return {\n    source,\n    path,\n    indexed,\n    nodes: [...indexed.byType.values()].flat(),\n    gate,\n    clean: diagnose(gate, source),\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ObjectExpression.argument",
+      "was": "{\n    source,\n    path,\n    indexed,\n    nodes: [...indexed.byType.values()].flat(),\n    gate,\n    clean: diagnose(gate, source),\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ObjectExpression.argument > Property:nth-child(1)",
+      "was": "source",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='path']",
+      "was": "path",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ObjectExpression.argument > Property:nth-child(3)",
+      "was": "indexed",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ObjectExpression.argument > Property:nth-child(4)",
+      "was": "nodes: [...indexed.byType.values()].flat()",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ObjectExpression.argument > Property:nth-child(4) > CallExpression.value > MemberExpression.callee > ArrayExpression.object",
+      "was": "[...indexed.byType.values()]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ObjectExpression.argument > Property:nth-child(5)",
+      "was": "gate",
+      "op": null
+    },
+    {
+      "at": "Property[value.callee.name='diagnose']",
+      "was": "clean: diagnose(gate, source)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "source",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(2)",
+      "was": "indexed",
+      "op": null
+    },
+    {
+      "at": "Property[value.name='nodes']",
+      "was": "nodes",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(4)",
+      "was": "gate",
+      "op": null
+    },
+    {
+      "at": "Property[value.name='clean']",
+      "was": "clean",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[operator='??']",
+      "was": "indexed.ancestry.get(candidate) ?? []",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value=0]",
+      "was": "if (matched.length === 0) return { verdict: { mutation, outcome: 'stale' } }",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[operator='===']",
+      "was": "matched.length === 0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > BinaryExpression.test > Literal.right",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent",
+      "was": "return { verdict: { mutation, outcome: 'stale' } }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ObjectExpression.argument",
+      "was": "{ verdict: { mutation, outcome: 'stale' } }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
+      "was": "verdict: { mutation, outcome: 'stale' }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value",
+      "was": "{ mutation, outcome: 'stale' }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(1)",
+      "was": "mutation",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2)",
+      "was": "outcome: 'stale'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2) > Literal.value",
+      "was": "'stale'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value=1]",
+      "was": "if (matched.length > 1) return { verdict: { mutation, outcome: 'ambiguous' } }",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value=1]",
+      "was": "matched.length > 1",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent",
       "was": "return { verdict: { mutation, outcome: 'ambiguous' } }",
-      "line": 39,
-      "column": 26,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument",
       "was": "{ verdict: { mutation, outcome: 'ambiguous' } }",
-      "line": 39,
-      "column": 33,
-      "ops": [
-        "empty"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
       "was": "verdict: { mutation, outcome: 'ambiguous' }",
-      "line": 39,
-      "column": 35,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value",
+      "was": "{ mutation, outcome: 'ambiguous' }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(1)",
+      "was": "mutation",
+      "op": null
+    },
+    {
+      "at": "Property[value.value='ambiguous']",
+      "was": "outcome: 'ambiguous'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2) > Literal.value",
+      "was": "'ambiguous'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.argument.name='node']",
+      "was": "if (!node) return { verdict: { mutation, outcome: 'stale' } }",
+      "op": null
+    },
+    {
+      "at": "UnaryExpression[argument.name='node']",
+      "was": "!node",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent",
       "was": "return { verdict: { mutation, outcome: 'stale' } }",
-      "line": 45,
-      "column": 13,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ObjectExpression.argument",
       "was": "{ verdict: { mutation, outcome: 'stale' } }",
-      "line": 45,
-      "column": 20,
-      "ops": [
-        "empty"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
       "was": "verdict: { mutation, outcome: 'stale' }",
-      "line": 45,
-      "column": 22,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value",
       "was": "{ mutation, outcome: 'stale' }",
-      "line": 45,
-      "column": 31,
-      "ops": [
-        "empty"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(1)",
       "was": "mutation",
-      "line": 45,
-      "column": 33,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2)",
       "was": "outcome: 'stale'",
-      "line": 45,
-      "column": 43,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2) > Literal.value",
       "was": "'stale'",
-      "line": 45,
-      "column": 52,
-      "ops": [
-        "value",
-        "empty"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(8) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "data: mutant",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(8) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(2)",
+      "was": "error",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9)",
+      "was": "if (error) return { verdict: { mutation, outcome: 'invalid', because: error.message } }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent",
       "was": "return { verdict: { mutation, outcome: 'invalid', because: error.message } }",
-      "line": 52,
-      "column": 13,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ObjectExpression.argument",
       "was": "{ verdict: { mutation, outcome: 'invalid', because: error.message } }",
-      "line": 52,
-      "column": 20,
-      "ops": [
-        "empty"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
       "was": "verdict: { mutation, outcome: 'invalid', because: error.message }",
-      "line": 52,
-      "column": 22,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value",
       "was": "{ mutation, outcome: 'invalid', because: error.message }",
-      "line": 52,
-      "column": 31,
-      "ops": [
-        "empty"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(1)",
       "was": "mutation",
-      "line": 52,
-      "column": 33,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2)",
       "was": "outcome: 'invalid'",
-      "line": 52,
-      "column": 43,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
-      "was": "fresh.length > 0",
-      "line": 56,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2) > Literal.value",
+      "was": "'invalid'",
+      "op": null
     },
     {
-      "was": "0",
-      "line": 56,
-      "column": 21,
-      "ops": [
-        "value"
-      ]
+      "at": "Property[value.object.name='error']",
+      "was": "because: error.message",
+      "op": null
     },
     {
+      "at": "IfStatement[test.name='first']",
+      "was": "if (first) {\n    return { verdict: { mutation, outcome: 'invalid', because: first.message } }\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1)",
+      "was": "return { verdict: { mutation, outcome: 'invalid', because: first.message } }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1) > ObjectExpression.argument",
+      "was": "{ verdict: { mutation, outcome: 'invalid', because: first.message } }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1) > ObjectExpression.argument > Property:nth-child(1)",
+      "was": "verdict: { mutation, outcome: 'invalid', because: first.message }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value",
+      "was": "{ mutation, outcome: 'invalid', because: first.message }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(1)",
+      "was": "mutation",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2)",
+      "was": "outcome: 'invalid'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BlockStatement.consequent > ReturnStatement:nth-child(1) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2) > Literal.value",
+      "was": "'invalid'",
+      "op": null
+    },
+    {
+      "at": "Property[value.object.name='first']",
+      "was": "because: first.message",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(13)",
+      "was": "return { mutant }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(13) > ObjectExpression.argument",
+      "was": "{ mutant }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='mutant']",
+      "was": "mutant",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "data: source",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(2)",
+      "was": "error",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2)",
+      "was": "if (error) {\n    throw new CliError(`Cannot read ${path}`, [\n      error.message,\n      'The plan names the source it mutates',\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
+      "was": "throw new CliError(`Cannot read ${path}`, [\n      error.message,\n      'The plan names the source it mutates',\n    ])",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(5) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(1)",
+      "was": "Deno.writeTextFileSync(path, source)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(5) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(2)",
+      "was": "Deno.exit(130)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(6)",
       "was": "Deno.addSignalListener('SIGINT', restore)",
-      "line": 83,
-      "column": 2,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(6) > CallExpression.expression > Literal:nth-child(1)",
+      "was": "'SIGINT'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(7)",
       "was": "Deno.addSignalListener('SIGTERM', restore)",
-      "line": 84,
-      "column": 2,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(7) > CallExpression.expression > Literal:nth-child(1)",
+      "was": "'SIGTERM'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.left.value='verdict']",
+      "was": "if ('verdict' in outcome) {\n        verdicts.push(outcome.verdict)\n        continue\n      }",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.value='verdict']",
+      "was": "'verdict' in outcome",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > ExpressionStatement:nth-child(1)",
+      "was": "verdicts.push(outcome.verdict)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(3)",
+      "was": "await Deno.writeTextFile(path, outcome.mutant)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(5)",
       "was": "await Deno.writeTextFile(path, source)",
-      "line": 103,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(6)",
+      "was": "verdicts.push({ mutation, outcome: caught ? 'killed' : 'survived' })",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(6) > CallExpression.expression > ObjectExpression:nth-child(1)",
+      "was": "{ mutation, outcome: caught ? 'killed' : 'survived' }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(6) > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(1)",
+      "was": "mutation",
+      "op": null
+    },
+    {
+      "at": "Property[value.test.name='caught']",
+      "was": "outcome: caught ? 'killed' : 'survived'",
+      "op": null
+    },
+    {
+      "at": "ConditionalExpression[test.name='caught']",
+      "was": "caught ? 'killed' : 'survived'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(6) > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(2) > ConditionalExpression.value > Literal.consequent",
+      "was": "'killed'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.block > ForOfStatement:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(6) > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(2) > ConditionalExpression.value > Literal.alternate",
+      "was": "'survived'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(1)",
+      "was": "await Deno.writeTextFile(path, source)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(2)",
+      "was": "Deno.removeSignalListener('SIGINT', restore)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(2) > CallExpression.expression > Literal:nth-child(1)",
+      "was": "'SIGINT'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(3)",
       "was": "Deno.removeSignalListener('SIGTERM', restore)",
-      "line": 106,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(18) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(3) > CallExpression.expression > Literal:nth-child(1)",
+      "was": "'SIGTERM'",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.name='verdicts']",
+      "was": "return verdicts",
+      "op": null
     }
   ]
 }

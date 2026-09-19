@@ -3,12 +3,6 @@
   "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/cmds/plan.cmds.test.ts src/lib/plan.test.ts src/lib/report.test.ts",
   "mutations": [
     {
-      "at": "TSAsExpression ArrayExpression",
-      "was": "['operator', 'value']",
-      "op": "empty",
-      "name": "no op is held to need a replacement, so a value naming none runs anyway"
-    },
-    {
       "at": "Literal[value='operator']",
       "was": "'operator'",
       "op": "value",
@@ -21,6 +15,26 @@
       "op": "value",
       "to": "'empty'",
       "name": "empty is held to need a replacement while value is not"
+    },
+    {
+      "at": "BinaryExpression[left.name='op']",
+      "was": "op === mutation.op",
+      "op": "operator",
+      "to": "!==",
+      "name": "operator and value are the two ops held not to need a replacement"
+    },
+    {
+      "at": "Literal[value=2]",
+      "was": "2",
+      "op": "value",
+      "to": "0",
+      "name": "the plan is written on one line rather than indented for a reader"
+    },
+    {
+      "at": "TSAsExpression ArrayExpression",
+      "was": "['operator', 'value']",
+      "op": "empty",
+      "name": "no op is held to need a replacement, so a value naming none runs anyway"
     },
     {
       "at": "VariableDeclarator[id.name='planPath'] ReturnStatement",
@@ -91,13 +105,6 @@
       "was": "NEEDS_TO.some((op) => op === mutation.op) && mutation.to === undefined",
       "op": "drop-left",
       "name": "any mutation naming no to is refused, whatever op it carries"
-    },
-    {
-      "at": "BinaryExpression[left.name='op']",
-      "was": "op === mutation.op",
-      "op": "operator",
-      "to": "!==",
-      "name": "operator and value are the two ops held not to need a replacement"
     },
     {
       "at": "VariableDeclarator[id.name='missingTo'] LogicalExpression > BinaryExpression",
@@ -195,13 +202,6 @@
       "was": "`${JSON.stringify(plan, null, 2)}\\n`",
       "op": "empty",
       "name": "the plan is written blank"
-    },
-    {
-      "at": "Literal[value=2]",
-      "was": "2",
-      "op": "value",
-      "to": "0",
-      "name": "the plan is written on one line rather than indented for a reader"
     },
     {
       "at": "BlockStatement ExpressionStatement:nth-child(2)",
@@ -348,13 +348,6 @@
       "name": "the merged plan holds no mutations at all"
     },
     {
-      "at": "Property[key.name='skipped'] MemberExpression",
-      "was": "skipped: stubbed.skipped",
-      "op": "value",
-      "to": "[]",
-      "name": "a site with no unique selector is dropped rather than carried through for an author"
-    },
-    {
       "at": "Property[key.name='kept'] MemberExpression",
       "was": "kept: kept.length",
       "op": "value",
@@ -374,88 +367,571 @@
       "op": "value",
       "to": "stale: []",
       "name": "a merge reports no stale entry however many selectors went stale"
-    }
-  ],
-  "skipped": [
+    },
     {
+      "at": "Program > VariableDeclaration:nth-child(7) > VariableDeclarator:nth-child(1) > TSAsExpression.init > ArrayExpression.expression",
+      "was": "['operator', 'value']",
+      "op": null
+    },
+    {
+      "at": "Literal[value='.esmut']",
+      "was": "'.esmut'",
+      "op": null
+    },
+    {
+      "at": "Literal[value='/']",
+      "was": "'/'",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.left.operator='!==']",
+      "was": "part !== '' && part !== '.' && part !== 'src'",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.left.name='part']",
+      "was": "part !== '' && part !== '.'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='']",
+      "was": "part !== ''",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(9) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > LogicalExpression.body > LogicalExpression.left > BinaryExpression.left > Literal.right",
+      "was": "''",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='.']",
+      "was": "part !== '.'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(9) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > LogicalExpression.body > LogicalExpression.left > BinaryExpression.right > Literal.right",
+      "was": "'.'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='src']",
+      "was": "part !== 'src'",
+      "op": null
+    },
+    {
+      "at": "Literal[value='src']",
+      "was": "'src'",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.callee.name='join']",
+      "was": "return join(ESMUT_DIR, [...from, `${stem}.json`].join('.'))",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(9) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > CallExpression.argument > CallExpression:nth-child(2) > MemberExpression.callee > ArrayExpression.object",
+      "was": "[...from, `${stem}.json`]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(9) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > CallExpression.argument > CallExpression:nth-child(2) > MemberExpression.callee > ArrayExpression.object > TemplateLiteral:nth-child(2)",
+      "was": "`${stem}.json`",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(9) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > CallExpression.argument > CallExpression:nth-child(2) > Literal:nth-child(1)",
+      "was": "'.'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(10) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
       "was": "data",
-      "line": 18,
-      "column": 10,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(10) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(2)",
       "was": "error",
-      "line": 18,
-      "column": 16,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Program > ExportNamedDeclaration:nth-child(10) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2)",
+      "was": "if (error) {\n    throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'A plan is json naming source, cmd, and mutations',\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(10) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
       "was": "throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'A plan is json naming source, cmd, and mutations',\n    ])",
-      "line": 21,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Property[value.name='plan']",
       "was": "data: plan",
-      "line": 27,
-      "column": 10,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "Property[value.name='invalid']",
       "was": "error: invalid",
-      "line": 27,
-      "column": 22,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "IfStatement[test.name='invalid']",
+      "was": "if (invalid) {\n    throw new CliError(`The plan at ${path} is not the shape a run reads`, [\n      ...invalid.issues.map((issue) => `${issue.path.join('.') || 'plan'}: ${issue.message}`),\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(10) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
       "was": "throw new CliError(`The plan at ${path} is not the shape a run reads`, [\n      ...invalid.issues.map((issue) => `${issue.path.join('.') || 'plan'}: ${issue.message}`),\n    ])",
-      "line": 31,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
+      "at": "ReturnStatement[argument.name='plan']",
+      "was": "return plan",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > CallExpression.object > ArrowFunctionExpression:nth-child(1) > ObjectExpression.body",
+      "was": "{ mutation, matches: select(source, sourcePath, mutation.at).length }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='mutation']",
+      "was": "mutation",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='matches']",
+      "was": "matches: select(source, sourcePath, mutation.at).length",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > BinaryExpression.body",
+      "was": "entry.matches !== 1",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > BinaryExpression.body > Literal.right",
+      "was": "1",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value=0]",
+      "was": "if (refused.length === 0) return",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test",
+      "was": "refused.length === 0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test > Literal.right",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > CallExpression.object > Literal:nth-child(1)",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Literal[value=3]",
+      "was": "3",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > TemplateLiteral.body",
+      "was": "`${entry.matches === 0 ? 'stale    ' : 'ambiguous'}  ${entry.mutation.at}`",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > TemplateLiteral.body > ConditionalExpression:nth-child(1) > BinaryExpression.test",
+      "was": "entry.matches === 0",
+      "op": null
+    },
+    {
+      "at": "ConditionalExpression[test.right.value=0]",
+      "was": "entry.matches === 0 ? 'stale    ' : 'ambiguous'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > TemplateLiteral.body > ConditionalExpression:nth-child(1) > BinaryExpression.test > Literal.right",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Literal[value='stale    ']",
+      "was": "'stale    '",
+      "op": null
+    },
+    {
+      "at": "Literal[value='ambiguous']",
+      "was": "'ambiguous'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(4) > VariableDeclarator:nth-child(1) > TemplateLiteral.init",
+      "was": "`${refused.length} selectors no longer resolve`",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(5) > VariableDeclarator:nth-child(1) > ConditionalExpression.init > BinaryExpression.test",
+      "was": "refused.length === 1",
+      "op": null
+    },
+    {
+      "at": "ConditionalExpression[test.right.value=1]",
+      "was": "refused.length === 1 ? '1 selector no longer resolves' : many",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(5) > VariableDeclarator:nth-child(1) > ConditionalExpression.init > BinaryExpression.test > Literal.right",
+      "was": "1",
+      "op": null
+    },
+    {
+      "at": "Literal[value='1 selector no longer resolves']",
+      "was": "'1 selector no longer resolves'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(11) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ThrowStatement:nth-child(6)",
+      "was": "throw new CliError(`${counted} in ${basename(path)}`, [\n    ...named,\n    `Run esmut check ${sourcePath} to see them all`,\n    `Run esmut stub ${sourcePath} to re-address them`,\n  ])",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1)",
+      "was": "if (!plan.cmd) {\n    throw new CliError(`The plan at ${path} names no cmd`, [\n      'Name the test command the suite runs, which must fail when a mutation is caught',\n      'stub leaves cmd empty because a command that cannot run reports every mutation as caught',\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "UnaryExpression[argument.object.name='plan']",
+      "was": "!plan.cmd",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
       "was": "throw new CliError(`The plan at ${path} names no cmd`, [\n      'Name the test command the suite runs, which must fail when a mutation is caught',\n      'stub leaves cmd empty because a command that cannot run reports every mutation as caught',\n    ])",
-      "line": 42,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
-      "was": "throw new CliError(`A mutation in ${path} names no op`, [\n      `The site is ${unfilled.at}`,\n      `Pick one of: ${OPS.join(', ')}`,\n    ])",
-      "line": 50,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
+      "at": "BinaryExpression[left.property.name='op']",
+      "was": "mutation.op === null",
+      "op": null
     },
     {
-      "was": "throw new CliError(`A ${missingTo.op} mutation in ${path} names no replacement`, [\n      `The site is ${missingTo.at}`,\n      `${missingTo.op} needs a to field saying what replaces it`,\n    ])",
-      "line": 61,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > CallExpression.init > ArrowFunctionExpression:nth-child(1) > BinaryExpression.body > Literal.right",
       "was": "null",
-      "line": 90,
-      "column": 64,
-      "ops": [
-        "value"
-      ]
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.name='unfilled']",
+      "was": "if (unfilled) {\n    throw new CliError(`A mutation in ${path} names no op`, [\n      `The site is ${unfilled.at}`,\n      `Pick one of: ${OPS.join(', ')}`,\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
+      "was": "throw new CliError(`A mutation in ${path} names no op`, [\n      `The site is ${unfilled.at}`,\n      `Pick one of: ${OPS.join(', ')}`,\n    ])",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[right.operator='===']",
+      "was": "NEEDS_TO.some((op) => op === mutation.op) && mutation.to === undefined",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.property.name='to']",
+      "was": "mutation.to === undefined",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.name='missingTo']",
+      "was": "if (missingTo) {\n    throw new CliError(`A ${missingTo.op} mutation in ${path} names no replacement`, [\n      `The site is ${missingTo.at}`,\n      `${missingTo.op} needs a to field saying what replaces it`,\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(12) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
+      "was": "throw new CliError(`A ${missingTo.op} mutation in ${path} names no replacement`, [\n      `The site is ${missingTo.at}`,\n      `${missingTo.op} needs a to field saying what replaces it`,\n    ])",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(13) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "data",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(13) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(2)",
+      "was": "error",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(13) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2)",
+      "was": "if (error) {\n    if (error instanceof Deno.errors.NotFound) return null\n\n    throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'Delete it to stub the file afresh',\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.left.name='error']",
+      "was": "if (error instanceof Deno.errors.NotFound) return null",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.name='error']",
+      "was": "error instanceof Deno.errors.NotFound",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(13) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(1) > ReturnStatement.consequent",
+      "was": "return null",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(13) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(1) > ReturnStatement.consequent > Literal.argument",
+      "was": "null",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(13) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > ThrowStatement:nth-child(2)",
+      "was": "throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'Delete it to stub the file afresh',\n    ])",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.callee.name='parsePlan']",
+      "was": "return parsePlan(data, path)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > TemplateLiteral.init",
+      "was": "`${path}.tmp`",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "error",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(1)",
+      "was": "await Deno.mkdir(dirname(path), { recursive: true })",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(1) > AwaitExpression.expression > CallExpression.argument > ObjectExpression:nth-child(2)",
+      "was": "{ recursive: true }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='recursive']",
+      "was": "recursive: true",
+      "op": null
+    },
+    {
+      "at": "Literal[value=true]",
+      "was": "true",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(2)",
+      "was": "await Deno.writeTextFile(temporary, `${JSON.stringify(plan, null, 2)}\\n`)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(2) > AwaitExpression.expression > CallExpression.argument > TemplateLiteral:nth-child(2)",
+      "was": "`${JSON.stringify(plan, null, 2)}\\n`",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(2) > AwaitExpression.expression > CallExpression.argument > TemplateLiteral:nth-child(2) > CallExpression:nth-child(1) > Literal:nth-child(2)",
+      "was": "null",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(3)",
+      "was": "await Deno.rename(temporary, path)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3)",
+      "was": "if (error) {\n    await safeAsync(() => Deno.remove(temporary))\n\n    throw new CliError(`Cannot write the plan at ${path}`, [\n      error.message,\n      'The plan is written beside the source it names',\n    ])\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > BlockStatement.consequent > ExpressionStatement:nth-child(1)",
+      "was": "await safeAsync(() => Deno.remove(temporary))",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > BlockStatement.consequent > ThrowStatement:nth-child(2)",
+      "was": "throw new CliError(`Cannot write the plan at ${path}`, [\n      error.message,\n      'The plan is written beside the source it names',\n    ])",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > NewExpression.init > CallExpression:nth-child(1) > ArrowFunctionExpression:nth-child(1) > ArrayExpression.body",
+      "was": "[mutation.at, mutation]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > LogicalExpression.init",
+      "was": "existing?.mutations ?? []",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.argument.name='match']",
+      "was": "if (!match) {\n      stale.push(mutation)\n      continue\n    }",
+      "op": null
+    },
+    {
+      "at": "UnaryExpression[argument.name='match']",
+      "was": "!match",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > ExpressionStatement:nth-child(1)",
+      "was": "stale.push(mutation)",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.operator='!==']",
+      "was": "if (match.was !== mutation.was) drifted.push({ at: mutation.at, was: mutation.was, now: match.was })",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.object.name='match']",
+      "was": "match.was !== mutation.was",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(3) > ExpressionStatement.consequent",
+      "was": "drifted.push({ at: mutation.at, was: mutation.was, now: match.was })",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(3) > ExpressionStatement.consequent > CallExpression.expression > ObjectExpression:nth-child(1)",
+      "was": "{ at: mutation.at, was: mutation.was, now: match.was }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='at']",
+      "was": "at: mutation.at",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(3) > ExpressionStatement.consequent > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(2)",
+      "was": "was: mutation.was",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='now']",
+      "was": "now: match.was",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > ExpressionStatement:nth-child(4)",
+      "was": "kept.push({ ...mutation, was: match.was })",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > ExpressionStatement:nth-child(4) > CallExpression.expression > ObjectExpression:nth-child(1)",
+      "was": "{ ...mutation, was: match.was }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > ExpressionStatement:nth-child(4) > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(2)",
+      "was": "was: match.was",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > ExpressionStatement:nth-child(5)",
+      "was": "found.delete(mutation.at)",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(7) > VariableDeclarator:nth-child(1) > ArrayExpression.init",
+      "was": "[...found.values()]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8)",
+      "was": "return {\n    plan: {\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n    },\n    kept: kept.length,\n    added: added.length,\n    stale,\n    drifted,\n  }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8) > ObjectExpression.argument",
+      "was": "{\n    plan: {\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n    },\n    kept: kept.length,\n    added: added.length,\n    stale,\n    drifted,\n  }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='plan']",
+      "was": "plan: {\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n    }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value",
+      "was": "{\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n    }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='source']",
+      "was": "source",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='cmd']",
+      "was": "cmd: existing?.cmd ?? ''",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[right.value='']",
+      "was": "existing?.cmd ?? ''",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(2) > LogicalExpression.value > Literal.right",
+      "was": "''",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > SpreadElement:nth-child(3) > ConditionalExpression.argument",
+      "was": "existing?.filledBy ? { filledBy: existing.filledBy } : {}",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > SpreadElement:nth-child(3) > ConditionalExpression.argument > ObjectExpression.consequent",
+      "was": "{ filledBy: existing.filledBy }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='filledBy']",
+      "was": "filledBy: existing.filledBy",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='mutations']",
+      "was": "mutations: [...kept, ...stale, ...added]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(8) > ObjectExpression.argument > Property:nth-child(1) > ObjectExpression.value > Property:nth-child(4) > ArrayExpression.value",
+      "was": "[...kept, ...stale, ...added]",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='kept']",
+      "was": "kept: kept.length",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='added']",
+      "was": "added: added.length",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='stale']",
+      "was": "stale",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='drifted']",
+      "was": "drifted",
+      "op": null
     }
   ]
 }

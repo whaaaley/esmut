@@ -19,6 +19,127 @@
       "op": "empty"
     },
     {
+      "at": "Literal[value='CallExpression']",
+      "was": "'CallExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='object']",
+      "was": "'object'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='NewExpression']",
+      "was": "'NewExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='Error']",
+      "was": "'Error'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value=false]",
+      "was": "false",
+      "op": "value",
+      "to": "true"
+    },
+    {
+      "at": "Literal[value='IfStatement']",
+      "was": "'IfStatement'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ConditionalExpression']",
+      "was": "'ConditionalExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='LogicalExpression']",
+      "was": "'LogicalExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='drop-left']",
+      "was": "'drop-left'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='drop-right']",
+      "was": "'drop-right'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='BinaryExpression']",
+      "was": "'BinaryExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='UnaryExpression']",
+      "was": "'UnaryExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='!']",
+      "was": "'!'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ImportDeclaration']",
+      "was": "'ImportDeclaration'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ExportNamedDeclaration']",
+      "was": "'ExportNamedDeclaration'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='TemplateLiteral']",
+      "was": "'TemplateLiteral'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ArrayExpression']",
+      "was": "'ArrayExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='elements']",
+      "was": "'elements'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ObjectExpression']",
+      "was": "'ObjectExpression'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='properties']",
+      "was": "'properties'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ReturnStatement']",
+      "was": "'ReturnStatement'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='argument']",
+      "was": "'argument'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ThrowStatement']",
+      "was": "'ThrowStatement'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='ExpressionStatement']",
+      "was": "'ExpressionStatement'",
+      "op": "empty"
+    },
+    {
       "at": "LogicalExpression Literal[value=0]",
       "was": "0",
       "op": "value",
@@ -50,18 +171,8 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='CallExpression']",
-      "was": "'CallExpression'",
-      "op": "empty"
-    },
-    {
       "at": "VariableDeclarator[id.name='owner'] Literal[value='callee']",
       "was": "'callee'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='object']",
-      "was": "'object'",
       "op": "empty"
     },
     {
@@ -76,11 +187,6 @@
       "to": "false"
     },
     {
-      "at": "Literal[value='NewExpression']",
-      "was": "'NewExpression'",
-      "op": "empty"
-    },
-    {
       "at": "VariableDeclarator[id.name='name'] Literal[value='callee']",
       "was": "'callee'",
       "op": "empty"
@@ -91,50 +197,14 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='Error']",
-      "was": "'Error'",
-      "op": "empty"
-    },
-    {
       "at": "IfStatement:has(Literal[value='Error']) Literal[value=true]",
       "was": "true",
       "op": "value",
       "to": "false"
     },
     {
-      "at": "Literal[value=false]",
-      "was": "false",
-      "op": "value",
-      "to": "true"
-    },
-    {
-      "at": "Literal[value='IfStatement']",
-      "was": "'IfStatement'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='ConditionalExpression']",
-      "was": "'ConditionalExpression'",
-      "op": "empty"
-    },
-    {
       "at": "IfStatement:has(Literal[value='IfStatement']) Literal[value='invert']",
       "was": "'invert'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='LogicalExpression']",
-      "was": "'LogicalExpression'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='drop-left']",
-      "was": "'drop-left'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='drop-right']",
-      "was": "'drop-right'",
       "op": "empty"
     },
     {
@@ -146,11 +216,6 @@
       "at": "BlockStatement:has(Literal[value='LogicalExpression']) IfStatement:nth-child(3)",
       "was": "if (node.type === 'BinaryExpression') return ['operator', 'invert']",
       "op": "invert"
-    },
-    {
-      "at": "Literal[value='BinaryExpression']",
-      "was": "'BinaryExpression'",
-      "op": "empty"
     },
     {
       "at": "ArrayExpression Literal[value='operator']",
@@ -168,18 +233,8 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='UnaryExpression']",
-      "was": "'UnaryExpression'",
-      "op": "empty"
-    },
-    {
       "at": "BinaryExpression Literal[value='operator']",
       "was": "'operator'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='!']",
-      "was": "'!'",
       "op": "empty"
     },
     {
@@ -201,16 +256,6 @@
       "at": "IfStatement IfStatement:nth-child(1)",
       "was": "if (parent?.type === 'ImportDeclaration' || parent?.type === 'ExportNamedDeclaration') return []",
       "op": "invert"
-    },
-    {
-      "at": "Literal[value='ImportDeclaration']",
-      "was": "'ImportDeclaration'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='ExportNamedDeclaration']",
-      "was": "'ExportNamedDeclaration'",
-      "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='Literal']) IfStatement:nth-child(2)",
@@ -253,11 +298,6 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='TemplateLiteral']",
-      "was": "'TemplateLiteral'",
-      "op": "empty"
-    },
-    {
       "at": "IfStatement:has(Literal[value='TemplateLiteral']) Literal[value='empty']",
       "was": "'empty'",
       "op": "empty"
@@ -266,16 +306,6 @@
       "at": "BlockStatement:has(Literal[value='LogicalExpression']) IfStatement:nth-child(7)",
       "was": "if (node.type === 'ArrayExpression') return holds(node, 'elements') ? ['empty'] : []",
       "op": "invert"
-    },
-    {
-      "at": "Literal[value='ArrayExpression']",
-      "was": "'ArrayExpression'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='elements']",
-      "was": "'elements'",
-      "op": "empty"
     },
     {
       "at": "ConditionalExpression:has(Literal[value='elements']) Literal[value='empty']",
@@ -288,16 +318,6 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='ObjectExpression']",
-      "was": "'ObjectExpression'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='properties']",
-      "was": "'properties'",
-      "op": "empty"
-    },
-    {
       "at": "ConditionalExpression:has(Literal[value='properties']) Literal[value='empty']",
       "was": "'empty'",
       "op": "empty"
@@ -306,16 +326,6 @@
       "at": "BlockStatement IfStatement:nth-child(9)",
       "was": "if (node.type === 'ReturnStatement') return field(node, 'argument') ? ['remove'] : []",
       "op": "invert"
-    },
-    {
-      "at": "Literal[value='ReturnStatement']",
-      "was": "'ReturnStatement'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='argument']",
-      "was": "'argument'",
-      "op": "empty"
     },
     {
       "at": "ConditionalExpression Literal[value='remove']",
@@ -328,11 +338,6 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='ThrowStatement']",
-      "was": "'ThrowStatement'",
-      "op": "empty"
-    },
-    {
       "at": "IfStatement:has(Literal[value='ThrowStatement']) Literal[value='remove']",
       "was": "'remove'",
       "op": "empty"
@@ -341,11 +346,6 @@
       "at": "BlockStatement:has(Literal[value='LogicalExpression']) IfStatement:nth-child(11)",
       "was": "if (node.type === 'ExpressionStatement') return ['remove']",
       "op": "invert"
-    },
-    {
-      "at": "Literal[value='ExpressionStatement']",
-      "was": "'ExpressionStatement'",
-      "op": "empty"
     },
     {
       "at": "IfStatement:has(Literal[value='ExpressionStatement']) Literal[value='remove']",
@@ -390,288 +390,6 @@
       "to": "1"
     },
     {
-      "at": "Literal[value='\\\\\\\\']",
-      "was": "'\\\\\\\\'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] Literal[value='value']",
-      "was": "'value'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='operator'] Literal",
-      "was": "'operator'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] Literal[value='name']",
-      "was": "'name'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] IfStatement:nth-child(5)",
-      "was": "if (typeof value === 'string' && value.length <= 40) found.push(`[value='${quote(value)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] LogicalExpression:has(Literal[value='string']) Literal[value='string']",
-      "was": "'string'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] Literal[value=40]",
-      "was": "40",
-      "op": "value",
-      "to": "41"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] IfStatement:nth-child(6)",
-      "was": "if (typeof value === 'number' || typeof value === 'boolean') found.push(`[value=${String(value)}]`)",
-      "op": "invert"
-    },
-    {
-      "at": "LogicalExpression Literal[value='number']",
-      "was": "'number'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value='boolean']",
-      "was": "'boolean'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] IfStatement:nth-child(7)",
-      "was": "if (typeof operator === 'string') found.push(`[operator='${quote(operator)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] IfStatement:nth-child(8)",
-      "was": "if (typeof name === 'string') found.push(`[name='${quote(name)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "VariableDeclarator[id.name='callee'] Literal",
-      "was": "'callee'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='attributes'] IfStatement:nth-child(11)",
-      "was": "if (calleeName) found.push(`[callee.name='${quote(calleeName)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "Literal[value='property']",
-      "was": "'property'",
-      "op": "empty"
-    },
-    {
-      "at": "BlockStatement IfStatement:nth-child(13)",
-      "was": "if (propertyName) found.push(`[callee.property.name='${quote(propertyName)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "VariableDeclarator[id.name='keyName'] Literal",
-      "was": "'key'",
-      "op": "empty"
-    },
-    {
-      "at": "BlockStatement IfStatement:nth-child(15)",
-      "was": "if (keyName) found.push(`[key.name='${quote(keyName)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "Literal[value='left']",
-      "was": "'left'",
-      "op": "empty"
-    },
-    {
-      "at": "BlockStatement IfStatement:nth-child(17)",
-      "was": "if (leftName) found.push(`[left.name='${quote(leftName)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "Literal[value='right']",
-      "was": "'right'",
-      "op": "empty"
-    },
-    {
-      "at": "BlockStatement IfStatement:nth-child(19)",
-      "was": "if (rightName) found.push(`[right.name='${quote(rightName)}']`)",
-      "op": "invert"
-    },
-    {
-      "at": "Program > VariableDeclaration > VariableDeclarator[id.name='baits'] > ArrowFunctionExpression > BlockStatement > IfStatement > BinaryExpression > Literal",
-      "was": "3",
-      "op": "value",
-      "to": "4"
-    },
-    {
-      "at": "VariableDeclarator[id.name='baits'] Literal[value='value']",
-      "was": "'value'",
-      "op": "empty"
-    },
-    {
-      "at": "LogicalExpression Literal[value='Literal']",
-      "was": "'Literal'",
-      "op": "empty"
-    },
-    {
-      "at": "LogicalExpression:has(Literal[value='Literal']) Literal[value='string']",
-      "was": "'string'",
-      "op": "empty"
-    },
-    {
-      "at": "LogicalExpression Literal[value=3]",
-      "was": "3",
-      "op": "value",
-      "to": "4"
-    },
-    {
-      "at": "VariableDeclarator[id.name='baits'] Literal[value=40]",
-      "was": "40",
-      "op": "value",
-      "to": "41"
-    },
-    {
-      "at": "ForOfStatement UnaryExpression",
-      "was": "!isNode(candidate)",
-      "op": "invert"
-    },
-    {
-      "at": "SpreadElement Literal",
-      "was": "1",
-      "op": "value",
-      "to": "2"
-    },
-    {
-      "at": "ForOfStatement BinaryExpression Literal[value=3]",
-      "was": "3",
-      "op": "value",
-      "to": "4"
-    },
-    {
-      "at": "VariableDeclarator[id.name='baits'] Literal[value=0]",
-      "was": "0",
-      "op": "value",
-      "to": "1"
-    },
-    {
-      "at": "CallExpression Literal[value=3]",
-      "was": "3",
-      "op": "value",
-      "to": "4"
-    },
-    {
-      "at": "ForOfStatement Literal[value='id']",
-      "was": "'id'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='key'] Literal",
-      "was": "'key'",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='anchors'] BlockStatement > IfStatement",
-      "was": "if (id) found.push(`${parent.type}[id.name='${quote(id)}']`)\n    else if (key) found.push(`${parent.type}[key.name='${quote(key)}']`)\n    else found.push(parent.type)",
-      "op": "invert"
-    },
-    {
-      "at": "IfStatement > IfStatement",
-      "was": "if (key) found.push(`${parent.type}[key.name='${quote(key)}']`)\n    else found.push(parent.type)",
-      "op": "invert"
-    },
-    {
-      "at": "VariableDeclarator[id.name='anchors'] Literal[value=0]",
-      "was": "0",
-      "op": "value",
-      "to": "1"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration > FunctionDeclaration[id.name='candidates'] > BlockStatement > ForStatement > BlockStatement > ForStatement > VariableDeclaration > VariableDeclarator[id.name='inner'] > BinaryExpression > Literal",
-      "was": "1",
-      "op": "value",
-      "to": "2"
-    },
-    {
-      "at": "VariableDeclarator[id.name='chain'] Literal",
-      "was": "'id'",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value=' > ']",
-      "was": "' > '",
-      "op": "empty"
-    },
-    {
-      "at": "Literal[value=' ']",
-      "was": "' '",
-      "op": "empty"
-    },
-    {
-      "at": "VariableDeclarator[id.name='mid'] Literal",
-      "was": "1",
-      "op": "value",
-      "to": "2"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration > FunctionDeclaration[id.name='candidates'] > BlockStatement > ForStatement > BlockStatement > ForStatement > BlockStatement > ForStatement > VariableDeclaration > VariableDeclarator[id.name='inner'] > BinaryExpression > Literal",
-      "was": "1",
-      "op": "value",
-      "to": "2"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration > FunctionDeclaration[id.name='candidates'] > BlockStatement > ForStatement > BlockStatement > ForStatement > BlockStatement > ForStatement > BinaryExpression > Literal",
-      "was": "0",
-      "op": "value",
-      "to": "1"
-    },
-    {
-      "at": "FunctionDeclaration[id.name='candidates'] IfStatement",
-      "was": "if (typeof position === 'number') {\n    for (const scope of scopes) {\n      for (const self of selves) {\n        yield `${scope} ${self}:nth-child(${position + 1})`\n      }\n    }\n  }",
-      "op": "invert"
-    },
-    {
-      "at": "FunctionDeclaration[id.name='candidates'] Literal[value='number']",
-      "was": "'number'",
-      "op": "empty"
-    },
-    {
-      "at": "TemplateLiteral Literal",
-      "was": "1",
-      "op": "value",
-      "to": "2"
-    },
-    {
-      "at": "Literal[value=4000]",
-      "was": "4000",
-      "op": "value",
-      "to": "4001"
-    },
-    {
-      "at": "VariableDeclarator[id.name='tried'] Literal",
-      "was": "0",
-      "op": "value",
-      "to": "1"
-    },
-    {
-      "at": "VariableDeclarator[id.name='address'] IfStatement:nth-child(1)",
-      "was": "if (tried >= budget) return null",
-      "op": "invert"
-    },
-    {
-      "at": "AssignmentExpression Literal",
-      "was": "1",
-      "op": "value",
-      "to": "2"
-    },
-    {
-      "at": "VariableDeclarator[id.name='address'] IfStatement:nth-child(4)",
-      "was": "if (matchesUniquely(indexed, selector, node)) return candidate",
-      "op": "invert"
-    },
-    {
       "at": "VariableDeclarator[id.name='was'] Literal[value=0]",
       "was": "0",
       "op": "value",
@@ -687,676 +405,791 @@
       "at": "VariableDeclarator[id.name='stubPlan'] IfStatement",
       "was": "if (at === null) {\n      skipped.push({ was, line: node.loc.start.line, column: node.loc.start.column, ops })\n      continue\n    }",
       "op": "invert"
-    }
-  ],
-  "skipped": [
-    {
-      "was": "if (parent.type === 'NewExpression') {\n      const name = named(child(parent, 'callee'))\n\n      if (name?.endsWith('Error')) return true\n    }",
-      "line": 47,
-      "column": 4,
-      "ops": [
-        "invert"
-      ]
     },
     {
-      "was": "if (node.type === 'IfStatement' || node.type === 'ConditionalExpression') return ['invert']",
-      "line": 58,
-      "column": 2,
-      "ops": [
-        "invert"
-      ]
+      "at": "Program > VariableDeclaration:nth-child(8) > VariableDeclarator:nth-child(1) > NewExpression.init > ArrayExpression:nth-child(1)",
+      "was": "['console', 'log', 'logger']",
+      "op": null
     },
     {
-      "was": "node.type === 'IfStatement'",
-      "line": 58,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "ConditionalExpression[consequent.object.name='node']",
+      "was": "isNode(node) ? node[key] : undefined",
+      "op": null
     },
     {
-      "was": "node.type === 'ConditionalExpression'",
-      "line": 58,
-      "column": 37,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "ReturnStatement[argument.consequent.name='value']",
+      "was": "return isNode(value) ? value : undefined",
+      "op": null
     },
     {
-      "was": "if (node.type === 'LogicalExpression') return ['drop-left', 'drop-right', 'invert']",
-      "line": 59,
-      "column": 2,
-      "ops": [
-        "invert"
-      ]
+      "at": "ConditionalExpression[consequent.name='value']",
+      "was": "isNode(value) ? value : undefined",
+      "op": null
     },
     {
-      "was": "node.type === 'UnaryExpression'",
-      "line": 61,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "ReturnStatement[argument.right.operator='>']",
+      "was": "return Array.isArray(value) && value.length > 0",
+      "op": null
     },
     {
-      "was": "field(node, 'operator') === '!'",
-      "line": 61,
-      "column": 41,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "LogicalExpression[right.right.value=0]",
+      "was": "Array.isArray(value) && value.length > 0",
+      "op": null
     },
     {
-      "was": "parent?.type === 'ImportDeclaration'",
-      "line": 65,
-      "column": 8,
-      "ops": [
-        "operator",
-        "invert"
-      ]
+      "at": "BinaryExpression[left.object.name='value']",
+      "was": "value.length > 0",
+      "op": null
     },
     {
-      "was": "parent?.type === 'ExportNamedDeclaration'",
-      "line": 65,
-      "column": 48,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "parent?.type === 'Property'",
-      "line": 66,
-      "column": 8,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "['empty' as const]",
-      "line": 69,
-      "column": 64,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "['empty']",
-      "line": 76,
-      "column": 72,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "['empty']",
-      "line": 77,
-      "column": 75,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "['remove']",
-      "line": 79,
-      "column": 72,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "node.type === 'Property'",
-      "line": 82,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(2) > LogicalExpression.argument > BinaryExpression.right > Literal.right",
       "was": "0",
-      "line": 105,
-      "column": 53,
-      "ops": [
-        "value"
-      ]
+      "op": null
     },
     {
-      "was": "0",
-      "line": 105,
-      "column": 75,
-      "ops": [
-        "value"
-      ]
+      "at": "IfStatement[test.argument.name='node']",
+      "was": "if (!node) return null",
+      "op": null
     },
     {
-      "was": "/'/g",
-      "line": 108,
-      "column": 78,
-      "ops": [
-        "value"
-      ]
+      "at": "UnaryExpression[argument.name='node']",
+      "was": "!node",
+      "op": null
     },
     {
-      "was": "found.push(`[value='${quote(value)}']`)",
-      "line": 118,
-      "column": 55,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[value='${quote(value)}']`",
-      "line": 118,
-      "column": 66,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "typeof value === 'number'",
-      "line": 119,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "typeof value === 'boolean'",
-      "line": 119,
-      "column": 35,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "typeof operator === 'string'",
-      "line": 120,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "'string'",
-      "line": 120,
-      "column": 26,
-      "ops": [
-        "value",
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[operator='${quote(operator)}']`)",
-      "line": 120,
-      "column": 36,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[operator='${quote(operator)}']`",
-      "line": 120,
-      "column": 47,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "typeof name === 'string'",
-      "line": 121,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "'string'",
-      "line": 121,
-      "column": 22,
-      "ops": [
-        "value",
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[name='${quote(name)}']`)",
-      "line": 121,
-      "column": 32,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[name='${quote(name)}']`",
-      "line": 121,
-      "column": 43,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[callee.name='${quote(calleeName)}']`)",
-      "line": 125,
-      "column": 18,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[callee.name='${quote(calleeName)}']`",
-      "line": 125,
-      "column": 29,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[callee.property.name='${quote(propertyName)}']`)",
-      "line": 128,
-      "column": 20,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[callee.property.name='${quote(propertyName)}']`",
-      "line": 128,
-      "column": 31,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[key.name='${quote(keyName)}']`)",
-      "line": 131,
-      "column": 15,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[key.name='${quote(keyName)}']`",
-      "line": 131,
-      "column": 26,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[left.name='${quote(leftName)}']`)",
-      "line": 135,
-      "column": 16,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[left.name='${quote(leftName)}']`",
-      "line": 135,
-      "column": 27,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "found.push(`[right.name='${quote(rightName)}']`)",
-      "line": 138,
-      "column": 17,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`[right.name='${quote(rightName)}']`",
-      "line": 138,
-      "column": 28,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "if (depth > 3) return []",
-      "line": 145,
-      "column": 2,
-      "ops": [
-        "invert"
-      ]
-    },
-    {
-      "was": "if (node.type === 'Literal' && typeof value === 'string' && value.length > 3 && value.length <= 40) {\n    return [`:has(Literal[value='${quote(value)}'])`]\n  }",
-      "line": 149,
-      "column": 2,
-      "ops": [
-        "invert"
-      ]
-    },
-    {
-      "was": "node.type === 'Literal'",
-      "line": 149,
-      "column": 6,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "typeof value === 'string'",
-      "line": 149,
-      "column": 33,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "if (!isNode(candidate)) continue",
-      "line": 161,
-      "column": 6,
-      "ops": [
-        "invert"
-      ]
-    },
-    {
-      "was": "if (found.length >= 3) return found.slice(0, 3)",
-      "line": 164,
-      "column": 6,
-      "ops": [
-        "invert"
-      ]
-    },
-    {
-      "was": "found.push(`${parent.type}[key.name='${quote(key)}']`)",
-      "line": 185,
-      "column": 18,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "found.push(parent.type)",
-      "line": 186,
-      "column": 9,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "yield `${scope} ${self}`",
-      "line": 207,
-      "column": 6,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scope} ${self}`",
-      "line": 207,
-      "column": 12,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield `${scope} > ${self}`",
-      "line": 208,
-      "column": 6,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scope} > ${self}`",
-      "line": 208,
-      "column": 12,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "scopes.length - 1",
-      "line": 215,
-      "column": 19,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "1",
-      "line": 215,
-      "column": 35,
-      "ops": [
-        "value"
-      ]
-    },
-    {
-      "was": "outer >= 0",
-      "line": 215,
-      "column": 38,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "0",
-      "line": 215,
-      "column": 47,
-      "ops": [
-        "value"
-      ]
-    },
-    {
-      "was": "0",
-      "line": 216,
-      "column": 41,
-      "ops": [
-        "value"
-      ]
-    },
-    {
-      "was": "yield `${scopes[outer]} ${scopes[inner]} ${self}`",
-      "line": 218,
-      "column": 8,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} ${scopes[inner]} ${self}`",
-      "line": 218,
-      "column": 14,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield `${scopes[outer]} ${scopes[inner]} > ${self}`",
-      "line": 219,
-      "column": 8,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} ${scopes[inner]} > ${self}`",
-      "line": 219,
-      "column": 14,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield `${scopes[outer]} > ${scopes[inner]} ${self}`",
-      "line": 220,
-      "column": 8,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} > ${scopes[inner]} ${self}`",
-      "line": 220,
-      "column": 14,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} > ${scopes[inner]} > ${self}`",
-      "line": 221,
-      "column": 14,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield [...chain, self].join(' > ')",
-      "line": 235,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "[...chain, self]",
-      "line": 235,
-      "column": 10,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield [...chain, self].join(' ')",
-      "line": 236,
-      "column": 4,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "[...chain, self]",
-      "line": 236,
-      "column": 10,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "scopes.length - 1",
-      "line": 240,
-      "column": 19,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "1",
-      "line": 240,
-      "column": 35,
-      "ops": [
-        "value"
-      ]
-    },
-    {
-      "was": "outer >= 0",
-      "line": 240,
-      "column": 38,
-      "ops": [
-        "operator",
-        "invert"
-      ]
-    },
-    {
-      "was": "0",
-      "line": 240,
-      "column": 47,
-      "ops": [
-        "value"
-      ]
-    },
-    {
-      "was": "0",
-      "line": 241,
-      "column": 37,
-      "ops": [
-        "value"
-      ]
-    },
-    {
-      "was": "yield `${scopes[outer]} ${scopes[mid]} > ${scopes[inner]} > ${self}`",
-      "line": 244,
-      "column": 10,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} ${scopes[mid]} > ${scopes[inner]} > ${self}`",
-      "line": 244,
-      "column": 16,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield `${scopes[outer]} ${scopes[mid]} ${scopes[inner]} > ${self}`",
-      "line": 245,
-      "column": 10,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} ${scopes[mid]} ${scopes[inner]} > ${self}`",
-      "line": 245,
-      "column": 16,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
-      "was": "yield `${scopes[outer]} > ${scopes[mid]} > ${scopes[inner]} > ${self}`",
-      "line": 246,
-      "column": 10,
-      "ops": [
-        "remove"
-      ]
-    },
-    {
-      "was": "`${scopes[outer]} > ${scopes[mid]} > ${scopes[inner]} > ${self}`",
-      "line": 246,
-      "column": 16,
-      "ops": [
-        "empty"
-      ]
-    },
-    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent",
       "was": "return null",
-      "line": 269,
-      "column": 25,
-      "ops": [
-        "remove"
-      ]
+      "op": null
     },
     {
-      "was": "return candidate",
-      "line": 273,
-      "column": 50,
-      "ops": [
-        "remove"
-      ]
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent > Literal.argument",
+      "was": "null",
+      "op": null
+    },
+    {
+      "at": "Literal[value='name']",
+      "was": "'name'",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.test.operator='===']",
+      "was": "return typeof name === 'string' ? name : null",
+      "op": null
+    },
+    {
+      "at": "ConditionalExpression[test.left.operator='typeof']",
+      "was": "typeof name === 'string' ? name : null",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.argument.name='name']",
+      "was": "typeof name === 'string'",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ConditionalExpression.argument > BinaryExpression.test > Literal.right",
+      "was": "'string'",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > ConditionalExpression.argument > Literal.alternate",
+      "was": "null",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='CallExpression']",
+      "was": "if (parent.type === 'CallExpression') {\n      const owner = named(child(child(parent, 'callee'), 'object'))\n\n      if (owner && MESSENGERS.has(owner)) return true\n    }",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='CallExpression']",
+      "was": "parent.type === 'CallExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(1) > BlockStatement.consequent > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > CallExpression:nth-child(1) > CallExpression:nth-child(1) > Literal:nth-child(2)",
+      "was": "'callee'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.left.name='owner']",
+      "was": "if (owner && MESSENGERS.has(owner)) return true",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.name='owner']",
+      "was": "owner && MESSENGERS.has(owner)",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(1) > BlockStatement.consequent > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "was": "return true",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(1) > BlockStatement.consequent > IfStatement:nth-child(2) > ReturnStatement.consequent > Literal.argument",
+      "was": "true",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='NewExpression']",
+      "was": "if (parent.type === 'NewExpression') {\n      const name = named(child(parent, 'callee'))\n\n      if (name?.endsWith('Error')) return true\n    }",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='NewExpression']",
+      "was": "parent.type === 'NewExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > CallExpression:nth-child(1) > Literal:nth-child(2)",
+      "was": "'callee'",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(2)",
+      "was": "if (name?.endsWith('Error')) return true",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "was": "return true",
+      "op": null
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(2) > ReturnStatement.consequent > Literal.argument",
+      "was": "true",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.value=false]",
+      "was": "return false",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1)",
+      "was": "if (node.type === 'IfStatement' || node.type === 'ConditionalExpression') return ['invert']",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.right.value='IfStatement']",
+      "was": "node.type === 'IfStatement' || node.type === 'ConditionalExpression'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='IfStatement']",
+      "was": "node.type === 'IfStatement'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ConditionalExpression']",
+      "was": "node.type === 'ConditionalExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent",
+      "was": "return ['invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'invert'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='LogicalExpression']",
+      "was": "if (node.type === 'LogicalExpression') return ['drop-left', 'drop-right', 'invert']",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='LogicalExpression']",
+      "was": "node.type === 'LogicalExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "was": "return ['drop-left', 'drop-right', 'invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['drop-left', 'drop-right', 'invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(3)",
+      "was": "'invert'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='BinaryExpression']",
+      "was": "if (node.type === 'BinaryExpression') return ['operator', 'invert']",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='BinaryExpression']",
+      "was": "node.type === 'BinaryExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > ReturnStatement.consequent",
+      "was": "return ['operator', 'invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['operator', 'invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'operator'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(3) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(2)",
+      "was": "'invert'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4)",
+      "was": "if (node.type === 'UnaryExpression' && field(node, 'operator') === '!') return ['invert']",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.right.value='UnaryExpression']",
+      "was": "node.type === 'UnaryExpression' && field(node, 'operator') === '!'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='UnaryExpression']",
+      "was": "node.type === 'UnaryExpression'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.callee.name='field']",
+      "was": "field(node, 'operator') === '!'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > LogicalExpression.test > BinaryExpression.right > CallExpression.left > Literal:nth-child(2)",
+      "was": "'operator'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent",
+      "was": "return ['invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['invert']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(4) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'invert'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='Literal']",
+      "was": "if (node.type === 'Literal') {\n    // A module specifier tests the resolver, and a property key is a rename the compiler refuses.\n    if (parent?.type === 'ImportDeclaration' || parent?.type === 'ExportNamedDeclaration') return []\n    if (parent?.type === 'Property' && child(parent, 'key') === node) return []\n\n    const value = field(node, 'value')\n    const empties = typeof value === 'string' && value !== '' ? ['empty' as const] : []\n    return ['value', ...empties]\n  }",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='Literal']",
+      "was": "node.type === 'Literal'",
+      "op": null
+    },
+    {
+      "at": "Literal[value='Literal']",
+      "was": "'Literal'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > IfStatement:nth-child(1)",
+      "was": "if (parent?.type === 'ImportDeclaration' || parent?.type === 'ExportNamedDeclaration') return []",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.right.value='ImportDeclaration']",
+      "was": "parent?.type === 'ImportDeclaration' || parent?.type === 'ExportNamedDeclaration'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ImportDeclaration']",
+      "was": "parent?.type === 'ImportDeclaration'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ExportNamedDeclaration']",
+      "was": "parent?.type === 'ExportNamedDeclaration'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > IfStatement:nth-child(1) > ReturnStatement.consequent",
+      "was": "return []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > IfStatement:nth-child(2)",
+      "was": "if (parent?.type === 'Property' && child(parent, 'key') === node) return []",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.right.value='Property']",
+      "was": "parent?.type === 'Property' && child(parent, 'key') === node",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > IfStatement:nth-child(2) > LogicalExpression.test > BinaryExpression.left",
+      "was": "parent?.type === 'Property'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > IfStatement:nth-child(2) > LogicalExpression.test > BinaryExpression.left > Literal.right",
+      "was": "'Property'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.callee.name='child']",
+      "was": "child(parent, 'key') === node",
+      "op": null
+    },
+    {
+      "at": "Literal[value='key']",
+      "was": "'key'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "was": "return []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > CallExpression.init > Literal:nth-child(2)",
+      "was": "'value'",
+      "op": null
+    },
+    {
+      "at": "ConditionalExpression[test.left.operator='===']",
+      "was": "typeof value === 'string' && value !== '' ? ['empty' as const] : []",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[left.left.operator='typeof']",
+      "was": "typeof value === 'string' && value !== ''",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.argument.name='value']",
+      "was": "typeof value === 'string'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > VariableDeclaration:nth-child(4) > VariableDeclarator:nth-child(1) > ConditionalExpression.init > LogicalExpression.test > BinaryExpression.left > Literal.right",
+      "was": "'string'",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.name='value']",
+      "was": "value !== ''",
+      "op": null
+    },
+    {
+      "at": "Literal[value='']",
+      "was": "''",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > VariableDeclaration:nth-child(4) > VariableDeclarator:nth-child(1) > ConditionalExpression.init > ArrayExpression.consequent",
+      "was": "['empty' as const]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > VariableDeclaration:nth-child(4) > VariableDeclarator:nth-child(1) > ConditionalExpression.init > ArrayExpression.consequent > TSAsExpression:nth-child(1) > Literal.expression",
+      "was": "'empty'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > ReturnStatement:nth-child(5)",
+      "was": "return ['value', ...empties]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > ReturnStatement:nth-child(5) > ArrayExpression.argument",
+      "was": "['value', ...empties]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BlockStatement.consequent > ReturnStatement:nth-child(5) > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'value'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='TemplateLiteral']",
+      "was": "if (node.type === 'TemplateLiteral') return ['empty']",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='TemplateLiteral']",
+      "was": "node.type === 'TemplateLiteral'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(6) > ReturnStatement.consequent",
+      "was": "return ['empty']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(6) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['empty']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(6) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'empty'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='ArrayExpression']",
+      "was": "if (node.type === 'ArrayExpression') return holds(node, 'elements') ? ['empty'] : []",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ArrayExpression']",
+      "was": "node.type === 'ArrayExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent",
+      "was": "return holds(node, 'elements') ? ['empty'] : []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ConditionalExpression.argument",
+      "was": "holds(node, 'elements') ? ['empty'] : []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ConditionalExpression.argument > ArrayExpression.consequent",
+      "was": "['empty']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(7) > ReturnStatement.consequent > ConditionalExpression.argument > ArrayExpression.consequent > Literal:nth-child(1)",
+      "was": "'empty'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='ObjectExpression']",
+      "was": "if (node.type === 'ObjectExpression') return holds(node, 'properties') ? ['empty'] : []",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ObjectExpression']",
+      "was": "node.type === 'ObjectExpression'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(8) > ReturnStatement.consequent",
+      "was": "return holds(node, 'properties') ? ['empty'] : []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(8) > ReturnStatement.consequent > ConditionalExpression.argument",
+      "was": "holds(node, 'properties') ? ['empty'] : []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(8) > ReturnStatement.consequent > ConditionalExpression.argument > ArrayExpression.consequent",
+      "was": "['empty']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(8) > ReturnStatement.consequent > ConditionalExpression.argument > ArrayExpression.consequent > Literal:nth-child(1)",
+      "was": "'empty'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='ReturnStatement']",
+      "was": "if (node.type === 'ReturnStatement') return field(node, 'argument') ? ['remove'] : []",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ReturnStatement']",
+      "was": "node.type === 'ReturnStatement'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent",
+      "was": "return field(node, 'argument') ? ['remove'] : []",
+      "op": null
+    },
+    {
+      "at": "ConditionalExpression[test.callee.name='field']",
+      "was": "field(node, 'argument') ? ['remove'] : []",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ConditionalExpression.argument > ArrayExpression.consequent",
+      "was": "['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(9) > ReturnStatement.consequent > ConditionalExpression.argument > ArrayExpression.consequent > Literal:nth-child(1)",
+      "was": "'remove'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='ThrowStatement']",
+      "was": "if (node.type === 'ThrowStatement') return ['remove']",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ThrowStatement']",
+      "was": "node.type === 'ThrowStatement'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(10) > ReturnStatement.consequent",
+      "was": "return ['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(10) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(10) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'remove'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='ExpressionStatement']",
+      "was": "if (node.type === 'ExpressionStatement') return ['remove']",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[right.value='ExpressionStatement']",
+      "was": "node.type === 'ExpressionStatement'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(11) > ReturnStatement.consequent",
+      "was": "return ['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(11) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(11) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'remove'",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value='Property']",
+      "was": "if (node.type === 'Property') return ['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BinaryExpression.test",
+      "was": "node.type === 'Property'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > BinaryExpression.test > Literal.right",
+      "was": "'Property'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > ReturnStatement.consequent",
+      "was": "return ['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > ReturnStatement.consequent > ArrayExpression.argument",
+      "was": "['remove']",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(12) > ReturnStatement.consequent > ArrayExpression.argument > Literal:nth-child(1)",
+      "was": "'remove'",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(13)",
+      "was": "return []",
+      "op": null
+    },
+    {
+      "at": "LogicalExpression[operator='??']",
+      "was": "indexed.ancestry.get(node) ?? []",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.callee.name='describes']",
+      "was": "if (describes(parents)) continue",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > ForOfStatement:nth-child(1) > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression:nth-child(2) > Literal.property",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.right.value=0]",
+      "was": "if (ops.length > 0) found.push({ node, ops })",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.object.name='ops']",
+      "was": "ops.length > 0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > ForOfStatement:nth-child(1) > BlockStatement.body > IfStatement:nth-child(4) > BinaryExpression.test > Literal.right",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > ForOfStatement:nth-child(1) > BlockStatement.body > IfStatement:nth-child(4) > ExpressionStatement.consequent",
+      "was": "found.push({ node, ops })",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > ForOfStatement:nth-child(1) > BlockStatement.body > IfStatement:nth-child(4) > ExpressionStatement.consequent > CallExpression.expression > ObjectExpression:nth-child(1)",
+      "was": "{ node, ops }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > ForOfStatement:nth-child(1) > BlockStatement.body > IfStatement:nth-child(4) > ExpressionStatement.consequent > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(1)",
+      "was": "node",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='ops']",
+      "was": "ops",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3)",
+      "was": "return found.sort((left, right) => left.node.range[0] - right.node.range[0])",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.property.value=0]",
+      "was": "left.node.range[0] - right.node.range[0]",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BinaryExpression.body > MemberExpression.left > Literal.property",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BinaryExpression.body > MemberExpression.right > Literal.property",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "IfStatement[test.left.name='seen']",
+      "was": "if (seen !== undefined) return seen",
+      "op": null
+    },
+    {
+      "at": "BinaryExpression[left.name='seen']",
+      "was": "seen !== undefined",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.name='seen']",
+      "was": "return seen",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(4) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(4)",
+      "was": "counted.set(at, hits)",
+      "op": null
+    },
+    {
+      "at": "ReturnStatement[argument.name='hits']",
+      "was": "return hits",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "node",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression:nth-child(1) > Literal.property",
+      "was": "0",
+      "op": null
+    },
+    {
+      "at": "Literal[value=1]",
+      "was": "1",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > VariableDeclaration:nth-child(3) > VariableDeclarator:nth-child(1) > ObjectPattern.id > Property:nth-child(1)",
+      "was": "at",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > ExpressionStatement:nth-child(4)",
+      "was": "mutations.push({ at, was, op: null })",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > ExpressionStatement:nth-child(4) > CallExpression.expression > ObjectExpression:nth-child(1)",
+      "was": "{ at, was, op: null }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > ExpressionStatement:nth-child(4) > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(1)",
+      "was": "at",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='was']",
+      "was": "was",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='op']",
+      "was": "op: null",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(5) > BlockStatement.body > ExpressionStatement:nth-child(4) > CallExpression.expression > ObjectExpression:nth-child(1) > Property:nth-child(3) > Literal.value",
+      "was": "null",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(6)",
+      "was": "return { mutations }",
+      "op": null
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(6) > ObjectExpression.argument",
+      "was": "{ mutations }",
+      "op": null
+    },
+    {
+      "at": "Property[key.name='mutations']",
+      "was": "mutations",
+      "op": null
     }
   ]
 }
