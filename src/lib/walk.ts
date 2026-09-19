@@ -16,6 +16,10 @@ export type Indexed = {
   // The key on the parent holding this node, and the position when that key holds a list.
   field: Map<TSESTree.Node, string>
   index: Map<TSESTree.Node, number | null>
+  // Whether a selector matched a node, keyed by the parsed selector and then by the node.
+  // The ladder offers the same selector to a node and its peers across tiers, and a :has() bait
+  // costs esquery a walk of the subtree every time, so the repeats are what a stub waits on.
+  answered: Map<Selector, Map<TSESTree.Node, boolean>>
 }
 
 export const isNode = (value: unknown): value is KeyedNode => {
@@ -31,9 +35,14 @@ export const indexSource = (source: string, path: string): Indexed => {
   const ancestry = new Map<TSESTree.Node, TSESTree.Node[]>()
   const field = new Map<TSESTree.Node, string>()
   const index = new Map<TSESTree.Node, number | null>()
+  const answered = new Map<Selector, Map<TSESTree.Node, boolean>>()
 
   const walk = (node: KeyedNode, parents: TSESTree.Node[]): void => {
-    byType.set(node.type, [...byType.get(node.type) ?? [], node])
+    const peers = byType.get(node.type)
+
+    if (peers) peers.push(node)
+    else byType.set(node.type, [node])
+
     ancestry.set(node, parents)
 
     const parented = [node, ...parents]
@@ -65,7 +74,7 @@ export const indexSource = (source: string, path: string): Indexed => {
   // The root arrives typed as a plain node, and the same guard that admits a child admits it.
   if (isNode(ast)) walk(ast, [])
 
-  return { ast, byType, ancestry, field, index }
+  return { ast, byType, ancestry, field, index, answered }
 }
 
 // True when the selector matches this node and nothing else.
@@ -73,9 +82,23 @@ export const indexSource = (source: string, path: string): Indexed => {
 export const matchesUniquely = (indexed: Indexed, selector: Selector, node: TSESTree.Node): boolean => {
   const peers = indexed.byType.get(node.type) ?? []
 
-  const matches = (candidate: TSESTree.Node): boolean => (
-    matchesNode(candidate, selector, indexed.ancestry.get(candidate) ?? [])
-  )
+  let answers = indexed.answered.get(selector)
+
+  if (!answers) {
+    answers = new Map<TSESTree.Node, boolean>()
+    indexed.answered.set(selector, answers)
+  }
+
+  // The tree an Indexed describes never changes, so an answer already given still holds.
+  const matches = (candidate: TSESTree.Node): boolean => {
+    const answered = answers.get(candidate)
+    if (answered !== undefined) return answered
+
+    const matched = matchesNode(candidate, selector, indexed.ancestry.get(candidate) ?? [])
+    answers.set(candidate, matched)
+
+    return matched
+  }
 
   if (!matches(node)) return false
 

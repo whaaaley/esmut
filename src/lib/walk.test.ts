@@ -72,6 +72,20 @@ describe('All Walk Tests', () => {
       assertEquals(binary && indexed.field.get(binary), 'body')
       assertEquals(declarator && indexed.field.get(declarator), 'declarations')
     })
+
+    // Every node of a type lands in its group in the order the walk reached them, parents first.
+    // The group was rebuilt by copying on each arrival, so this pins the contents the copying produced.
+    it('groups every node of a type in source order', () => {
+      // Arrange
+      const source = "const a = 'one'\nconst b = 'two'\nconst c = 'three'\n"
+
+      // Act
+      const indexed = indexSource(source, 'order.ts')
+      const literals = indexed.byType.get('Literal') ?? []
+
+      // Assert
+      assertEquals(literals.map((literal) => source.slice(literal.range[0], literal.range[1])), ["'one'", "'two'", "'three'"])
+    })
   })
 
   describe('isNode', () => {

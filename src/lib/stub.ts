@@ -223,8 +223,8 @@ export function* candidates(indexed: Indexed, node: TSESTree.Node): Generator<st
     }
   }
 
-  // The full ancestor chain, unique by construction as the node's address in the tree.
-  // It comes before the combinatorial tiers because it cannot fail and never spends the budget.
+  // The full ancestor chain, which names the node's own path and matches twins sharing that path.
+  // It is one candidate per compound where the tier below is a cube of them, so it comes first.
   // The chain is drawn from the ancestry rather than from scopes, which baits every ancestor.
   const chain = [...parents].reverse().map((parent) => {
     const id = named(child(parent, 'id'))
@@ -236,7 +236,7 @@ export function* candidates(indexed: Indexed, node: TSESTree.Node): Generator<st
     yield [...chain, self].join(' ')
   }
 
-  // Three levels, which is what a twin separated only by an intermediate child edge needs.
+  // Three levels, which is what a nested twin needs when the chain alone names both of them.
   for (let outer = scopes.length - 1; outer >= 0; outer--) {
     for (let mid = outer - 1; mid >= 0; mid--) {
       for (let inner = mid - 1; inner >= 0; inner--) {
