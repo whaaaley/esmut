@@ -27,6 +27,7 @@ const CORPUS = [
   '14-single-expression.ts',
   '15-empty.ts',
   '16-operand-shapes.ts',
+  '17-template-statements.ts',
 ] as const
 
 type Fixture = { path: string; source: string }
@@ -523,6 +524,22 @@ describe('All Stub Tests', () => {
 
       // Assert
       assertExists(at, 'a comparison reading target.operator must be addressable')
+      assertEquals(select(found.source, found.path, at).length, 1)
+    })
+
+    // A template's fixed text is the only thing separating these, and it sits under TemplateElement
+    // rather than on a Literal, so a bait that reads only literals describes none of them.
+    it('names the fixed text of a template where that is the only separating fact', () => {
+      // Arrange
+      const { fixture: found, indexed } = parse('17-template-statements.ts')
+      const templates = indexed.byType.get('TemplateLiteral') ?? []
+      const node = templates.find((template) => text(found, template).includes('carries no condition'))
+
+      // Act
+      const at = node ? address(indexed, node) : null
+
+      // Assert
+      assertExists(at, 'a template carrying distinct text must be addressable')
       assertEquals(select(found.source, found.path, at).length, 1)
     })
   })

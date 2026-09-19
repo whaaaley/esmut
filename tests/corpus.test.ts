@@ -25,6 +25,7 @@ const CORPUS = [
   '14-single-expression.ts',
   '15-empty.ts',
   '16-operand-shapes.ts',
+  '17-template-statements.ts',
 ] as const
 
 type Fixture = {
@@ -80,6 +81,7 @@ const BASELINE: Record<string, { sites: number; addressed: number; skipped: numb
   '14-single-expression.ts': { sites: 1, addressed: 1, skipped: 0 },
   '15-empty.ts': { sites: 0, addressed: 0, skipped: 0 },
   '16-operand-shapes.ts': { sites: 16, addressed: 16, skipped: 0 },
+  '17-template-statements.ts': { sites: 7, addressed: 7, skipped: 0 },
 }
 
 describe('All Corpus Tests', () => {

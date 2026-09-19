@@ -164,6 +164,16 @@ const baits = (indexed: Indexed, node: TSESTree.Node, depth: number): string[] =
     return [`:has(Literal[value='${quote(value)}'])`]
   }
 
+  // A template's fixed text is the only content it carries that an interpolation cannot change.
+  // It sits on TemplateElement rather than on a Literal, so the literal bait above never reads it.
+  if (node.type === 'TemplateElement') {
+    const fixed = value && typeof value === 'object' && 'cooked' in value ? value.cooked : undefined
+
+    if (typeof fixed === 'string' && fixed.length > 3 && fixed.length <= 40) {
+      return [`:has(TemplateElement[value.cooked='${quote(fixed)}'])`]
+    }
+  }
+
   const found: string[] = []
 
   // The same keys the index walked with, so a bait never names a node the selector cannot reach.
