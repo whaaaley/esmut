@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertGreaterOrEqual, assertLessOrEqual } from '@std/assert'
+import { assert, assertEquals } from '@std/assert'
 import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
 import { indexSource, matchesUniquely } from '../src/lib/walk.ts'
@@ -62,26 +62,27 @@ const stubbed = (name: string): ReturnType<typeof stubPlan> => {
   return fresh
 }
 
-// Today's measured split per fixture, so a regression fails while understood gaps do not block.
-// addressed is a floor and skipped a ceiling, letting a generator fix pass without editing numbers.
-const BASELINE: Record<string, { sites: number; addressed: number; skipped: number }> = {
-  '01-distinct-ops.ts': { sites: 33, addressed: 33, skipped: 0 },
-  '02-excluded-sites.ts': { sites: 11, addressed: 11, skipped: 0 },
-  '03-awkward-literals.ts': { sites: 15, addressed: 15, skipped: 0 },
-  '04-typescript-kinds.ts': { sites: 23, addressed: 23, skipped: 0 },
-  '05-http-handler.ts': { sites: 46, addressed: 44, skipped: 2 },
-  '06-repeated-literals.ts': { sites: 28, addressed: 23, skipped: 5 },
-  '07-loop-bodies.ts': { sites: 9, addressed: 9, skipped: 0 },
-  '08-nested-identical.ts': { sites: 23, addressed: 23, skipped: 0 },
-  '09-twins.ts': { sites: 24, addressed: 24, skipped: 0 },
-  '10-triplets.ts': { sites: 24, addressed: 24, skipped: 0 },
-  '11-deep-nesting.ts': { sites: 34, addressed: 33, skipped: 1 },
-  '12-jsx-twins.tsx': { sites: 7, addressed: 7, skipped: 0 },
-  '13-types-only.ts': { sites: 0, addressed: 0, skipped: 0 },
-  '14-single-expression.ts': { sites: 1, addressed: 1, skipped: 0 },
-  '15-empty.ts': { sites: 0, addressed: 0, skipped: 0 },
-  '16-operand-shapes.ts': { sites: 16, addressed: 16, skipped: 0 },
-  '17-template-statements.ts': { sites: 7, addressed: 7, skipped: 0 },
+// How many sites each fixture holds, which every one of them is addressed by.
+// The count moving means the walk or the op set changed, which is a thing to look at rather than
+// a number to raise, so it is asserted exactly rather than as a floor.
+const SITES: Record<string, number> = {
+  '01-distinct-ops.ts': 33,
+  '02-excluded-sites.ts': 11,
+  '03-awkward-literals.ts': 15,
+  '04-typescript-kinds.ts': 23,
+  '05-http-handler.ts': 46,
+  '06-repeated-literals.ts': 28,
+  '07-loop-bodies.ts': 9,
+  '08-nested-identical.ts': 23,
+  '09-twins.ts': 24,
+  '10-triplets.ts': 24,
+  '11-deep-nesting.ts': 34,
+  '12-jsx-twins.tsx': 7,
+  '13-types-only.ts': 0,
+  '14-single-expression.ts': 1,
+  '15-empty.ts': 0,
+  '16-operand-shapes.ts': 16,
+  '17-template-statements.ts': 7,
 }
 
 describe('All Corpus Tests', () => {
@@ -119,17 +120,16 @@ describe('All Corpus Tests', () => {
     }
   })
 
-  describe('the coverage ratchet', () => {
+  describe('the coverage floor', () => {
     for (const name of CORPUS) {
-      it(`addresses at least as many sites in ${name} as it did when the baseline was taken`, () => {
-        const expected = BASELINE[name]
-        assert(expected, `No baseline recorded for ${name}`)
+      it(`addresses every site in ${name}, leaving none without a selector`, () => {
+        const expected = SITES[name]
+        assert(expected !== undefined, `No site count recorded for ${name}`)
 
-        const { mutations, skipped } = stubbed(name)
+        const { mutations } = stubbed(name)
 
-        assertEquals(mutations.length + skipped.length, expected.sites, 'the site count moved')
-        assertGreaterOrEqual(mutations.length, expected.addressed, 'fewer sites addressed than before')
-        assertLessOrEqual(skipped.length, expected.skipped, 'more sites skipped than before')
+        assertEquals(mutations.length, expected, 'the site count moved')
+        assertEquals(mutations.filter((mutation) => mutation.at === '').length, 0, 'a mutation carries no selector')
       })
     }
   })

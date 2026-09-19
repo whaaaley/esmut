@@ -100,19 +100,6 @@ export const formatStub = (path: string, merged: Merged): string => {
     lines.push(`    stale  ${mutation.at}`)
   }
 
-  const skipped = plan.skipped ?? []
-
-  if (skipped.length > 0) {
-    lines.push(`    ${skipped.length} with no unique selector, left out of mutations`)
-
-    for (const site of skipped) {
-      const location = `${basename(plan.source)}:${site.line}:${site.column + 1}`
-      const [head = '', ...tail] = asLines(site.was, ' '.repeat(6 + location.length + 2))
-
-      lines.push(`      ${location}  ${head}`, ...tail)
-    }
-  }
-
   for (const drift of merged.drifted) {
     lines.push(`    drifted  ${drift.at}`)
 

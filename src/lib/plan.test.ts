@@ -7,7 +7,7 @@ import type { Stubbed } from './stub.ts'
 
 const plan = (mutations: Plan['mutations'], cmd = 'deno task test'): Plan => ({ source: 'src/a.ts', cmd, mutations })
 
-const stubbed = (mutations: Stubbed['mutations'], skipped: Stubbed['skipped'] = []): Stubbed => ({ mutations, skipped })
+const stubbed = (mutations: Stubbed['mutations']): Stubbed => ({ mutations })
 
 describe('All Plan Tests', () => {
   describe('planPath', () => {
@@ -110,18 +110,6 @@ describe('All Plan Tests', () => {
         'Literal[value=7]',
         'Literal[value=9]',
       ])
-    })
-
-    it('carries the skipped sites through, so an author can hand-write an anchor for one', () => {
-      // Arrange
-      const found = stubbed([], [{ was: 'data: fn()', line: 9, column: 13, ops: ['remove'] }])
-
-      // Act
-      const merged = mergePlan(null, found, 'src/a.ts')
-
-      // Assert
-      assertEquals(merged.plan.skipped?.length, 1)
-      assertEquals(merged.plan.skipped?.[0]?.line, 9)
     })
 
     it('keeps the cmd an author named, since a stub cannot guess the suite', () => {

@@ -3,13 +3,15 @@ import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { indexSource } from './walk.ts'
+import { matchAll } from './query.ts'
 import { parseSelector, select } from './select.ts'
 import type { Op } from './schema.ts'
-import { address, candidates, opsFor, sites, stubPlan } from './stub.ts'
+import { pin } from './pin.ts'
+import { opsFor, sites, stubPlan } from './stub.ts'
 
 const FIXTURES = fromFileUrl(new URL('../../tests/fixtures/', import.meta.url))
 
-// The corpus runs simplest first, so a failure list read top to bottom says how far the ladder got.
+// The corpus runs simplest first, so a failure list read top to bottom says how far addressing got.
 const CORPUS = [
   '01-distinct-ops.ts',
   '02-excluded-sites.ts',
@@ -58,18 +60,6 @@ const nodesOfType = (name: string, type: string): TSESTree.Node[] => parse(name)
 const siteAt = (name: string, snippet: string): { node: TSESTree.Node; ops: Op[] } | undefined => {
   const { fixture: found, indexed } = parse(name)
   return sites(indexed).find((site) => text(found, site.node) === snippet)
-}
-
-// Reads the first few of a generator, since a candidate ladder is unbounded but its head matters.
-function* take<T>(values: Iterable<T>, count: number): Generator<T> {
-  let taken = 0
-
-  for (const value of values) {
-    if (taken >= count) return
-    taken += 1
-
-    yield value
-  }
 }
 
 describe('All Stub Tests', () => {
@@ -276,308 +266,102 @@ describe('All Stub Tests', () => {
     })
   })
 
-  describe('candidates', () => {
-    it('offers the bare type first, so the shortest selector that works is the one kept', () => {
-      // Arrange
-      const { indexed } = parse('14-single-expression.ts')
-      const [node] = indexed.byType.get('Literal') ?? []
+  describe('pin', () => {
+    // The counter is the only thing pin asks about a selector, so the tests drive the real matcher.
+    const counter = (indexed: ReturnType<typeof indexSource>) => (at: string): number => (
+      matchAll(indexed.ast, parseSelector(at)).length
+    )
 
-      // Act
-      const [first] = node ? [...take(candidates(indexed, node), 1)] : []
+    const addressOf = (name: string, snippet: string): { at: string; matches: number; found: Fixture } => {
+      const { fixture: found, indexed } = parse(name)
+      const site = sites(indexed).find((candidate) => text(found, candidate.node) === snippet)
 
-      // Assert
-      assertEquals(first, 'Literal')
-    })
+      if (!site) throw new Error(`No site reading ${snippet} in ${name}`)
 
-    it('escapes a quote and a backslash, so the selector it emits still parses', () => {
-      // Arrange
-      const { fixture: found, indexed } = parse('03-awkward-literals.ts')
-      const node = (indexed.byType.get('Literal') ?? []).find((literal) => text(found, literal).includes("quote ' and"))
+      return { ...pin(indexed, site.node, counter(indexed)), found }
+    }
 
-      // Act
-      const offered = node ? [...take(candidates(indexed, node), 40)] : []
-
-      // Assert: every candidate must survive the parser, which is what a bad escape breaks.
-      for (const candidate of offered) parseSelector(candidate)
-
-      // Parsing is not enough: a mangled escape still parses while naming a literal the file lacks.
-      // The ladder offers candidates matching nothing by design, so the chosen one must resolve.
-      const chosen = node ? address(indexed, node) : null
-
-      assert(chosen, 'the literal is addressable')
-      assert(chosen?.includes('[value='), 'the address carries the literal it names')
-      assertEquals(select(found.source, found.path, chosen ?? '').length, 1)
-    })
-
-    // A backslash in a literal is a character the selector language also reads, so it must survive.
-    it('emits a selector that still finds a literal holding a backslash', () => {
-      // Arrange: two literals, so the bare type is ambiguous and the value attribute separates.
-      const source = `const path = 'a\\\\b'\nconst other = 'plain'\n`
-      const indexed = indexSource(source, 'escaping.ts')
-      const literal = (indexed.byType.get('Literal') ?? []).find((node) => (
-        source.slice(node.range[0], node.range[1]).includes('\\\\')
-      ))
-
-      // Act
-      const chosen = literal ? address(indexed, literal) : null
-
-      // Assert: the address is what a plan carries, so it is the one that must find the node again.
-      assert(chosen?.includes('[value='), 'the address carries the literal it names')
-      assertEquals(select(source, 'escaping.ts', chosen ?? '').length, 1)
-    })
-
-    // A value attribute carries the literal into the selector, and a long one makes it unreadable.
-    // The cap keeps a selector something a person can check, and a plan is read as well as run.
-    it('offers a value attribute for a short literal and withholds it for a long one', () => {
-      // Arrange
-      const short = indexSource("const a = 'ok'\n", 'x.ts')
-      const long = indexSource(`const a = '${'x'.repeat(41)}'\n`, 'x.ts')
-
-      const literal = (indexed: ReturnType<typeof indexSource>): TSESTree.Node => {
-        const [node] = indexed.byType.get('Literal') ?? []
-        if (!node) throw new Error('No literal in the source')
-
-        return node
-      }
-
-      // Act
-      const offered = [...take(candidates(short, literal(short)), 6)]
-      const withheld = [...take(candidates(long, literal(long)), 6)]
+    it('names a node by its own content rather than by the scopes above it', () => {
+      // Arrange, Act
+      const { at, matches, found } = addressOf('14-single-expression.ts', '42')
 
       // Assert
-      assert(offered.some((candidate) => candidate.includes("[value='ok']")), 'a short value is named')
-      assert(!withheld.some((candidate) => candidate.includes('[value=')), 'a long value is not named')
+      assertEquals(at, 'Literal[value=42]')
+      assertEquals(matches, 1)
+      assertEquals(select(found.source, found.path, at).length, 1)
     })
 
-    // A bait tells one ancestor from an identical sibling, so the literal must be distinctive.
-    // Three characters distinguishes nothing, and past forty the selector is unreadable.
-    it('baits an ancestor with a literal long enough to distinguish it and short enough to read', () => {
+    // A path step carries a position only where its key holds a list, so a ternary's two sides
+    // would tie on the path alone and the field selector is the only thing separating them.
+    it('names the field a node sits under where the key holds one child', () => {
       // Arrange
-      const guard = (marker: string): ReturnType<typeof indexSource> => (
-        indexSource(`const f = (): void => {\n  if (a) go('${marker}')\n}\n`, 'x.ts')
-      )
+      const twins = indexSource('const f = (v: string): string[] => v ? [] : []\n', 'twins.ts')
+      const [consequent, alternate] = twins.byType.get('ArrayExpression') ?? []
 
-      const baitsFor = (indexed: ReturnType<typeof indexSource>): string[] => {
-        const target = (indexed.byType.get('Identifier') ?? []).find((node) => (
-          indexed.ancestry.get(node)?.some((parent) => parent.type === 'IfStatement')
-        ))
-
-        if (!target) throw new Error('No identifier under a guard')
-
-        return [...take(candidates(indexed, target), 200)].filter((candidate) => candidate.includes(':has('))
-      }
-
-      // Act & Assert
-      assert(baitsFor(guard('abcd')).length > 0, 'four characters is distinctive enough to bait with')
-      assertEquals(baitsFor(guard('abc')).length, 0)
-      assertEquals(baitsFor(guard('z'.repeat(41))).length, 0)
-    })
-
-    // A selector reads outermost first, so each scope in a chain sits further up than the next.
-    // A bound letting a scope pair with itself emits X X Self, which names nothing in the tree.
-    it('draws each scope from further up the ancestry than the one after it', () => {
-      // Arrange
-      const { indexed } = parse('09-twins.ts')
-      const [node] = indexed.byType.get('CatchClause') ?? []
+      if (!consequent || !alternate) throw new Error('the ternary must hold two arrays')
 
       // Act
-      const offered = node ? [...take(candidates(indexed, node), 400)] : []
+      const first = pin(twins, consequent, counter(twins))
+      const second = pin(twins, alternate, counter(twins))
+
+      // Assert: both are empty and positionless, so nothing but the field tells them apart.
+      assertEquals(first.matches, 1)
+      assertEquals(second.matches, 1)
+      assert(first.at.endsWith('.consequent'), `${first.at} must name its field`)
+      assert(second.at.endsWith('.alternate'), `${second.at} must name its field`)
+    })
+
+    it('resolves a comparison whose operand reads a property', () => {
+      // Arrange, Act
+      const { at, matches, found } = addressOf('16-operand-shapes.ts', "target.type === 'UnaryExpression'")
 
       // Assert
-      assert(offered.length > 0, 'the twin fixture offers candidates to check')
-
-      for (const candidate of offered) {
-        const parts = candidate.split(/\s+>?\s*/).filter(Boolean)
-        const repeated = parts.find((part, index) => index > 0 && part === parts[index - 1])
-
-        assertEquals(repeated, undefined, `${candidate} repeats a scope`)
-      }
+      assertEquals(matches, 1)
+      assertEquals(select(found.source, found.path, at).length, 1)
     })
 
-    it('names one concrete type at its rightmost compound, which is what the by-type check relies on', () => {
-      // Arrange
-      const { indexed } = parse('09-twins.ts')
-      const nodes = [...indexed.byType.values()].flat()
-
-      // Act & Assert: a rightmost :matches or :not spans types and silently breaks matchesUniquely.
-      for (const node of nodes.slice(0, 40)) {
-        for (const candidate of take(candidates(indexed, node), 30)) {
-          const rightmost = candidate.split(/[\s>]+/).filter(Boolean).at(-1) ?? ''
-          assert(rightmost.startsWith(node.type), `${candidate} must end in ${node.type}`)
-        }
-      }
-    })
-  })
-
-  // Each attribute reads a different field, and a wrong field name yields a selector naming none.
-  // The ladder then falls through to a longer candidate, which the addressing rate hides.
-  it('names the method a call reaches and the binding a comparison reads', () => {
-    // Arrange
-    const source = "const ok = headers.get('x') === wanted\n"
-    const indexed = indexSource(source, 'calling.ts')
-    const [call] = indexed.byType.get('CallExpression') ?? []
-    const [binary] = indexed.byType.get('BinaryExpression') ?? []
-
-    // Act
-    const forCall = call ? [...take(candidates(indexed, call), 12)] : []
-    const forBinary = binary ? [...take(candidates(indexed, binary), 12)] : []
-
-    // Assert
-    assert(forCall.includes("CallExpression[callee.property.name='get']"), 'the method a call reaches')
-    assert(forBinary.includes("BinaryExpression[right.name='wanted']"), 'the binding on the right')
-  })
-
-  // A declarator names its binding through id, the anchor that tells one twin from another.
-  it('names the binding a scope declares, which is what separates two twins', () => {
-    // Arrange
-    const source = 'const safe = () => {\n  return 1\n}\n'
-    const indexed = indexSource(source, 'twins.ts')
-    const [returning] = indexed.byType.get('ReturnStatement') ?? []
-
-    // Act
-    const offered = returning ? [...take(candidates(indexed, returning), 40)] : []
-
-    // Assert
-    assert(offered.some((one) => one.includes("VariableDeclarator[id.name='safe']")), 'the declared binding')
-  })
-
-  describe('address', () => {
-    it('addresses a lone node by its bare type rather than reaching for a scope', () => {
-      // Arrange
-      const { indexed } = parse('14-single-expression.ts')
-      const [node] = indexed.byType.get('Literal') ?? []
-
-      // Act & Assert
-      assertEquals(node && address(indexed, node), 'Literal')
-    })
-
-    it('names the enclosing binding to tell one twin from the other', () => {
-      // Arrange
-      const { fixture: found, indexed } = parse('09-twins.ts')
-      const node = (indexed.byType.get('CatchClause') ?? [])[0]
-
-      // Act
-      const at = node ? address(indexed, node) : null
-
-      // Assert: the declarator is the only thing separating the two bodies.
-      assert(at?.includes("[id.name='attempt']"), `${at} must name the binding it sits in`)
-      assertEquals(select(found.source, found.path, at ?? '').length, 1)
-    })
-
-    // A node this deep once exhausted the budget inside the scope tiers, since every scope above it
-    // repeats. The literal it compares against sits on the node itself, so no scope is needed at all.
-    it('addresses a deeply nested comparison by its own operand rather than by the scopes above it', () => {
-      // Arrange
-      const { fixture: found, indexed } = parse('11-deep-nesting.ts')
-      const binaries = indexed.byType.get('BinaryExpression') ?? []
-      const node = binaries.find((binary) => text(found, binary) === 'depth > 9')
-
-      // Act
-      const at = node ? address(indexed, node) : null
+    // A deeply nested node once exhausted a budget, where a computed address never searches.
+    it('resolves a deeply nested comparison without naming the scopes above it', () => {
+      // Arrange, Act
+      const { at, matches, found } = addressOf('11-deep-nesting.ts', 'depth > 9')
 
       // Assert
       assertEquals(at, 'BinaryExpression[right.value=9]')
-      assertEquals(select(found.source, found.path, at ?? '').length, 1)
-    })
-
-    // Two comparisons under one declarator at one depth share operator, depth, and bait literal.
-    // Which binding each reads is the only separating fact, so the operand attribute settles it.
-    it('names the operand a comparison reads, which is the only fact separating it from its neighbour', () => {
-      // Arrange
-      const { fixture: found, indexed } = parse('06-repeated-literals.ts')
-      const binaries = indexed.byType.get('BinaryExpression') ?? []
-      const node = binaries.find((binary) => text(found, binary) === "name === 'help'")
-
-      // Act
-      const found_at = node ? address(indexed, node) : null
-
-      // Assert
-      assertEquals(found_at, "BinaryExpression[left.name='name']")
-      assertEquals(select(found.source, found.path, "BinaryExpression[left.name='name']").length, 1)
-    })
-
-    // An operand that is a member expression carries no name, so the name attributes describe nothing.
-    // The property it reads is the separating fact, and without it two comparisons go unaddressed.
-    it('names the property an operand reads where the operand is not a bare binding', () => {
-      // Arrange
-      const { fixture: found, indexed } = parse('16-operand-shapes.ts')
-      const binaries = indexed.byType.get('BinaryExpression') ?? []
-      const node = binaries.find((binary) => text(found, binary) === "target.type === 'UnaryExpression'")
-
-      // Act
-      const at = node ? address(indexed, node) : null
-
-      // Assert
-      assertExists(at, 'a comparison reading target.type must be addressable')
+      assertEquals(matches, 1)
       assertEquals(select(found.source, found.path, at).length, 1)
     })
 
-    // The right operand is a literal, which carries a value rather than a name or a property.
-    it('names the literal an operand compares against where the other side repeats', () => {
-      // Arrange
-      const { fixture: found, indexed } = parse('16-operand-shapes.ts')
-      const binaries = indexed.byType.get('BinaryExpression') ?? []
-      const node = binaries.find((binary) => text(found, binary) === "target.operator === '!'")
-
-      // Act
-      const at = node ? address(indexed, node) : null
+    // Three identical objects at three depths share content, so only the path separates them.
+    it('falls back to the path where every peer carries the same content', () => {
+      // Arrange, Act
+      const { at, matches, found } = addressOf('08-nested-identical.ts', '{ attempts: 2, backoff: 100 }')
 
       // Assert
-      assertExists(at, 'a comparison reading target.operator must be addressable')
+      assertEquals(matches, 1)
+      assert(at.includes(' > '), `${at} must name a path, since content ties`)
       assertEquals(select(found.source, found.path, at).length, 1)
     })
 
-    // A template's fixed text is the only thing separating these, and it sits under TemplateElement
-    // rather than on a Literal, so a bait that reads only literals describes none of them.
-    it('names the fixed text of a template where that is the only separating fact', () => {
+    it('resolves every site in every fixture, so no site is left without an address', () => {
       // Arrange
-      const { fixture: found, indexed } = parse('17-template-statements.ts')
-      const templates = indexed.byType.get('TemplateLiteral') ?? []
-      const node = templates.find((template) => text(found, template).includes('carries no condition'))
+      const unresolved: string[] = []
 
       // Act
-      const at = node ? address(indexed, node) : null
+      for (const name of CORPUS) {
+        const { fixture: found, indexed } = parse(name)
+        const count = counter(indexed)
+
+        for (const site of sites(indexed)) {
+          const { at, matches } = pin(indexed, site.node, count)
+          const hits = select(found.source, found.path, at)
+          const right = matches === 1 && hits.length === 1 && hits[0]?.range[0] === site.node.range[0]
+
+          if (!right) unresolved.push(`${name}:${site.node.loc.start.line} ${site.node.type} ${at}`)
+        }
+      }
 
       // Assert
-      assertExists(at, 'a template carrying distinct text must be addressable')
-      assertEquals(select(found.source, found.path, at).length, 1)
-    })
-  })
-
-  describe('the budget', () => {
-    // The budget stops the ladder searching forever, set where the hardest real site lands.
-    // A site in the http fixture needs all of it, so lowering it costs addresses, not just time.
-    it('addresses fewer sites when the search is cut short', () => {
-      // Arrange
-      const { indexed } = parse('05-http-handler.ts')
-      const found = sites(indexed)
-
-      // Act
-      const generous = found.filter((site) => address(indexed, site.node) !== null).length
-      const stingy = found.filter((site) => address(indexed, site.node, 40) !== null).length
-
-      // Assert
-      assert(stingy < generous, 'a smaller budget reaches fewer sites')
-      assertEquals(generous, 44)
-    })
-
-    // A bait is a literal under an ancestor.
-    // The cap is how many one ancestor contributes before the ladder moves on.
-    // Capping at one costs an address in the corpus, so the number is load-bearing, not a default.
-    it('offers more than one bait for an ancestor carrying several literals', () => {
-      // Arrange
-      const source = "const go = (): string => {\n  if (mode === 'fast') return 'quick'\n  return 'slow'\n}\n"
-      const indexed = indexSource(source, 'baiting.ts')
-      const [branch] = indexed.byType.get('IfStatement') ?? []
-      const [returning] = indexed.byType.get('ReturnStatement') ?? []
-
-      // Act
-      const offered = returning ? [...take(candidates(indexed, returning), 80)] : []
-      const baited = offered.filter((one) => one.includes(':has(Literal'))
-
-      // Assert
-      assert(branch, 'the fixture carries a branch to bait')
-      assert(new Set(baited).size > 1, 'an ancestor with several literals offers more than one bait')
+      assertEquals(unresolved, [])
     })
   })
 
@@ -604,16 +388,17 @@ describe('All Stub Tests', () => {
       assertEquals(mutations[0]?.was, '42')
     })
 
-    it('carries an unaddressable site into skipped with the ops it would have taken', () => {
+    // Every site gets an address, so a plan never carries an empty selector or leaves a site out.
+    it('addresses every site of a fixture written to repeat one value', () => {
       // Arrange
       const found = fixture('06-repeated-literals.ts')
+      const { indexed } = parse('06-repeated-literals.ts')
 
       // Act
-      const { mutations, skipped } = stubPlan(found.source, found.path)
+      const { mutations } = stubPlan(found.source, found.path)
 
-      // Assert: a skipped entry keeps a position so an author can hand-write an anchor for it.
-      assert(skipped.length > 0, 'the repeated-literal fixture has sites the ladder cannot reach')
-      assertEquals(skipped.every((entry) => entry.ops.length > 0 && entry.line > 0), true)
+      // Assert
+      assertEquals(mutations.length, sites(indexed).length)
       assertEquals(mutations.some((mutation) => mutation.at === ''), false)
     })
 
@@ -625,7 +410,7 @@ describe('All Stub Tests', () => {
       const stubbed = stubPlan(found.source, found.path)
 
       // Assert
-      assertEquals(stubbed, { mutations: [], skipped: [] })
+      assertEquals(stubbed, { mutations: [] })
     })
 
     it('reaches a site under a TS-only kind, which is unreachable without the visitor keys', () => {
@@ -633,10 +418,9 @@ describe('All Stub Tests', () => {
       const found = fixture('04-typescript-kinds.ts')
 
       // Act
-      const { mutations, skipped } = stubPlan(found.source, found.path)
+      const { mutations } = stubPlan(found.source, found.path)
 
       // Assert: an unreachable node reads as stale, so every site here must be addressed.
-      assertEquals(skipped.length, 0)
       const reached = mutations.some((mutation) => mutation.was === "'over the ceiling'")
       assert(reached, 'a site inside a generic is reachable')
     })
@@ -646,10 +430,9 @@ describe('All Stub Tests', () => {
       const found = fixture('12-jsx-twins.tsx')
 
       // Act
-      const { mutations, skipped } = stubPlan(found.source, found.path)
+      const { mutations } = stubPlan(found.source, found.path)
 
       // Assert
-      assertEquals(skipped.length, 0)
       assert(mutations.some((mutation) => mutation.was === "'active'"), 'a jsx attribute value is a site')
     })
   })

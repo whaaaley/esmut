@@ -18,15 +18,6 @@ const mutationSchema = z.strictObject({
   name: z.string().optional(),
 })
 
-// A site the generator found but could not address, kept out of mutations so a run never reads it.
-// The position is printed for a reader to jump to, so a fractional or negative one names no line.
-const skippedSchema = z.strictObject({
-  was: z.string(),
-  line: z.number().int().positive(),
-  column: z.number().int().nonnegative(),
-  ops: z.array(opSchema),
-})
-
 export const planSchema = z.strictObject({
   source: z.string().min(1),
   // Empty from stub, since a guessed command that cannot run reports every mutation as caught.
@@ -34,10 +25,8 @@ export const planSchema = z.strictObject({
   // A plan whose ops a script chose records that, since no author's judgment stands behind them.
   filledBy: z.literal('sweep').optional(),
   mutations: z.array(mutationSchema),
-  skipped: z.array(skippedSchema).optional(),
 })
 
 export type Op = z.infer<typeof opSchema>
 export type Mutation = z.infer<typeof mutationSchema>
-export type Skipped = z.infer<typeof skippedSchema>
 export type Plan = z.infer<typeof planSchema>

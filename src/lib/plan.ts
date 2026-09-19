@@ -183,7 +183,6 @@ export const mergePlan = (existing: Plan | null, stubbed: Stubbed, source: strin
       cmd: existing?.cmd ?? '',
       ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),
       mutations: [...kept, ...stale, ...added],
-      skipped: stubbed.skipped,
     },
     kept: kept.length,
     added: added.length,

@@ -10,7 +10,6 @@ type Counts = {
   added?: number
   cmd?: string
   mutations?: Merged['plan']['mutations']
-  skipped?: Merged['plan']['skipped']
   stale?: Merged['stale']
   drifted?: Merged['drifted']
 }
@@ -25,7 +24,6 @@ const merge = (counts: Counts = {}): Merged => ({
     source: 'safe.utils.ts',
     cmd: counts.cmd ?? '',
     mutations: counts.mutations ?? [],
-    skipped: counts.skipped ?? [],
   },
 })
 
@@ -151,47 +149,11 @@ describe('All Report Tests', () => {
       assertEquals(formatStub('plan.json', filled).includes('awaiting'), false)
     })
 
-    it('names the sites it could not address only when it skipped one', () => {
-      // Arrange
-      const skipped = merge({ skipped: [{ was: 'data: fn()', line: 9, column: 13, ops: ['remove'] }] })
-
-      // Act & Assert
-      assertStringIncludes(formatStub('plan.json', skipped), '1 with no unique selector')
-      assertEquals(formatStub('plan.json', merge()).includes('no unique selector'), false)
-    })
-
     // A plan with no cmd cannot run and stub always writes one empty, so the reminder is common.
     it('asks for a cmd while the plan names none', () => {
       // Act & Assert
       assertStringIncludes(formatStub('plan.json', merge()), 'name a cmd before running')
       assertEquals(formatStub('plan.json', merge({ cmd: 'deno test' })).includes('name a cmd'), false)
-    })
-
-    // A skipped site is printed so its position can be hand-anchored, as formatMatches serves.
-    // The two printers offset the column separately, so one can regress while the other is right.
-    it('counts a skipped column from one, the same way a match is counted', () => {
-      // Arrange
-      const merged: Merged = {
-        plan: {
-          source: 'safe.utils.ts',
-          cmd: '',
-          mutations: [],
-          skipped: [{ was: 'data: fn()', line: 9, column: 13, ops: ['remove'] }],
-        },
-        kept: 0,
-        added: 0,
-        stale: [],
-        drifted: [],
-      }
-
-      // Act
-      const printed = formatStub('safe.utils.mut.json', merged)
-
-      // Assert: the plan stores the column ESTree gave, and the print adds what an editor counts.
-      assertStringIncludes(printed, 'safe.utils.ts:9:14')
-
-      // Each fact sits on its own line, since a report run together is one unreadable string.
-      assertEquals(printed.split('\n').length, 5)
     })
   })
 
