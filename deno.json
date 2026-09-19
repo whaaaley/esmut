@@ -1,0 +1,58 @@
+{
+  "name": "@whaaaley/esmut",
+  "version": "0.0.1",
+  "exports": "./src/esmut.ts",
+  "tasks": {
+    "esmut": "deno run --allow-read --allow-write --allow-run --allow-env src/esmut.ts",
+    "check": "deno check src/ tests/*.ts",
+    "bench": "deno bench --allow-read --allow-env src/",
+    "test": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/",
+    "test:corpus": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys tests/*.ts",
+    "test:all": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/ tests/*.ts"
+  },
+  "compilerOptions": {
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "lint": {
+    "exclude": [
+      ".claude"
+    ],
+    "rules": {
+      "include": [
+        "explicit-function-return-type",
+        "explicit-module-boundary-types",
+        "no-explicit-any",
+        "no-non-null-assertion"
+      ]
+    }
+  },
+  "fmt": {
+    "lineWidth": 240,
+    "semiColons": false,
+    "singleQuote": true,
+    "exclude": [
+      "*.md",
+      "**/*.md",
+      "**/*.mut.json"
+    ]
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/cli": "jsr:@std/cli@^1.0.32",
+    "@std/internal": "jsr:@std/internal@^1.0.14",
+    "@std/path": "jsr:@std/path@^1.1.6",
+    "@types/esquery": "npm:@types/esquery@^1.5.4",
+    "@types/estree": "npm:@types/estree@^1.0.9",
+    "@typescript-eslint/typescript-estree": "npm:@typescript-eslint/typescript-estree@^8.70.0",
+    "@typescript-eslint/visitor-keys": "npm:@typescript-eslint/visitor-keys@^8.70.0",
+    "esquery": "npm:esquery@^1.7.0",
+    "typescript": "npm:typescript@^5.9.3",
+    "estree": "npm:@types/estree@^1.0.9",
+    "zod": "npm:zod@^4.6.5"
+  }
+}

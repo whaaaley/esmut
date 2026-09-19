@@ -1,0 +1,461 @@
+{
+  "source": "src/lib/plan.ts",
+  "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/cmds/plan.cmds.test.ts src/lib/plan.test.ts src/lib/report.test.ts",
+  "mutations": [
+    {
+      "at": "TSAsExpression ArrayExpression",
+      "was": "['operator', 'value']",
+      "op": "empty",
+      "name": "no op is held to need a replacement, so a value naming none runs anyway"
+    },
+    {
+      "at": "Literal[value='operator']",
+      "was": "'operator'",
+      "op": "value",
+      "to": "'invert'",
+      "name": "invert is held to need a replacement while operator is not"
+    },
+    {
+      "at": "Literal[value='value']",
+      "was": "'value'",
+      "op": "value",
+      "to": "'empty'",
+      "name": "empty is held to need a replacement while value is not"
+    },
+    {
+      "at": "VariableDeclarator[id.name='planPath'] ReturnStatement",
+      "was": "return join(ESMUT_DIR, [...from, `${stem}.json`].join('.'))",
+      "op": "value",
+      "to": "return '.esmut'",
+      "name": "every source resolves to the same plan file"
+    },
+    {
+      "at": "ReturnStatement TemplateLiteral",
+      "was": "`${stem}.json`",
+      "op": "empty",
+      "name": "a plan is named for its directory alone, so two sources in one collide"
+    },
+    {
+      "at": "VariableDeclarator[id.name='parsePlan'] IfStatement:nth-child(2)",
+      "was": "if (error) {\n    throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'A plan is json naming source, cmd, and mutations',\n    ])\n  }",
+      "op": "invert",
+      "name": "unparseable json is returned as a plan and valid json is refused"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(4)",
+      "was": "if (invalid) {\n    throw new CliError(`The plan at ${path} is not the shape a run reads`, [\n      ...invalid.issues.map((issue) => `${issue.path.join('.') || 'plan'}: ${issue.message}`),\n    ])\n  }",
+      "op": "invert",
+      "name": "a plan of the wrong shape is returned and a valid one refused"
+    },
+    {
+      "at": "VariableDeclarator[id.name='parsePlan'] ReturnStatement",
+      "was": "return plan",
+      "op": "value",
+      "to": "return { source: plan.source, cmd: plan.cmd, mutations: [] }",
+      "name": "a parsed plan comes back carrying no mutations"
+    },
+    {
+      "at": "VariableDeclarator[id.name='assertRunnable'] IfStatement:nth-child(1)",
+      "was": "if (!plan.cmd) {\n    throw new CliError(`The plan at ${path} names no cmd`, [\n      'Name the test command the suite runs, which must fail when a mutation is caught',\n      'stub leaves cmd empty because a command that cannot run reports every mutation as caught',\n    ])\n  }",
+      "op": "invert",
+      "name": "a plan naming a cmd is refused and one naming none runs"
+    },
+    {
+      "at": "VariableDeclarator[id.name='assertRunnable'] UnaryExpression",
+      "was": "!plan.cmd",
+      "op": "invert",
+      "name": "a plan naming a cmd is refused for naming none"
+    },
+    {
+      "at": "VariableDeclarator[id.name='unfilled'] BinaryExpression",
+      "was": "mutation.op === null",
+      "op": "operator",
+      "to": "!==",
+      "name": "an unfilled op passes and a filled one is refused"
+    },
+    {
+      "at": "VariableDeclarator[id.name='unfilled'] BinaryExpression Literal",
+      "was": "null",
+      "op": "value",
+      "to": "'x'",
+      "name": "an op counts as unfilled only when it reads x, so null passes"
+    },
+    {
+      "at": "VariableDeclarator[id.name='assertRunnable'] IfStatement:nth-child(3)",
+      "was": "if (unfilled) {\n    throw new CliError(`A mutation in ${path} names no op`, [\n      `The site is ${unfilled.at}`,\n      `Pick one of: ${OPS.join(', ')}`,\n    ])\n  }",
+      "op": "invert",
+      "name": "an unfilled op runs and a filled plan is refused"
+    },
+    {
+      "at": "VariableDeclarator[id.name='missingTo'] LogicalExpression[operator='&&']",
+      "was": "NEEDS_TO.some((op) => op === mutation.op) && mutation.to === undefined",
+      "op": "drop-left",
+      "name": "any mutation naming no to is refused, whatever op it carries"
+    },
+    {
+      "at": "BinaryExpression[left.name='op']",
+      "was": "op === mutation.op",
+      "op": "operator",
+      "to": "!==",
+      "name": "operator and value are the two ops held not to need a replacement"
+    },
+    {
+      "at": "VariableDeclarator[id.name='missingTo'] LogicalExpression > BinaryExpression",
+      "was": "mutation.to === undefined",
+      "op": "operator",
+      "to": "!==",
+      "name": "a mutation naming a replacement is refused for naming none"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(5)",
+      "was": "if (missingTo) {\n    throw new CliError(`A ${missingTo.op} mutation in ${path} names no replacement`, [\n      `The site is ${missingTo.at}`,\n      `${missingTo.op} needs a to field saying what replaces it`,\n    ])\n  }",
+      "op": "invert",
+      "name": "a value naming a replacement is refused and one naming none runs"
+    },
+    {
+      "at": "VariableDeclarator[id.name='readPlan'] ArrowFunctionExpression > CallExpression",
+      "was": "data",
+      "op": "value",
+      "to": "Deno.readTextFile(`${path}.absent`)",
+      "name": "every plan reads as missing"
+    },
+    {
+      "at": "VariableDeclarator[id.name='readPlan'] CallExpression[callee.name='safeAsync']",
+      "was": "error",
+      "op": "value",
+      "to": "safeAsync(() => Promise.resolve(''))",
+      "name": "every plan reads as empty rather than from disk"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='readPlan'] > ArrowFunctionExpression > BlockStatement > IfStatement",
+      "was": "if (error) {\n    if (error instanceof Deno.errors.NotFound) return null\n\n    throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'Delete it to stub the file afresh',\n    ])\n  }",
+      "op": "invert",
+      "name": "a plan that read is treated as unreadable"
+    },
+    {
+      "at": "IfStatement IfStatement",
+      "was": "if (error instanceof Deno.errors.NotFound) return null",
+      "op": "invert",
+      "name": "a plan that is merely unreadable reads as absent"
+    },
+    {
+      "at": "BinaryExpression[operator='instanceof']",
+      "was": "error instanceof Deno.errors.NotFound",
+      "op": "value",
+      "to": "error instanceof Deno.errors.PermissionDenied",
+      "name": "a missing plan is reported as a failure rather than read as absence"
+    },
+    {
+      "at": "VariableDeclarator[id.name='readPlan'] IfStatement ReturnStatement",
+      "was": "return null",
+      "op": "value",
+      "to": "return parsePlan('{\"source\":\"\",\"cmd\":\"\",\"mutations\":[]}', path)",
+      "name": "a missing plan reads as an empty plan rather than as nothing"
+    },
+    {
+      "at": "ReturnStatement > Literal",
+      "was": "null",
+      "op": "value",
+      "to": "undefined",
+      "name": "a missing plan reads as undefined rather than as nothing"
+    },
+    {
+      "at": "VariableDeclarator[id.name='readPlan'] ThrowStatement",
+      "was": "throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'Delete it to stub the file afresh',\n    ])",
+      "op": "remove",
+      "name": "an unreadable plan is swallowed rather than reported"
+    },
+    {
+      "at": "VariableDeclarator[id.name='readPlan'] BlockStatement > ReturnStatement",
+      "was": "return parsePlan(data, path)",
+      "op": "value",
+      "to": "return parsePlan(data, `${path}.other`)",
+      "name": "a plan that fails to parse names a path it did not come from"
+    },
+    {
+      "at": "VariableDeclarator[id.name='temporary'] TemplateLiteral",
+      "was": "`${path}.tmp`",
+      "op": "empty",
+      "name": "the plan is staged over the root of the filesystem rather than beside itself"
+    },
+    {
+      "at": "VariableDeclarator[id.name='writePlan'] ExpressionStatement:has(CallExpression[callee.property.name='remove'])",
+      "was": "error",
+      "op": "remove",
+      "name": "a failed write leaves its staging file beside the plan"
+    },
+    {
+      "at": "CallExpression ExpressionStatement:nth-child(1)",
+      "was": "await Deno.mkdir(dirname(path), { recursive: true })",
+      "op": "remove",
+      "name": "the plans directory is never created, so the first stub cannot write"
+    },
+    {
+      "at": "AwaitExpression TemplateLiteral",
+      "was": "`${JSON.stringify(plan, null, 2)}\\n`",
+      "op": "empty",
+      "name": "the plan is written blank"
+    },
+    {
+      "at": "Literal[value=2]",
+      "was": "2",
+      "op": "value",
+      "to": "0",
+      "name": "the plan is written on one line rather than indented for a reader"
+    },
+    {
+      "at": "BlockStatement ExpressionStatement:nth-child(2)",
+      "was": "await Deno.writeTextFile(temporary, `${JSON.stringify(plan, null, 2)}\\n`)",
+      "op": "remove",
+      "name": "nothing is staged, so the rename moves an empty file into place"
+    },
+    {
+      "at": "VariableDeclarator[id.name='writePlan'] IfStatement",
+      "was": "if (error) {\n    await safeAsync(() => Deno.remove(temporary))\n\n    throw new CliError(`Cannot write the plan at ${path}`, [\n      error.message,\n      'The plan is written beside the source it names',\n    ])\n  }",
+      "op": "invert",
+      "name": "a write that failed reports success and one that worked reports failure"
+    },
+    {
+      "at": "VariableDeclarator[id.name='writePlan'] IfStatement ExpressionStatement",
+      "was": "await safeAsync(() => Deno.remove(temporary))",
+      "op": "value",
+      "to": "await safeAsync(() => Deno.remove(`${temporary}.other`))",
+      "name": "a failed write removes a file it never staged"
+    },
+    {
+      "at": "VariableDeclarator[id.name='writePlan'] ThrowStatement",
+      "was": "throw new CliError(`Cannot write the plan at ${path}`, [\n      error.message,\n      'The plan is written beside the source it names',\n    ])",
+      "op": "remove",
+      "name": "a write that failed is swallowed rather than reported"
+    },
+    {
+      "at": "ArrowFunctionExpression > ArrayExpression",
+      "was": "[mutation.at, mutation]",
+      "op": "value",
+      "to": "['', mutation]",
+      "name": "every stubbed site is keyed the same, so only the last one is ever found"
+    },
+    {
+      "at": "VariableDeclarator[id.name='previous'] LogicalExpression",
+      "was": "existing?.mutations ?? []",
+      "op": "drop-right",
+      "name": "a first stub reads its previous mutations as undefined rather than none"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] ForOfStatement IfStatement:has(UnaryExpression)",
+      "was": "if (!match) {\n      stale.push(mutation)\n      continue\n    }",
+      "op": "invert",
+      "name": "a site the stub found is called stale and one it did not is kept"
+    },
+    {
+      "at": "ForOfStatement UnaryExpression",
+      "was": "!match",
+      "op": "invert",
+      "name": "a site the stub found is called stale"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] IfStatement ExpressionStatement:has(Identifier[name='stale'])",
+      "was": "stale.push(mutation)",
+      "op": "remove",
+      "name": "an entry whose selector no longer resolves is dropped rather than reported"
+    },
+    {
+      "at": "BlockStatement ExpressionStatement:nth-child(3)",
+      "was": "await Deno.rename(temporary, path)",
+      "op": "remove",
+      "name": "the staged plan is never renamed into place, so the plan never appears"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] CallExpression ObjectExpression:has(SpreadElement)",
+      "was": "{ ...mutation, was: match.was }",
+      "op": "empty",
+      "name": "a kept entry loses the op and name an author chose"
+    },
+    {
+      "at": "Property[key.name='was'][value.object.name='match']",
+      "was": "was: match.was",
+      "op": "remove",
+      "name": "a kept entry keeps the source the plan recorded rather than what the node reads"
+    },
+    {
+      "at": "BlockStatement ExpressionStatement:nth-child(4)",
+      "was": "kept.push({ ...mutation, was: match.was })",
+      "op": "remove",
+      "name": "a kept entry is dropped from the merged plan"
+    },
+    {
+      "at": "VariableDeclarator[id.name='added'] ArrayExpression",
+      "was": "[...found.values()]",
+      "op": "empty",
+      "name": "a site the stub newly found is never added to the plan"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] ExpressionStatement:has(CallExpression[callee.property.name='delete'])",
+      "was": "return {\n    plan: {\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n      skipped: stubbed.skipped,\n    },\n    kept: kept.length,\n    added: added.length,\n    stale,\n    drifted,\n  }",
+      "op": "remove",
+      "name": "a site already kept is added again, so the merged plan doubles it"
+    },
+    {
+      "at": "VariableDeclarator[id.name='found'] NewExpression",
+      "was": "{\n    plan: {\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n      skipped: stubbed.skipped,\n    },\n    kept: kept.length,\n    added: added.length,\n    stale,\n    drifted,\n  }",
+      "op": "value",
+      "to": "new Map(stubbed.mutations.map((mutation) => [mutation.was, mutation]))",
+      "name": "a stubbed site is found by its source rather than by its selector"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] ConditionalExpression",
+      "was": "plan: {\n      source,\n      cmd: existing?.cmd ?? '',\n      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),\n      mutations: [...kept, ...stale, ...added],\n      skipped: stubbed.skipped,\n    }",
+      "op": "invert",
+      "name": "a plan a script filled loses that record and one nobody filled gains it"
+    },
+    {
+      "at": "Property[key.name='plan'] > ObjectExpression > Property[key.name='source']",
+      "was": "source",
+      "op": "value",
+      "to": "source: `${source}.other`",
+      "name": "the merged plan names a source it did not come from"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] ForOfStatement CallExpression[callee.property.name='get']",
+      "was": "cmd: existing?.cmd ?? ''",
+      "op": "value",
+      "to": "found.get(mutation.was)",
+      "name": "a previous entry is matched by the source it recorded rather than by its selector"
+    },
+    {
+      "at": "Property[key.name='cmd'] LogicalExpression",
+      "was": "existing?.cmd ?? ''",
+      "op": "drop-right",
+      "name": "a first stub writes cmd as undefined rather than empty"
+    },
+    {
+      "at": "Property[key.name='cmd'] Literal[value='']",
+      "was": "''",
+      "op": "value",
+      "to": "'deno test'",
+      "name": "a first stub guesses a cmd rather than leaving it for an author"
+    },
+    {
+      "at": "Property[key.name='mutations'] ArrayExpression > SpreadElement:nth-child(2)",
+      "was": "mutations: [...kept, ...stale, ...added]",
+      "op": "remove",
+      "name": "an entry whose selector went stale is dropped from the merged plan"
+    },
+    {
+      "at": "Property[key.name='mutations'] ArrayExpression",
+      "was": "[...kept, ...stale, ...added]",
+      "op": "empty",
+      "name": "the merged plan holds no mutations at all"
+    },
+    {
+      "at": "Property[key.name='skipped'] MemberExpression",
+      "was": "skipped: stubbed.skipped",
+      "op": "value",
+      "to": "[]",
+      "name": "a site with no unique selector is dropped rather than carried through for an author"
+    },
+    {
+      "at": "Property[key.name='kept'] MemberExpression",
+      "was": "kept: kept.length",
+      "op": "value",
+      "to": "0",
+      "name": "a merge reports it kept nothing however many entries it kept"
+    },
+    {
+      "at": "Property[key.name='added'] MemberExpression",
+      "was": "added: added.length",
+      "op": "value",
+      "to": "0",
+      "name": "a merge reports it added nothing however many sites the stub newly found"
+    },
+    {
+      "at": "VariableDeclarator[id.name='mergePlan'] ReturnStatement ObjectExpression Property[key.name='stale']",
+      "was": "stale",
+      "op": "value",
+      "to": "stale: []",
+      "name": "a merge reports no stale entry however many selectors went stale"
+    }
+  ],
+  "skipped": [
+    {
+      "was": "data",
+      "line": 18,
+      "column": 10,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "error",
+      "line": 18,
+      "column": 16,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "throw new CliError(`Cannot read the plan at ${path}`, [\n      error.message,\n      'A plan is json naming source, cmd, and mutations',\n    ])",
+      "line": 21,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "data: plan",
+      "line": 27,
+      "column": 10,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "error: invalid",
+      "line": 27,
+      "column": 22,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "throw new CliError(`The plan at ${path} is not the shape a run reads`, [\n      ...invalid.issues.map((issue) => `${issue.path.join('.') || 'plan'}: ${issue.message}`),\n    ])",
+      "line": 31,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "throw new CliError(`The plan at ${path} names no cmd`, [\n      'Name the test command the suite runs, which must fail when a mutation is caught',\n      'stub leaves cmd empty because a command that cannot run reports every mutation as caught',\n    ])",
+      "line": 42,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "throw new CliError(`A mutation in ${path} names no op`, [\n      `The site is ${unfilled.at}`,\n      `Pick one of: ${OPS.join(', ')}`,\n    ])",
+      "line": 50,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "throw new CliError(`A ${missingTo.op} mutation in ${path} names no replacement`, [\n      `The site is ${missingTo.at}`,\n      `${missingTo.op} needs a to field saying what replaces it`,\n    ])",
+      "line": 61,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "null",
+      "line": 90,
+      "column": 64,
+      "ops": [
+        "value"
+      ]
+    }
+  ]
+}

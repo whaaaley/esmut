@@ -1,0 +1,419 @@
+{
+  "source": "src/lib/run.ts",
+  "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/lib/run.test.ts src/lib/report.test.ts src/cmds/plan.cmds.test.ts",
+  "filledBy": "sweep",
+  "mutations": [
+    {
+      "at": "TSLiteralType Literal[value='killed']",
+      "was": "'killed'",
+      "op": "empty"
+    },
+    {
+      "at": "TSLiteralType Literal[value='survived']",
+      "was": "'survived'",
+      "op": "empty"
+    },
+    {
+      "at": "TSLiteralType Literal[value='invalid']",
+      "was": "'invalid'",
+      "op": "empty"
+    },
+    {
+      "at": "TSLiteralType Literal[value='stale']",
+      "was": "'stale'",
+      "op": "empty"
+    },
+    {
+      "at": "TSLiteralType Literal[value='ambiguous']",
+      "was": "'ambiguous'",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value=' ']",
+      "was": "' '",
+      "op": "empty"
+    },
+    {
+      "at": "VariableDeclarator[id.name='suiteFails'] IfStatement",
+      "was": "if (!bin) {\n    throw new CliError('The plan names an empty cmd', [\n      'Name the test command the suite runs',\n    ])\n  }",
+      "op": "invert"
+    },
+    {
+      "at": "VariableDeclarator[id.name='suiteFails'] UnaryExpression",
+      "was": "!bin",
+      "op": "invert"
+    },
+    {
+      "at": "Property[key.name='stdout'] Literal",
+      "was": "'null'",
+      "op": "empty"
+    },
+    {
+      "at": "Property[key.name='stderr'] Literal",
+      "was": "'null'",
+      "op": "empty"
+    },
+    {
+      "at": "VariableDeclarator[id.name='suiteFails'] Literal[value=0]",
+      "was": "0",
+      "op": "value",
+      "to": "1"
+    },
+    {
+      "at": "VariableDeclarator[id.name='judge'] IfStatement:nth-child(2)",
+      "was": "if (matches.length === 0) return { verdict: { mutation, outcome: 'stale' } }",
+      "op": "invert"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(3)",
+      "was": "if (matches.length > 1) return { verdict: { mutation, outcome: 'ambiguous' } }",
+      "op": "invert"
+    },
+    {
+      "at": "Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "2"
+    },
+    {
+      "at": "Property[key.name='outcome'] Literal[value='ambiguous']",
+      "was": "'ambiguous'",
+      "op": "empty"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(7)",
+      "was": "if (!node) return { verdict: { mutation, outcome: 'stale' } }",
+      "op": "invert"
+    },
+    {
+      "at": "VariableDeclarator[id.name='judge'] UnaryExpression",
+      "was": "!node",
+      "op": "invert"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(9)",
+      "was": "if (error) return { verdict: { mutation, outcome: 'invalid', because: error.message } }",
+      "op": "invert"
+    },
+    {
+      "at": "IfStatement > ReturnStatement Literal[value='invalid']",
+      "was": "'invalid'",
+      "op": "empty"
+    },
+    {
+      "at": "IfStatement:has(Identifier[name='first'])",
+      "was": "if (first) {\n    return { verdict: { mutation, outcome: 'invalid', because: first.message } }\n  }",
+      "op": "invert"
+    },
+    {
+      "at": "BlockStatement:has(Literal[value='SIGINT']) > IfStatement",
+      "was": "if (error) {\n    throw new CliError(`Cannot read ${path}`, [\n      error.message,\n      'The plan names the source it mutates',\n    ])\n  }",
+      "op": "invert"
+    },
+    {
+      "at": "Literal[value=130]",
+      "was": "130",
+      "op": "value",
+      "to": "131"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='runPlan'] > ArrowFunctionExpression > BlockStatement > ExpressionStatement > CallExpression > Literal[value='SIGINT']",
+      "was": "'SIGINT'",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='runPlan'] > ArrowFunctionExpression > BlockStatement > ExpressionStatement > CallExpression > Literal[value='SIGTERM']",
+      "was": "'SIGTERM'",
+      "op": "empty"
+    },
+    {
+      "at": "ForOfStatement IfStatement",
+      "was": "if ('verdict' in judged) {\n        verdicts.push(judged.verdict)\n        continue\n      }",
+      "op": "invert"
+    },
+    {
+      "at": "Literal[value='verdict']",
+      "was": "'verdict'",
+      "op": "empty"
+    },
+    {
+      "at": "BinaryExpression[operator='in']",
+      "was": "'verdict' in judged",
+      "op": "empty"
+    },
+    {
+      "at": "ConditionalExpression Literal[value='killed']",
+      "was": "'killed'",
+      "op": "empty"
+    },
+    {
+      "at": "ConditionalExpression Literal[value='survived']",
+      "was": "'survived'",
+      "op": "empty"
+    },
+    {
+      "at": "TryStatement Literal[value='SIGINT']",
+      "was": "'SIGINT'",
+      "op": "empty"
+    },
+    {
+      "at": "TryStatement Literal[value='SIGTERM']",
+      "was": "'SIGTERM'",
+      "op": "empty"
+    }
+  ],
+  "skipped": [
+    {
+      "was": "0",
+      "line": 38,
+      "column": 25,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "return { verdict: { mutation, outcome: 'stale' } }",
+      "line": 38,
+      "column": 28,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ verdict: { mutation, outcome: 'stale' } }",
+      "line": 38,
+      "column": 35,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "verdict: { mutation, outcome: 'stale' }",
+      "line": 38,
+      "column": 37,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ mutation, outcome: 'stale' }",
+      "line": 38,
+      "column": 46,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "mutation",
+      "line": 38,
+      "column": 48,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "outcome: 'stale'",
+      "line": 38,
+      "column": 58,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "'stale'",
+      "line": 38,
+      "column": 67,
+      "ops": [
+        "value",
+        "empty"
+      ]
+    },
+    {
+      "was": "matches.length > 1",
+      "line": 39,
+      "column": 6,
+      "ops": [
+        "operator",
+        "invert"
+      ]
+    },
+    {
+      "was": "return { verdict: { mutation, outcome: 'ambiguous' } }",
+      "line": 39,
+      "column": 26,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ verdict: { mutation, outcome: 'ambiguous' } }",
+      "line": 39,
+      "column": 33,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "verdict: { mutation, outcome: 'ambiguous' }",
+      "line": 39,
+      "column": 35,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "return { verdict: { mutation, outcome: 'stale' } }",
+      "line": 45,
+      "column": 13,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ verdict: { mutation, outcome: 'stale' } }",
+      "line": 45,
+      "column": 20,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "verdict: { mutation, outcome: 'stale' }",
+      "line": 45,
+      "column": 22,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ mutation, outcome: 'stale' }",
+      "line": 45,
+      "column": 31,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "mutation",
+      "line": 45,
+      "column": 33,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "outcome: 'stale'",
+      "line": 45,
+      "column": 43,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "'stale'",
+      "line": 45,
+      "column": 52,
+      "ops": [
+        "value",
+        "empty"
+      ]
+    },
+    {
+      "was": "return { verdict: { mutation, outcome: 'invalid', because: error.message } }",
+      "line": 52,
+      "column": 13,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ verdict: { mutation, outcome: 'invalid', because: error.message } }",
+      "line": 52,
+      "column": 20,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "verdict: { mutation, outcome: 'invalid', because: error.message }",
+      "line": 52,
+      "column": 22,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "{ mutation, outcome: 'invalid', because: error.message }",
+      "line": 52,
+      "column": 31,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "mutation",
+      "line": 52,
+      "column": 33,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "outcome: 'invalid'",
+      "line": 52,
+      "column": 43,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "fresh.length > 0",
+      "line": 56,
+      "column": 6,
+      "ops": [
+        "operator",
+        "invert"
+      ]
+    },
+    {
+      "was": "0",
+      "line": 56,
+      "column": 21,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "Deno.addSignalListener('SIGINT', restore)",
+      "line": 83,
+      "column": 2,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "Deno.addSignalListener('SIGTERM', restore)",
+      "line": 84,
+      "column": 2,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "await Deno.writeTextFile(path, source)",
+      "line": 103,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "Deno.removeSignalListener('SIGTERM', restore)",
+      "line": 106,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    }
+  ]
+}

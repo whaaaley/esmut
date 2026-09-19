@@ -1,0 +1,351 @@
+{
+  "source": "src/lib/walk.ts",
+  "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/lib/ops.test.ts src/lib/stub.test.ts src/lib/walk.test.ts tests/corpus.test.ts",
+  "mutations": [
+    {
+      "at": "VariableDeclarator[id.name='isNode'] IfStatement",
+      "was": "if (typeof value !== 'object' || value === null) return false",
+      "op": "value",
+      "to": "if (typeof value !== 'object' || value === null) return true",
+      "name": "a non-object admits itself as a node"
+    },
+    {
+      "at": "LogicalExpression[operator='||']",
+      "was": "typeof value !== 'object' || value === null",
+      "op": "drop-right",
+      "name": "null passes the object check, since typeof null is object"
+    },
+    {
+      "at": "LogicalExpression:has(Literal[value='object']) BinaryExpression[operator='!==']",
+      "was": "typeof value !== 'object'",
+      "op": "value",
+      "to": "typeof value !== 'object' || Array.isArray(value)",
+      "name": "an array carrying a type is refused as a node"
+    },
+    {
+      "at": "Literal[value='object']",
+      "was": "'object'",
+      "op": "value",
+      "to": "'function'",
+      "name": "the object check reads function, so every object is refused"
+    },
+    {
+      "at": "BinaryExpression[left.name='value']",
+      "was": "value === null",
+      "op": "invert",
+      "name": "every object but null is refused as a node"
+    },
+    {
+      "at": "IfStatement:has(Literal[value='object']) ReturnStatement",
+      "was": "return false",
+      "op": "value",
+      "to": "return true",
+      "name": "a null or a non-object reads as a node rather than as neither"
+    },
+    {
+      "at": "IfStatement:has(Literal[value='object']) Literal[value=false]",
+      "was": "false",
+      "op": "invert",
+      "name": "the refusal of a non-object answers true"
+    },
+    {
+      "at": "VariableDeclarator[id.name='isNode'] BlockStatement > ReturnStatement",
+      "was": "return 'type' in value && typeof value.type === 'string'",
+      "op": "remove",
+      "name": "an object past the null check is admitted with no type read at all"
+    },
+    {
+      "at": "Literal[value='type']",
+      "was": "'type'",
+      "op": "value",
+      "to": "'range' as 'type'",
+      "name": "the key looked for is range rather than type"
+    },
+    {
+      "at": "ReturnStatement > LogicalExpression",
+      "was": "'type' in value && typeof value.type === 'string'",
+      "op": "drop-right",
+      "name": "a type of any kind admits the value, string or not"
+    },
+    {
+      "at": "BinaryExpression[operator='in']",
+      "was": "'type' in value",
+      "op": "value",
+      "to": "'type' in value && 'range' in value",
+      "name": "a node carrying no range is refused"
+    },
+    {
+      "at": "LogicalExpression:has(Literal[value='type']) BinaryExpression[operator='===']",
+      "was": "typeof value.type === 'string'",
+      "op": "operator",
+      "to": "!==",
+      "name": "a string type is what disqualifies a value"
+    },
+    {
+      "at": "Literal[value='string']",
+      "was": "'string'",
+      "op": "value",
+      "to": "'number'",
+      "name": "the type is required to be a number"
+    },
+    {
+      "at": "VariableDeclarator[id.name='walk'] CallExpression > ArrayExpression",
+      "was": "[...byType.get(node.type) ?? [], node]",
+      "op": "value",
+      "to": "[node]",
+      "name": "byType keeps only the last node of each type"
+    },
+    {
+      "at": "SpreadElement LogicalExpression",
+      "was": "byType.get(node.type) ?? []",
+      "op": "drop-right",
+      "name": "the first node of a type spreads undefined rather than an empty list"
+    },
+    {
+      "at": "VariableDeclarator[id.name='parented'] ArrayExpression",
+      "was": "[node, ...parents]",
+      "op": "value",
+      "to": "[...parents]",
+      "name": "a child's ancestry omits its own parent"
+    },
+    {
+      "at": "ForOfStatement LogicalExpression",
+      "was": "known[node.type] ?? []",
+      "op": "drop-right",
+      "name": "a type with no known keys iterates undefined rather than nothing"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(2)",
+      "was": "if (Array.isArray(value)) {\n        value.forEach((child, position) => {\n          if (!isNode(child)) return\n\n          field.set(child, key)\n          index.set(child, position)\n          walk(child, parented)\n        })\n\n        continue\n      }",
+      "op": "invert",
+      "name": "a single-valued key is walked as a list and a list as a single value"
+    },
+    {
+      "at": "IfStatement > BlockStatement > ExpressionStatement",
+      "was": "value.forEach((child, position) => {\n          if (!isNode(child)) return\n\n          field.set(child, key)\n          index.set(child, position)\n          walk(child, parented)\n        })",
+      "op": "remove",
+      "name": "nothing under a list key is indexed"
+    },
+    {
+      "at": "CallExpression IfStatement",
+      "was": "if (!isNode(child)) return",
+      "op": "invert",
+      "name": "only the non-nodes of a list are walked"
+    },
+    {
+      "at": "CallExpression UnaryExpression",
+      "was": "!isNode(child)",
+      "op": "invert",
+      "name": "a list element that is a node is skipped"
+    },
+    {
+      "at": "ForOfStatement IfStatement:nth-child(3)",
+      "was": "if (!isNode(value)) continue",
+      "op": "remove",
+      "name": "a single-valued key holding no node is walked anyway"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='indexSource'] > ArrowFunctionExpression > BlockStatement > VariableDeclaration > VariableDeclarator[id.name='walk'] > ArrowFunctionExpression > BlockStatement > ForOfStatement > BlockStatement > IfStatement > UnaryExpression",
+      "was": "!isNode(value)",
+      "op": "invert",
+      "name": "a single-valued key holding a node is skipped"
+    },
+    {
+      "at": "BlockStatement ExpressionStatement:nth-child(5)",
+      "was": "index.set(value, null)",
+      "op": "remove",
+      "name": "a single-valued key records no position at all"
+    },
+    {
+      "at": "CallExpression Literal",
+      "was": "null",
+      "op": "value",
+      "to": "0",
+      "name": "a single-valued key records position zero, which reads as a first list element"
+    },
+    {
+      "at": "BlockStatement ExpressionStatement:nth-child(6)",
+      "was": "walk(value, parented)",
+      "op": "remove",
+      "name": "a single-valued child is recorded but never descended into"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='indexSource'] > ArrowFunctionExpression > BlockStatement > IfStatement",
+      "was": "if (isNode(ast)) walk(ast, [])",
+      "op": "remove",
+      "name": "the tree is never walked, so the index comes back empty"
+    },
+    {
+      "at": "IfStatement > ExpressionStatement",
+      "was": "walk(ast, [])",
+      "op": "remove",
+      "name": "the root passes the guard and the walk still never starts"
+    },
+    {
+      "at": "VariableDeclarator[id.name='indexSource'] BlockStatement > ReturnStatement",
+      "was": "return { ast, byType, ancestry, field, index }",
+      "op": "value",
+      "to": "return { ast, byType: new Map(), ancestry, field, index }",
+      "name": "the index hands back no nodes by type"
+    },
+    {
+      "at": "ObjectExpression",
+      "was": "{ ast, byType, ancestry, field, index }",
+      "op": "remove",
+      "name": "indexSource returns nothing"
+    },
+    {
+      "at": "Property[key.name='ast']",
+      "was": "ast",
+      "op": "value",
+      "to": "ast: { ...ast, type: 'Literal' as typeof ast.type }",
+      "name": "the tree handed back is not the one parsed"
+    },
+    {
+      "at": "Property[key.name='byType']",
+      "was": "byType",
+      "op": "value",
+      "to": "byType: new Map()",
+      "name": "byType comes back empty"
+    },
+    {
+      "at": "Property[key.name='ancestry']",
+      "was": "ancestry",
+      "op": "value",
+      "to": "ancestry: new Map()",
+      "name": "ancestry comes back empty"
+    },
+    {
+      "at": "Property[key.name='field']",
+      "was": "field",
+      "op": "value",
+      "to": "field: new Map()",
+      "name": "field comes back empty"
+    },
+    {
+      "at": "Property[key.name='index']",
+      "was": "index",
+      "op": "value",
+      "to": "index: new Map()",
+      "name": "index comes back empty"
+    },
+    {
+      "at": "VariableDeclarator[id.name='peers'] LogicalExpression",
+      "was": "indexed.byType.get(node.type) ?? []",
+      "op": "drop-right",
+      "name": "a type with no peers recorded reads undefined rather than an empty list"
+    },
+    {
+      "at": "CallExpression > LogicalExpression",
+      "was": "indexed.ancestry.get(candidate) ?? []",
+      "op": "drop-right",
+      "name": "a candidate with no ancestry recorded is matched against undefined parents"
+    },
+    {
+      "at": "VariableDeclarator[id.name='matchesUniquely'] IfStatement",
+      "was": "if (!matches(node)) return false",
+      "op": "invert",
+      "name": "a node the selector matches is refused and one it misses goes on"
+    },
+    {
+      "at": "VariableDeclarator[id.name='matchesUniquely'] IfStatement UnaryExpression",
+      "was": "!matches(node)",
+      "op": "invert",
+      "name": "the node is refused precisely when the selector names it"
+    },
+    {
+      "at": "VariableDeclarator[id.name='matchesUniquely'] IfStatement ReturnStatement",
+      "was": "return false",
+      "op": "remove",
+      "name": "a node the selector misses falls through to the peer check"
+    },
+    {
+      "at": "VariableDeclarator[id.name='matchesUniquely'] Literal",
+      "was": "false",
+      "op": "invert",
+      "name": "a node the selector misses reads as uniquely matched"
+    },
+    {
+      "at": "VariableDeclarator[id.name='matchesUniquely'] BlockStatement > ReturnStatement",
+      "was": "return !peers.some((peer) => peer !== node && matches(peer))",
+      "op": "remove",
+      "name": "a node the selector matches gets no peer check at all"
+    },
+    {
+      "at": "ReturnStatement > UnaryExpression",
+      "was": "!peers.some((peer) => peer !== node && matches(peer))",
+      "op": "invert",
+      "name": "a selector is unique precisely when a peer also matches"
+    },
+    {
+      "at": "ArrowFunctionExpression > LogicalExpression",
+      "was": "peer !== node && matches(peer)",
+      "op": "drop-left",
+      "name": "the node counts as its own peer, so every match reads as ambiguous"
+    },
+    {
+      "at": "BinaryExpression[left.name='peer']",
+      "was": "peer !== node",
+      "op": "invert",
+      "name": "only the node itself is compared against the selector as a peer"
+    }
+  ],
+  "skipped": [
+    {
+      "was": "null",
+      "line": 22,
+      "column": 45,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "byType.set(node.type, [...byType.get(node.type) ?? [], node])",
+      "line": 36,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "ancestry.set(node, parents)",
+      "line": 37,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "field.set(child, key)",
+      "line": 49,
+      "column": 10,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "index.set(child, position)",
+      "line": 50,
+      "column": 10,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "walk(child, parented)",
+      "line": 51,
+      "column": 10,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "field.set(value, key)",
+      "line": 59,
+      "column": 6,
+      "ops": [
+        "remove"
+      ]
+    }
+  ]
+}

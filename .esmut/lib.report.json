@@ -1,0 +1,671 @@
+{
+  "source": "src/lib/report.ts",
+  "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/lib/report.test.ts",
+  "mutations": [
+    {
+      "at": "ConditionalExpression:has(Literal[value='1 match']) BinaryExpression",
+      "was": "matches.length === 1",
+      "op": "operator",
+      "to": "!==",
+      "name": "one match reads plural and every other count reads singular"
+    },
+    {
+      "at": "VariableDeclarator[id.name='count'] ConditionalExpression",
+      "was": "matches.length === 1 ? '1 match' : `${matches.length} matches`",
+      "op": "invert",
+      "name": "the count a reader acts on is the one the other branch prints"
+    },
+    {
+      "at": "ConditionalExpression Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "2",
+      "name": "two matches read singular rather than one"
+    },
+    {
+      "at": "Literal[value='1 match']",
+      "was": "'1 match'",
+      "op": "empty",
+      "name": "a single match prints no count at all"
+    },
+    {
+      "at": "ConditionalExpression TemplateLiteral",
+      "was": "`${matches.length} matches`",
+      "op": "empty",
+      "name": "a plural count prints nothing where the number belongs"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatMatches'] ArrayExpression",
+      "was": "[`  ${count}`]",
+      "op": "empty",
+      "name": "the match count is dropped from the printed report"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatMatches'] VariableDeclarator[id.name='lines'] TemplateLiteral",
+      "was": "`  ${count}`",
+      "op": "empty",
+      "name": "the count line prints blank rather than the number of matches"
+    },
+    {
+      "at": "VariableDeclarator[id.name='locations'] TemplateLiteral",
+      "was": "`${basename(path)}:${match.line}:${match.column + 1}`",
+      "op": "empty",
+      "name": "a match prints no location at all"
+    },
+    {
+      "at": "VariableDeclarator[id.name='locations'] BinaryExpression",
+      "was": "match.column + 1",
+      "op": "operator",
+      "to": "-",
+      "name": "a column is printed one short rather than one past the ESTree offset"
+    },
+    {
+      "at": "VariableDeclarator[id.name='locations'] Literal",
+      "was": "1",
+      "op": "value",
+      "to": "0",
+      "name": "a column is printed as ESTree counts it rather than as an editor does"
+    },
+    {
+      "at": "VariableDeclarator[id.name='location'] LogicalExpression",
+      "was": "locations[index] ?? ''",
+      "op": "drop-right",
+      "name": "a location past the end of the list reads as undefined rather than blank"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatMatches'] ExpressionStatement",
+      "was": "lines.push(`    ${location.padEnd(width + 2)}${oneLine(match.text)}`)",
+      "op": "remove",
+      "name": "the matches themselves are dropped and only the count prints"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatMatches'] ForOfStatement TemplateLiteral",
+      "was": "`    ${location.padEnd(width + 2)}${oneLine(match.text)}`",
+      "op": "empty",
+      "name": "every match line prints blank"
+    },
+    {
+      "at": "BinaryExpression[left.name='width']",
+      "was": "width + 2",
+      "op": "operator",
+      "to": "-",
+      "name": "the location column is padded short rather than past the longest"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatMatches'] ReturnStatement CallExpression",
+      "was": "return lines.join('\\n')",
+      "op": "value",
+      "to": "''",
+      "name": "formatMatches returns nothing at all"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatMatches'] Literal[value='\n']",
+      "was": "'\\n'",
+      "op": "value",
+      "to": "' '",
+      "name": "the match report runs onto one line rather than one line per match"
+    },
+    {
+      "at": "ExpressionStatement:has(TemplateElement[value.cooked='    survived  '])",
+      "was": "plan",
+      "op": "remove",
+      "name": "a survivor is tallied but never named"
+    },
+    {
+      "at": "ExpressionStatement:has(TemplateElement[value.cooked='    invalid   '])",
+      "was": "kept",
+      "op": "remove",
+      "name": "an invalid mutant is tallied but never named"
+    },
+    {
+      "at": "VariableDeclarator[id.name='tally'] CallExpression[callee.property.name='join']",
+      "was": "added",
+      "op": "value",
+      "to": "''",
+      "name": "the tally prints blank and the report claims nothing was planned"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ForOfStatement MemberExpression[property.name='at']",
+      "was": "stale",
+      "op": "value",
+      "to": "mutation.was",
+      "name": "a refused selector is reported by the source it read rather than by its address"
+    },
+    {
+      "at": "MemberExpression BinaryExpression[operator='===']",
+      "was": "mutation.op === null",
+      "op": "operator",
+      "to": "!==",
+      "name": "a filled op counts as awaiting one and an unfilled one does not"
+    },
+    {
+      "at": "VariableDeclarator[id.name='unfilled'] Literal",
+      "was": "null",
+      "op": "value",
+      "to": "'x'",
+      "name": "an op is counted as unfilled only when it reads x"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] VariableDeclarator[id.name='lines'] ArrayExpression",
+      "was": "[`  wrote ${basename(path)}`, `    ${plan.mutations.length} sites`]",
+      "op": "empty",
+      "name": "a stub reports neither what it wrote nor how many sites it found"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] ArrayExpression TemplateLiteral:nth-child(2)",
+      "was": "`    ${plan.mutations.length} sites`",
+      "op": "empty",
+      "name": "the site count prints blank"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] IfStatement:has(BinaryExpression[left.name='kept'])",
+      "was": "if (kept > 0) lines.push(`    ${kept} kept, op and name intact`)",
+      "op": "invert",
+      "name": "a first stub claims it kept nothing and a merge reports no kept count"
+    },
+    {
+      "at": "BinaryExpression[left.name='kept']",
+      "was": "kept > 0",
+      "op": "operator",
+      "to": ">=",
+      "name": "a first stub claims it kept nothing"
+    },
+    {
+      "at": "BlockStatement IfStatement:nth-child(5)",
+      "was": "if (added > 0) lines.push(`    ${added} added`)",
+      "op": "invert",
+      "name": "a first stub claims it added nothing and a merge reports no added count"
+    },
+    {
+      "at": "BinaryExpression[left.name='added']",
+      "was": "added > 0",
+      "op": "operator",
+      "to": ">=",
+      "name": "a first stub claims it added nothing"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] IfStatement:has(BinaryExpression[left.name='unfilled'])",
+      "was": "if (unfilled > 0) lines.push(`    ${unfilled} awaiting an op`)",
+      "op": "invert",
+      "name": "a filled plan claims a site awaits an op and an unfilled one reports none"
+    },
+    {
+      "at": "BinaryExpression[left.name='unfilled']",
+      "was": "unfilled > 0",
+      "op": "operator",
+      "to": ">=",
+      "name": "a fully filled plan claims a site is awaiting an op"
+    },
+    {
+      "at": "ExpressionStatement:has(TemplateElement[value.cooked='    stale  '])",
+      "was": "lines.push(`    stale  ${mutation.at}`)",
+      "op": "remove",
+      "name": "a stale selector is counted but never named"
+    },
+    {
+      "at": "TemplateLiteral:has(TemplateElement[value.cooked='    stale  '])",
+      "was": "`    stale  ${mutation.at}`",
+      "op": "empty",
+      "name": "a stale selector prints as a blank line"
+    },
+    {
+      "at": "VariableDeclarator[id.name='skipped'] LogicalExpression",
+      "was": "plan.skipped ?? []",
+      "op": "drop-right",
+      "name": "a plan carrying no skipped array reads as undefined rather than empty"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] IfStatement:has(BinaryExpression[left.object.name='skipped'])",
+      "was": "if (skipped.length > 0) {\n    lines.push(`    ${skipped.length} with no unique selector, left out of mutations`)\n\n    for (const site of skipped) {\n      lines.push(`      ${basename(plan.source)}:${site.line}:${site.column + 1}  ${oneLine(site.was)}`)\n    }\n  }",
+      "op": "invert",
+      "name": "a plan skipping nothing reports skipped sites and one skipping some reports none"
+    },
+    {
+      "at": "ExpressionStatement:has(TemplateElement[value.cooked=' with no unique selector, left out of mutations'])",
+      "was": "lines.push(`    ${skipped.length} with no unique selector, left out of mutations`)",
+      "op": "remove",
+      "name": "the skipped count is never printed while the sites still are"
+    },
+    {
+      "at": "TemplateLiteral:has(TemplateElement[value.cooked=' with no unique selector, left out of mutations'])",
+      "was": "`    ${skipped.length} with no unique selector, left out of mutations`",
+      "op": "empty",
+      "name": "the skipped count line prints blank"
+    },
+    {
+      "at": "IfStatement ForOfStatement ExpressionStatement",
+      "was": "lines.push(`      ${basename(plan.source)}:${site.line}:${site.column + 1}  ${oneLine(site.was)}`)",
+      "op": "remove",
+      "name": "a skipped site is counted but its position never printed"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "0",
+      "name": "a skipped site's column is printed as ESTree counts it rather than as an editor does"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] IfStatement:has(UnaryExpression)",
+      "was": "if (!plan.cmd) lines.push(`    name a cmd before running, since a plan with none cannot run`)",
+      "op": "invert",
+      "name": "a plan naming a cmd is told to name one and a plan naming none is not"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] UnaryExpression",
+      "was": "!plan.cmd",
+      "op": "invert",
+      "name": "a plan naming a cmd is told to name one"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] ReturnStatement CallExpression",
+      "was": "return lines.join('\\n')",
+      "op": "value",
+      "to": "''",
+      "name": "formatStub returns nothing at all"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatStub'] Literal[value='\n']",
+      "was": "'\\n'",
+      "op": "value",
+      "to": "' '",
+      "name": "the stub report runs onto one line rather than one fact per line"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] BinaryExpression[operator='+'] > Literal",
+      "was": "(counted.get(verdict.outcome) ?? 0) + 1",
+      "op": "value",
+      "to": "0",
+      "name": "every outcome tallies as zero however many verdicts carry it"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "2",
+      "name": "each verdict counts as two"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] VariableDeclarator[id.name='lines'] ArrayExpression",
+      "was": "[`  ${basename(path)}`]",
+      "op": "empty",
+      "name": "the verdict report names no source file"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] VariableDeclarator[id.name='lines'] TemplateLiteral",
+      "was": "`  ${basename(path)}`",
+      "op": "empty",
+      "name": "the source file line prints blank"
+    },
+    {
+      "at": "ArrowFunctionExpression:has(Literal[value='survived']) > BinaryExpression",
+      "was": "entry.outcome === 'survived'",
+      "op": "operator",
+      "to": "!==",
+      "name": "every outcome but survived is named as a survivor"
+    },
+    {
+      "at": "Literal[value='survived']",
+      "was": "'survived'",
+      "op": "value",
+      "to": "'killed'",
+      "name": "a killed mutation is named where a survivor should be"
+    },
+    {
+      "at": "ArrowFunctionExpression:has(Literal[value='invalid']) > BinaryExpression",
+      "was": "entry.outcome === 'invalid'",
+      "op": "operator",
+      "to": "!==",
+      "name": "every outcome but invalid is named as invalid"
+    },
+    {
+      "at": "Literal[value='invalid']",
+      "was": "'invalid'",
+      "op": "value",
+      "to": "'stale'",
+      "name": "a stale mutation is named where an invalid one should be"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] IfStatement",
+      "was": "if (verdict.because) lines.push(`              ${verdict.because}`)",
+      "op": "invert",
+      "name": "an invalid mutant carrying a reason never prints it"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] IfStatement ExpressionStatement CallExpression",
+      "was": "lines.push(`              ${verdict.because}`)",
+      "op": "value",
+      "to": "undefined",
+      "name": "an invalid mutant's reason is dropped from the report"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] IfStatement TemplateLiteral",
+      "was": "`              ${verdict.because}`",
+      "op": "empty",
+      "name": "an invalid mutant's reason prints as a blank line"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] MemberExpression ArrayExpression",
+      "was": "[...counted]",
+      "op": "empty",
+      "name": "the tally counts nothing whatever the verdicts were"
+    },
+    {
+      "at": "MemberExpression TemplateLiteral",
+      "was": "`${count} ${outcome}`",
+      "op": "empty",
+      "name": "each tallied outcome prints blank"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatVerdicts'] VariableDeclaration:has(Identifier[name='counted']) NewExpression",
+      "was": "return `${lines.join('\\n')}\\n    ${tally || 'nothing planned'}`",
+      "op": "value",
+      "to": "new Map<string, number>([['killed', 9]])",
+      "name": "every verdict report starts with nine killed already tallied"
+    },
+    {
+      "at": "ReturnStatement:has(Literal[value='nothing planned']) TemplateLiteral",
+      "was": "`${lines.join('\\n')}\\n    ${tally || 'nothing planned'}`",
+      "op": "empty",
+      "name": "formatVerdicts returns nothing at all"
+    },
+    {
+      "at": "TemplateLiteral:has(Literal[value='nothing planned']) Literal[value='\n']",
+      "was": "'\\n'",
+      "op": "value",
+      "to": "' '",
+      "name": "the tally runs onto the last verdict line rather than its own"
+    },
+    {
+      "at": "LogicalExpression[left.name='tally']",
+      "was": "tally || 'nothing planned'",
+      "op": "drop-right",
+      "name": "a plan with no verdicts prints a blank tally rather than nothing planned"
+    },
+    {
+      "at": "Literal[value='nothing planned']",
+      "was": "'nothing planned'",
+      "op": "empty",
+      "name": "a plan with no verdicts prints a blank tally"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ArrayExpression",
+      "was": "[`  ${basename(path)}`]",
+      "op": "empty",
+      "name": "the check report names no source file"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] VariableDeclaration TemplateLiteral",
+      "was": "`  ${basename(path)}`",
+      "op": "empty",
+      "name": "the check report names its source file as a blank line"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] IfStatement > BinaryExpression",
+      "was": "mutation",
+      "op": "operator",
+      "to": "<",
+      "name": "a resolving selector is named as refused"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ReturnStatement CallExpression",
+      "was": "matches",
+      "op": "value",
+      "to": "''",
+      "name": "the check report names no refused selector at all"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] MemberExpression[property.name='length'][object.name='resolved']",
+      "was": "if (matches === 1) continue",
+      "op": "value",
+      "to": "0",
+      "name": "the check report counts nothing as resolved"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ForOfStatement Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "0",
+      "name": "a stale selector is passed over and a resolving one is named"
+    },
+    {
+      "at": "ConditionalExpression BinaryExpression[left.name='matches']",
+      "was": "matches === 0",
+      "op": "operator",
+      "to": "!==",
+      "name": "a stale selector reads as ambiguous and an ambiguous one as stale"
+    },
+    {
+      "at": "VariableDeclarator[id.name='verdict'] ConditionalExpression",
+      "was": "matches === 0 ? 'stale    ' : 'ambiguous'",
+      "op": "invert",
+      "name": "the verdict a refused selector reads is the one the other count means"
+    },
+    {
+      "at": "Literal[value='stale    ']",
+      "was": "'stale    '",
+      "op": "empty",
+      "name": "a stale selector is named with no verdict beside it"
+    },
+    {
+      "at": "Literal[value='ambiguous']",
+      "was": "'ambiguous'",
+      "op": "empty",
+      "name": "an ambiguous selector is named with no verdict beside it"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ExpressionStatement",
+      "was": "lines.push(`    ${verdict}  ${mutation.at}`)",
+      "op": "remove",
+      "name": "a refused selector is counted but never named"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ForOfStatement TemplateLiteral",
+      "was": "`    ${verdict}  ${mutation.at}`",
+      "op": "empty",
+      "name": "a refused selector prints as a blank line"
+    },
+    {
+      "at": "VariableDeclarator[id.name='bad'] BinaryExpression[operator='!==']",
+      "was": "entry.matches !== 1",
+      "op": "operator",
+      "to": "===",
+      "name": "the refused count counts what resolved instead"
+    },
+    {
+      "at": "VariableDeclarator[id.name='bad'] CallExpression[callee.property.name='filter']",
+      "was": "return `${lines.join('\\n')}\\n    ${resolved.length} resolved, ${bad} refused`",
+      "op": "value",
+      "to": "resolved",
+      "name": "every resolved selector counts as refused"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] ReturnStatement TemplateLiteral",
+      "was": "`${lines.join('\\n')}\\n    ${resolved.length} resolved, ${bad} refused`",
+      "op": "empty",
+      "name": "formatCheck returns nothing at all"
+    },
+    {
+      "at": "VariableDeclarator[id.name='formatCheck'] Literal[value='\n']",
+      "was": "'\\n'",
+      "op": "value",
+      "to": "' '",
+      "name": "the check tally runs onto the last selector line rather than its own"
+    }
+  ],
+  "skipped": [
+    {
+      "was": "`  wrote ${basename(path)}`",
+      "line": 49,
+      "column": 17,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "0",
+      "line": 51,
+      "column": 13,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "lines.push(`    ${kept} kept, op and name intact`)",
+      "line": 51,
+      "column": 16,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "`    ${kept} kept, op and name intact`",
+      "line": 51,
+      "column": 27,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "0",
+      "line": 52,
+      "column": 14,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "lines.push(`    ${added} added`)",
+      "line": 52,
+      "column": 17,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "`    ${added} added`",
+      "line": 52,
+      "column": 28,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "0",
+      "line": 53,
+      "column": 17,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "lines.push(`    ${unfilled} awaiting an op`)",
+      "line": 53,
+      "column": 20,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "`    ${unfilled} awaiting an op`",
+      "line": 53,
+      "column": 31,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "skipped.length > 0",
+      "line": 61,
+      "column": 6,
+      "ops": [
+        "operator",
+        "invert"
+      ]
+    },
+    {
+      "was": "0",
+      "line": 61,
+      "column": 23,
+      "ops": [
+        "value"
+      ]
+    },
+    {
+      "was": "lines.push(`    name a cmd before running, since a plan with none cannot run`)",
+      "line": 69,
+      "column": 17,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "`    name a cmd before running, since a plan with none cannot run`",
+      "line": 69,
+      "column": 28,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "counted.set(verdict.outcome, (counted.get(verdict.outcome) ?? 0) + 1)",
+      "line": 79,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "lines.push(`    survived  ${verdict.mutation.name || verdict.mutation.at}`)",
+      "line": 85,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "`    survived  ${verdict.mutation.name || verdict.mutation.at}`",
+      "line": 85,
+      "column": 15,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "verdict.mutation.name || verdict.mutation.at",
+      "line": 85,
+      "column": 32,
+      "ops": [
+        "drop-left",
+        "drop-right",
+        "invert"
+      ]
+    },
+    {
+      "was": "lines.push(`    invalid   ${verdict.mutation.name || verdict.mutation.at}`)",
+      "line": 89,
+      "column": 4,
+      "ops": [
+        "remove"
+      ]
+    },
+    {
+      "was": "`    invalid   ${verdict.mutation.name || verdict.mutation.at}`",
+      "line": 89,
+      "column": 15,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "verdict.mutation.name || verdict.mutation.at",
+      "line": 89,
+      "column": 32,
+      "ops": [
+        "drop-left",
+        "drop-right",
+        "invert"
+      ]
+    }
+  ]
+}

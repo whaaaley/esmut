@@ -1,0 +1,118 @@
+{
+  "source": "src/lib/check.ts",
+  "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/lib/check.test.ts src/cmds/plan.cmds.test.ts",
+  "filledBy": "sweep",
+  "mutations": [
+    {
+      "at": "CallExpression Literal[value=0]",
+      "was": "0",
+      "op": "value",
+      "to": "1"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='introduced'] > ArrowFunctionExpression > BlockStatement > ForOfStatement > BlockStatement > ExpressionStatement > CallExpression > BinaryExpression > Literal",
+      "was": "1",
+      "op": "value",
+      "to": "2"
+    },
+    {
+      "at": "VariableDeclarator[id.name='carried'] Literal",
+      "was": "0",
+      "op": "value",
+      "to": "1"
+    },
+    {
+      "at": "ForOfStatement IfStatement",
+      "was": "if (carried > 0) {\n      seen.set(key, carried - 1)\n      continue\n    }",
+      "op": "invert"
+    },
+    {
+      "at": "BinaryExpression > Literal[value=0]",
+      "was": "0",
+      "op": "value",
+      "to": "1"
+    },
+    {
+      "at": "IfStatement Literal[value=1]",
+      "was": "1",
+      "op": "value",
+      "to": "2"
+    },
+    {
+      "at": "Property[key.name='allowJs'] Literal",
+      "was": "true",
+      "op": "value",
+      "to": "false"
+    },
+    {
+      "at": "Property[key.name='checkJs'] Literal",
+      "was": "true",
+      "op": "value",
+      "to": "false"
+    },
+    {
+      "at": "Property[key.name='getSourceFile'] IfStatement",
+      "was": "if (name !== path) return base.getSourceFile(name, language, onError, shouldCreate)",
+      "op": "invert"
+    },
+    {
+      "at": "VariableDeclaration VariableDeclaration IfStatement",
+      "was": "if (!file) return []",
+      "op": "invert"
+    },
+    {
+      "at": "IfStatement > UnaryExpression",
+      "was": "!file",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='diagnose'] > ArrowFunctionExpression > BlockStatement > IfStatement",
+      "was": "if (error) {\n    throw new CliError(`Cannot type-check ${path}`, [\n      error.message,\n      'The gate compares a mutant against the file it came from',\n    ])\n  }",
+      "op": "invert"
+    },
+    {
+      "at": "ExportNamedDeclaration ReturnStatement IfStatement",
+      "was": "if (!file || start === undefined) {\n      throw new CliError(`A diagnostic for ${path} carries no position`, [\n        'diagnose reads only the syntactic and semantic diagnostics of one file, which always carry one',\n      ])\n    }",
+      "op": "invert"
+    },
+    {
+      "at": "LogicalExpression[operator='||']",
+      "was": "!file || start === undefined",
+      "op": "invert"
+    },
+    {
+      "at": "LogicalExpression UnaryExpression",
+      "was": "!file",
+      "op": "invert"
+    },
+    {
+      "at": "VariableDeclarator[id.name='line'] Literal",
+      "was": "1",
+      "op": "value",
+      "to": "2"
+    },
+    {
+      "at": "Literal[value=' ']",
+      "was": "' '",
+      "op": "empty"
+    }
+  ],
+  "skipped": [
+    {
+      "was": "`${diagnostic.code}:${diagnostic.message}`",
+      "line": 19,
+      "column": 16,
+      "ops": [
+        "empty"
+      ]
+    },
+    {
+      "was": "`${diagnostic.code}:${diagnostic.message}`",
+      "line": 26,
+      "column": 16,
+      "ops": [
+        "empty"
+      ]
+    }
+  ]
+}
