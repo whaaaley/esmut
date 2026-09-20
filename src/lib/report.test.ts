@@ -128,6 +128,20 @@ describe('All Report Tests', () => {
       assertEquals(formatMatches('x.ts', trailing("'ok'\n  \n\t\n")).split('\n').length, 2)
     })
 
+    // A node whose whole text is blank has no last line holding anything, and dropping every row
+    // would print the count with no location under it, leaving a reader nothing to jump to.
+    it('prints the location of a node whose text is blank', () => {
+      // Arrange
+      const blank: Match[] = [{ range: [0, 0], line: 1, column: 0, type: 'Literal', text: '' }]
+
+      // Act
+      const printed = formatMatches('x.ts', blank)
+
+      // Assert: the count and one row for the match, rather than the count alone.
+      assertEquals(printed.split('\n').length, 2)
+      assertStringIncludes(printed, 'x.ts:1:1')
+    })
+
     // A blank line between two lines of a node is content rather than a trailing row, so it stays.
     // Dropping every blank instead of only the trailing ones would close the gap the author wrote.
     it('keeps a blank line that sits between two lines of a node', () => {
