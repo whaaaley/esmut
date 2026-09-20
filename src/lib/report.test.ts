@@ -121,6 +121,42 @@ describe('All Report Tests', () => {
       assertStringIncludes(newline, "'ok'")
       assertEquals(spaces.split('\n').length, 2)
       assertStringIncludes(spaces, "'ok'")
+
+      // Several trailing blanks are dropped rather than one, which is what the loop is for.
+      // A blank holding whitespace counts as blank, since a row of spaces prints as an empty row.
+      assertEquals(formatMatches('x.ts', trailing("'ok'\n\n\n")).split('\n').length, 2)
+      assertEquals(formatMatches('x.ts', trailing("'ok'\n  \n\t\n")).split('\n').length, 2)
+    })
+
+    // A blank line between two lines of a node is content rather than a trailing row, so it stays.
+    // Dropping every blank instead of only the trailing ones would close the gap the author wrote.
+    it('keeps a blank line that sits between two lines of a node', () => {
+      // Arrange
+      const spans = select('const a = {\n  b: 1,\n\n  c: 2,\n}\n', 'x.ts', 'ObjectExpression')
+
+      // Act
+      const printed = formatMatches('x.ts', spans)
+
+      // Assert: five rows for the count and the four lines the object spans, the blank among them.
+      assertEquals(printed.split('\n').length, 6)
+      assertStringIncludes(printed, 'b: 1,')
+      assertStringIncludes(printed, 'c: 2,')
+    })
+
+    // The loop reads the last line to decide, so reading the first instead drops every line of a
+    // node whose second line is blank while its last is not. Both keep a node with no blank at all.
+    it('decides by the last line rather than the first, which a leading blank tells apart', () => {
+      // Arrange
+      const range: [number, number] = [0, 1]
+      const leading = [{ range, line: 1, column: 0, type: 'Literal', text: "'ok'\n\nb\nc" }]
+
+      // Act
+      const printed = formatMatches('x.ts', leading)
+
+      // Assert: nothing is trailing, so every line stays and the blank among them is kept.
+      assertEquals(printed.split('\n').length, 5)
+      assertStringIncludes(printed, 'b')
+      assertStringIncludes(printed, 'c')
     })
   })
 
@@ -175,6 +211,27 @@ describe('All Report Tests', () => {
       // Assert: the header, the count, kept, added, awaiting, and the cmd reminder each get a line.
       assertEquals(printed.split('\n').length, 6)
       assertEquals(printed.includes('sites    '), false)
+    })
+
+    // A drifted entry still resolves, so nothing else in the report mentions it. Naming the selector
+    // is what sends a reader to the node, and naming both structures is what says it moved.
+    it('names a drifted selector and the structures it moved between', () => {
+      // Arrange
+      const drifted = merge({ drifted: [{ at: "IfStatement[test.left.name='kept']", before: '81ffa987', after: 'fb1eced8' }] })
+
+      // Act
+      const printed = formatStub('plan.json', drifted)
+
+      // Assert
+      assertStringIncludes(printed, "drifted  IfStatement[test.left.name='kept']")
+      assertStringIncludes(printed, '81ffa987 became fb1eced8')
+    })
+
+    // Drift is the uncommon case, so a report mentioning it when nothing moved reads as a problem.
+    it('says nothing about drift where no entry moved', () => {
+      // Act & Assert
+      assertEquals(formatStub('plan.json', merge()).includes('drifted'), false)
+      assertEquals(formatStub('plan.json', merge()).includes('became'), false)
     })
 
     // A plan with no cmd cannot run and stub always writes one empty, so the reminder is common.
