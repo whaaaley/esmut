@@ -172,8 +172,13 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
       verdicts.push({ mutation, outcome: caught ? 'killed' : 'survived' })
     }
   } finally {
+    // The loop above restores after each suite, so this write is reached with the source already
+    // back. It stays for the path where judge or a write throws between the mutant and the restore,
+    // which no test can drive, so a mutation of this line is a mutant nothing catches.
     await Deno.writeTextFile(path, source)
 
+    // Deno exposes no listener count and refuses nothing for a listener it does not hold, so a run
+    // that left these behind is invisible from inside the process.
     Deno.removeSignalListener('SIGINT', restore)
     Deno.removeSignalListener('SIGTERM', restore)
   }

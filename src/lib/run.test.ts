@@ -159,11 +159,15 @@ describe('All Run Tests', () => {
       }
 
       child.kill('SIGTERM')
-      await child.status
+      const status = await child.status
 
       // Assert
       assertEquals(during.includes('500'), true)
       assertEquals(Deno.readTextFileSync(path), SOURCE)
+
+      // The handler exits rather than returning, and 130 is what a shell reads as killed by a signal.
+      // A run exiting 0 here would read as a clean finish to whatever called it.
+      assertEquals(status.code, 130)
     })
 
     // A verdict needing no suite costs no disk, so a stale selector never writes anything.
