@@ -41,21 +41,25 @@ describe('All Run Tests', () => {
     })
 
     // A mutant that does not compile never ran, so reporting it killed credits a blind test.
+    // The compiler's own objection is what says which mutation to fix, so the verdict carries it.
     it('reports a mutant the compiler refuses as invalid rather than killed', () => {
       // Act
       const judged = judge(READY, mutation({ to: 'missing' }))
 
       // Assert
       assertEquals('verdict' in judged && judged.verdict.outcome, 'invalid')
+      assert('verdict' in judged && judged.verdict.because?.includes('missing'), 'the verdict names no reason')
     })
 
     // An op the node cannot take is a plan to fix, and reporting it lets the run finish.
+    // A drop keeps one side, so the refusal names the side it would have kept rather than dropped.
     it('reports an op the node cannot take as invalid rather than throwing', () => {
       // Act
       const judged = judge(READY, mutation({ op: 'drop-left', to: undefined }))
 
       // Assert
       assertEquals('verdict' in judged && judged.verdict.outcome, 'invalid')
+      assert('verdict' in judged && judged.verdict.because?.includes('carries no right'), 'the verdict names no reason')
     })
 
     it('returns the mutant where the mutation compiles', () => {
@@ -313,6 +317,29 @@ describe('All Run Tests', () => {
       // Act & Assert
       assertEquals(await suiteFails('true', 30_000), false)
       assertEquals(await suiteFails('false', 30_000), true)
+    })
+
+    // The timeout is told apart from any other failure by its name, which runPlan reads to decide
+    // whether the hang is this mutation's verdict or the whole plan's error.
+    it('names the timeout, since a run tells it from any other failure by that', async () => {
+      // Act
+      const refusal = await assertRejects(() => suiteFails('sleep 30', 200), SuiteTimeout)
+
+      // Assert
+      assertEquals(refusal.name, 'SuiteTimeout')
+      assertEquals(refusal.ms, 200)
+    })
+
+    // The bound is the signal handed to the command, so a command started without it runs unbounded
+    // and the wait above would never end. The child being gone afterwards is what says it was killed.
+    it('kills the command it bounded rather than leaving it running', async () => {
+      // Act: a sleep long enough that only a kill ends it inside the assertion below.
+      const started = Date.now()
+      await assertRejects(() => suiteFails('sleep 30', 250), SuiteTimeout)
+      const waited = Date.now() - started
+
+      // Assert: the wait ended near the bound rather than after the sleep, so the child was killed.
+      assert(waited < 5_000, `waited ${waited}ms, so the command outlived its bound`)
     })
   })
 })
