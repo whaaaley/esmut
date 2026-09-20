@@ -338,6 +338,23 @@ describe('All Report Tests', () => {
 
   describe('formatPruned', () => {
     // A prune deletes an op and a name somebody wrote, so the print is the only record of it.
+    // Each dropped entry gets its own row, since a reader scans the list for work they recognise.
+    // Joined onto one line, two names read as one and the count no longer matches what is shown.
+    it('prints one dropped entry per line', () => {
+      // Arrange
+      const dropped = [
+        { at: 'Gone', shape: 'eeee0004', op: 'remove' as const, name: 'the first' },
+        { at: 'Also', shape: 'eeee0005', op: 'remove' as const, name: 'the second' },
+      ]
+
+      // Act
+      const printed = formatPruned(dropped)
+
+      // Assert: the header and one row each, so three lines rather than one.
+      assertEquals(printed.split('\n').length, 3)
+      assertStringIncludes(printed, '2 dropped')
+    })
+
     it('names a dropped entry by what its author called it', () => {
       // Arrange
       const dropped = [{ at: 'Gone', shape: 'eeee0004', op: 'remove' as const, name: 'the guard nobody tests' }]
