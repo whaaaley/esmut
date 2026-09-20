@@ -153,6 +153,57 @@ describe('All Run Tests', () => {
       await Deno.chmod(path, 0o600)
     })
 
+    // The handlers are added per run, so a run that leaves them behind stacks another pair on the
+    // next one and the stale one exits 130 on any later signal. That is invisible in-process, since
+    // Deno exposes no listener count, so the exit code of a child signalled after the run says it.
+    it('drops the handlers it added, so a later signal takes the default disposition', async () => {
+      // Arrange
+      const directory = Deno.makeTempDirSync()
+      const path = `${directory}/target.ts`
+      Deno.writeTextFileSync(path, SOURCE)
+      const written = { source: 'target.ts', cmd: 'true', mutations: [mutation()] }
+      Deno.writeTextFileSync(`${directory}/plan.mut.json`, JSON.stringify(written))
+
+      const config = fromFileUrl(new URL('../../deno.json', import.meta.url))
+      const script = `${directory}/idle.ts`
+      const entry = new URL('./run.ts', import.meta.url).href
+      const parse = new URL('./plan.ts', import.meta.url).href
+
+      // The child runs the plan to completion, says so, then waits to be signalled.
+      Deno.writeTextFileSync(
+        script,
+        `import { runPlan } from '${entry}'\nimport { parsePlan } from '${parse}'\n` +
+          `await runPlan('${path}', parsePlan(Deno.readTextFileSync('${directory}/plan.mut.json'), 'p'))\n` +
+          `console.log('ran')\nawait new Promise((resolve) => setTimeout(resolve, 20000))\n`,
+      )
+
+      const child = new Deno.Command(Deno.execPath(), {
+        args: ['run', '--config', config, ...PERMISSIONS, script],
+        stdout: 'piped',
+        stderr: 'null',
+      }).spawn()
+
+      // Act: the signal comes after the run finished, so only a handler it forgot could answer it.
+      const reader = child.stdout.getReader()
+      const decoder = new TextDecoder()
+      let said = ''
+
+      while (!said.includes('ran')) {
+        const { value, done } = await reader.read()
+        if (done) break
+
+        said += decoder.decode(value)
+      }
+
+      reader.releaseLock()
+      child.kill('SIGTERM')
+      const status = await child.status
+
+      // Assert: 143 is the default for SIGTERM, where a handler the run left behind exits 130.
+      assertEquals(said.includes('ran'), true)
+      assertEquals(status.code, 143)
+    })
+
     // A signal does not unwind the stack, so finally never runs and the mutant outlives the run.
     // This is the promise the tool makes about its own safety, and a kill is how it is tested.
     it('restores the source when the run is killed rather than thrown out of', async () => {

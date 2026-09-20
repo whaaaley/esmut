@@ -679,11 +679,6 @@
       "op": "empty"
     },
     {
-      "at": "Program > ExportNamedDeclaration:nth-child(20) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(1)",
-      "shape": "19df6238",
-      "op": "remove"
-    },
-    {
       "at": "Program > ExportNamedDeclaration:nth-child(20) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > ExpressionStatement:nth-child(2)",
       "shape": "d806b816",
       "op": "remove"
@@ -770,11 +765,6 @@
       "op": "invert"
     },
     {
-      "at": "BlockStatement:has(Literal[value='SIGINT']) > IfStatement",
-      "shape": "cdc47e10",
-      "op": "invert"
-    },
-    {
       "at": "Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='runPlan'] > ArrowFunctionExpression > BlockStatement > ExpressionStatement > CallExpression > Literal[value='SIGINT']",
       "shape": "44553fd6",
       "op": "empty"
@@ -808,6 +798,21 @@
       "at": "TryStatement Literal[value='SIGTERM']",
       "shape": "f641cccf",
       "op": "empty"
+    },
+    {
+      "at": "Property[value.name='unrestored']",
+      "shape": "d3462a0e",
+      "op": "remove"
+    },
+    {
+      "at": "IfStatement[test.name='unrestored']",
+      "shape": "e2946640",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(20) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(8) > BlockStatement.finalizer > IfStatement:nth-child(4) > BlockStatement.consequent > ThrowStatement:nth-child(1)",
+      "shape": "3b43fca5",
+      "op": "remove"
     }
   ]
 }
