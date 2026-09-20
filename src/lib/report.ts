@@ -35,15 +35,16 @@ export const formatMatches = (path: string, matches: Match[]): string => {
   // ESTree counts the first column as zero while counting the first line as one.
   // A reader jumps to the location in an editor, which counts the first column as one.
   // Width comes from the longest location so the source column lines up at any line number.
-  const locations = matches.map((match) => `${basename(path)}:${match.line}:${match.column + 1}`)
-  const width = Math.max(...locations.map((location) => location.length))
+  // The location is carried beside its match rather than looked up by index, so nothing needs a
+  // fallback for an element that is always there.
+  const located = matches.map((match) => ({ match, at: `${basename(path)}:${match.line}:${match.column + 1}` }))
+  const width = Math.max(...located.map((entry) => entry.at.length))
 
-  for (const [index, match] of matches.entries()) {
-    const location = locations[index] ?? ''
+  for (const { match, at } of located) {
     const indent = ' '.repeat(4 + width + 2)
     const [head = '', ...tail] = asLines(match.text, indent)
 
-    lines.push(`    ${location.padEnd(width + 2)}${head}`, ...tail)
+    lines.push(`    ${at.padEnd(width + 2)}${head}`, ...tail)
   }
 
   return lines.join('\n')
