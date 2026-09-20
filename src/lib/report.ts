@@ -12,19 +12,17 @@ export type Resolved = {
 // Every line of a node, the first on the line the caller built and the rest indented under it.
 // Nothing is withheld, since a reader deciding whether a site is theirs needs all of it.
 // The lines are kept apart rather than joined, which would read as source that does not parse.
-// The two fallbacks below are unreachable: split always answers with one string, and at(-1) inside
-// a non-empty guard always finds one. noUncheckedIndexedAccess demands them anyway, so a mutation of
-// either is a mutant no test can catch, and both are left rather than worked around.
+// Read as one list rather than a head and a tail, so no line is reached by an index that needs a
+// fallback for an element split always answers with.
 const asLines = (text: string, indent: string): string[] => {
-  const [first = '', ...rest] = text.split('\n')
-  const kept = [first.trimEnd()]
+  const lines = text.split('\n').map((line) => line.trimEnd())
 
   // Trailing blank lines carry nothing, so they are dropped rather than printed as empty rows.
-  while (rest.length > 0 && (rest.at(-1) ?? '').trim() === '') rest.pop()
+  // The last line holding something bounds the list, and no line at all leaves the first.
+  const last = lines.findLastIndex((line) => line !== '')
+  const kept = lines.slice(0, Math.max(last + 1, 1))
 
-  for (const line of rest) kept.push(`${indent}${line.trimEnd()}`)
-
-  return kept
+  return kept.map((line, index) => index === 0 ? line : `${indent}${line}`)
 }
 
 // Leads with the count because that is the signal: 0 is stale, 1 is usable, more is ambiguous.
