@@ -149,6 +149,34 @@ describe('All Report Tests', () => {
       assertEquals(formatStub('plan.json', filled).includes('awaiting'), false)
     })
 
+    // The site count is what says a stub found anything, so a blank one reads as a file with no sites.
+    it('counts the sites it wrote', () => {
+      // Arrange
+      const two = merge({
+        mutations: [
+          { at: 'Literal', shape: 'aaaa1111', op: 'value', to: '2' },
+          { at: 'IfStatement', shape: 'b78119ea', op: 'invert' },
+        ],
+      })
+
+      // Act & Assert
+      assertStringIncludes(formatStub('plan.json', two), '2 sites')
+      assertStringIncludes(formatStub('plan.json', merge()), '0 sites')
+    })
+
+    // Each fact sits on its own line, since a report run together is one unreadable string.
+    it('prints one fact per line rather than joining them', () => {
+      // Arrange
+      const several = merge({ kept: 3, added: 2, mutations: [{ at: 'Literal', shape: 'aaaa1111', op: null }] })
+
+      // Act
+      const printed = formatStub('plan.json', several)
+
+      // Assert: the header, the count, kept, added, awaiting, and the cmd reminder each get a line.
+      assertEquals(printed.split('\n').length, 6)
+      assertEquals(printed.includes('sites    '), false)
+    })
+
     // A plan with no cmd cannot run and stub always writes one empty, so the reminder is common.
     it('asks for a cmd while the plan names none', () => {
       // Act & Assert
@@ -186,6 +214,33 @@ describe('All Report Tests', () => {
 
       // Act & Assert
       assertStringIncludes(formatVerdicts('report.ts', [invalid]), "Cannot find name 'a'.")
+    })
+
+    // A tally alone says a mutant was refused without saying which, so the site is named beside it.
+    it('names the invalid mutant rather than only tallying it', () => {
+      // Arrange
+      const invalid: Verdict = {
+        mutation: { at: 'ReturnStatement', shape: 'eeee0003', op: 'remove', name: 'the guard is dropped' },
+        outcome: 'invalid',
+        because: 'it does not compile',
+      }
+
+      // Act
+      const printed = formatVerdicts('report.ts', [invalid])
+
+      // Assert
+      assertStringIncludes(printed, 'invalid   the guard is dropped')
+      assertStringIncludes(printed, '1 invalid')
+    })
+
+    // A plan holding nothing tallies nothing, and a blank line reads as a run that found no problem.
+    it('says nothing was planned rather than printing a blank tally', () => {
+      // Act
+      const printed = formatVerdicts('report.ts', [])
+
+      // Assert
+      assertStringIncludes(printed, 'nothing planned')
+      assertEquals(printed.trim().endsWith('nothing planned'), true)
     })
   })
 

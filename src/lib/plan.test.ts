@@ -283,6 +283,41 @@ describe('All Plan Tests', () => {
       // Act & Assert
       assertThrows(() => assertResolves(ambiguous, SOURCE, 'status.ts', 'status.mut.json'), CliError)
     })
+
+    // The refusal is what a reader acts on, and the two failures are fixed differently: a stale
+    // address is rewritten or pruned, where an ambiguous one is narrowed. Naming neither says which.
+    it('says which of the two refusals each selector met', () => {
+      // Arrange
+      const mixed = plan([
+        { at: 'Literal[value=999]', shape: 'dddd9990', op: 'value', to: '1' },
+        { at: 'Literal', shape: '400a400a', op: 'value', to: '500' },
+      ])
+
+      // Act
+      const refusal = assertThrows(() => assertResolves(mixed, SOURCE, 'status.ts', 'status.mut.json'), CliError)
+
+      // Assert
+      assertEquals(refusal.suggestions.some((line) => line.startsWith('stale')), true)
+      assertEquals(refusal.suggestions.some((line) => line.startsWith('ambiguous')), true)
+    })
+
+    // One selector reads as singular, which a substring check misses since selector prefixes selectors.
+    it('counts one refused selector in the singular and more in the plural', () => {
+      // Arrange
+      const one = plan([{ at: 'Literal[value=999]', shape: 'dddd9990', op: 'value', to: '1' }])
+      const two = plan([
+        { at: 'Literal[value=999]', shape: 'dddd9990', op: 'value', to: '1' },
+        { at: 'Literal[value=998]', shape: 'dddd9991', op: 'value', to: '1' },
+      ])
+
+      // Act
+      const single = assertThrows(() => assertResolves(one, SOURCE, 'status.ts', 'status.mut.json'), CliError)
+      const several = assertThrows(() => assertResolves(two, SOURCE, 'status.ts', 'status.mut.json'), CliError)
+
+      // Assert
+      assertStringIncludes(single.message, '1 selector no longer resolves in')
+      assertStringIncludes(several.message, '2 selectors no longer resolve in')
+    })
   })
 
   describe('readPlan and writePlan', () => {

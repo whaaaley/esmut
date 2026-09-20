@@ -1,4 +1,4 @@
-import { assert, assertEquals } from '@std/assert'
+import { assert, assertEquals, assertExists, assertStringIncludes } from '@std/assert'
 import { describe, it } from 'node:test'
 import { diagnose, type Diagnostic, introduced, openGate } from './check.ts'
 
@@ -65,6 +65,35 @@ describe('All Check Tests', () => {
     it('reports nothing for a file the compiler accepts', () => {
       // Act & Assert
       assertEquals(diagnose(openGate('/tmp/clean.ts'), 'export const add = (a: number): number => a + 1\n'), [])
+    })
+
+    // The gate keeps the program it built so the next call reuses it, which is why a run type-checks
+    // one file rather than a graph. Deleting the write leaves every answer right and every call slow.
+    it('keeps the program it built, so the next call has something to reuse', () => {
+      // Arrange
+      const gate = openGate('/tmp/prior.ts')
+
+      // Act
+      assertEquals(gate.prior, undefined)
+      diagnose(gate, 'export const add = (a: number): number => a + 1\n')
+
+      // Assert
+      assertExists(gate.prior, 'the gate kept no program to build the next one from')
+    })
+
+    // A diagnostic can carry a chain of messages, and they are flattened onto one line so the report
+    // prints one row per mutation. Joining them with nothing would run the last word into the next.
+    it('separates the messages of a chained diagnostic', () => {
+      // Act: an array whose element type mismatches reports a chain rather than one message.
+      const source = 'const a: { b: number }[] = [{ b: 1 }]\nconst c: string[] = a\n'
+      const [first] = diagnose(openGate('/tmp/chained.ts'), source)
+
+      // Assert: the chain is one line, and the separator stands where the newline would have been.
+      // TypeScript indents a nested message by two, so the separator is the third space after the
+      // period. Joining with nothing leaves two, which is what this pins.
+      assertExists(first)
+      assertEquals(first.message.includes('\n'), false)
+      assertStringIncludes(first.message, "'string[]'.   Type '{ b: number; }'")
     })
 
     // The gate reads a mutant from memory, since writing one to disk is what it exists to avoid.

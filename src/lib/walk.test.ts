@@ -1,4 +1,4 @@
-import { assert, assertEquals } from '@std/assert'
+import { assert, assertEquals, assertExists } from '@std/assert'
 import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
@@ -148,6 +148,44 @@ describe('All Walk Tests', () => {
 
       // Act & Assert
       assertEquals(matchesUniquely(indexed, parseSelector("Literal[value='y']"), node), false)
+    })
+
+    // The memo is why addressing a file is fast rather than why it is correct, so deleting either
+    // write leaves every other test passing while the work is done again on each ask.
+    // What it holds is a field on Indexed, so the assertion reads the answer rather than counting
+    // calls into a stand-in, which a cache hit would otherwise need.
+    it('records the answer it gave for a selector, so a second ask is not asked again', () => {
+      // Arrange
+      const indexed = indexOf("const a = 'x'\nconst b = 'y'\nconst c = 'z'\n")
+      const node = nodeAt(indexed, 'Literal', 0)
+      const selector = parseSelector("Literal[value='x']")
+
+      // Act
+      const answered = matchesUniquely(indexed, selector, node)
+
+      // Assert: the selector has a map of its own, holding the answer for every node it was asked about.
+      assertEquals(answered, true)
+
+      const answers = indexed.answered.get(selector)
+
+      assertExists(answers, 'the selector recorded no answers at all')
+      assertEquals(answers.get(node), true)
+      assertEquals(answers.size, 3)
+    })
+
+    // The same selector text parses to one object, which is what lets the map be keyed by it.
+    it('reuses the map it recorded rather than adding one per ask', () => {
+      // Arrange
+      const indexed = indexOf("const a = 'x'\nconst b = 'y'\n")
+      const node = nodeAt(indexed, 'Literal', 0)
+
+      // Act
+      matchesUniquely(indexed, parseSelector("Literal[value='x']"), node)
+      matchesUniquely(indexed, parseSelector("Literal[value='x']"), node)
+      matchesUniquely(indexed, parseSelector("Literal[value='y']"), node)
+
+      // Assert: two selectors were asked about, so the third ask found the first one's map.
+      assertEquals(indexed.answered.size, 2)
     })
 
     // Only nodes sharing a type are compared, so one matching two kinds escapes the peer check.
