@@ -20,9 +20,9 @@ const asLines = (text: string, prefix: string, indent: string): string[] => {
   const lines = text.split('\n').map((line) => line.trimEnd())
 
   // Trailing blank lines carry nothing, so they are dropped rather than printed as empty rows.
-  // A node of only blank lines keeps its first, since every match prints at least one row.
+  // A node of only blank lines finds no last line and keeps its first, since every match prints one.
   const last = lines.findLastIndex((line) => line !== '')
-  const kept = last === -1 ? lines.slice(0, 1) : lines.slice(0, last + 1)
+  const kept = lines.slice(0, Math.max(last + 1, 1))
 
   return kept.map((line, index) => index === 0 ? `${prefix}${line}` : `${indent}${line}`)
 }
