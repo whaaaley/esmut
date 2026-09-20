@@ -79,6 +79,9 @@ const host = (gate: Gate, source: string): ts.CompilerHost => ({
 
     return made
   },
+  // getSourceFile answers every question the program asks about the target, so this is never asked
+  // for it: measured at 86 reads per check, none of them the target. It stays because a host owes a
+  // consistent answer on both, and a mutation of the test here is a mutant no test can catch.
   readFile: (name) => name === gate.path ? source : gate.base.readFile(name),
 })
 

@@ -130,8 +130,8 @@ describe('All Check Tests', () => {
       assertEquals(broken.map((one) => one.code), [2304])
     })
 
-    // The host answers readFile as well as getSourceFile, and the mutant is what both must return
-    // for the target. A file on disk that differs is what tells the substitution from a plain read.
+    // The mutant is never written, so a file on disk that still compiles is what proves the gate
+    // read the source it was handed. getSourceFile is what answers, and readFile is never asked.
     it('reads the mutant for the target even where the file on disk says otherwise', () => {
       // Arrange: the file on disk compiles, and the source handed in does not.
       const path = `${Deno.makeTempDirSync()}/target.ts`
