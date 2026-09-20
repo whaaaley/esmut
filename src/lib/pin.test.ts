@@ -43,6 +43,71 @@ describe('All Pin Tests', () => {
       assertEquals(pinOf('const only = 1\n', 'Identifier'), "Identifier[name='only']")
     })
 
+    // A backslash in the value would start an escape inside the quoted selector, so it is doubled.
+    it('doubles a backslash in a pinned value', () => {
+      // Act & Assert
+      assertEquals(pinOf('const a = "back\\\\slash"\n', 'Literal'), "Literal[value='back\\\\slash']")
+    })
+
+    // The selector quotes with an apostrophe, so one in the value has to be escaped to stay inside.
+    it('escapes a single quote in a pinned value', () => {
+      // Act & Assert
+      assertEquals(pinOf('const a = "it\'s"\n', 'Literal'), "Literal[value='it\\'s']")
+    })
+
+    // An escaped value has to survive the round trip, or pin names a node esquery cannot find.
+    it('returns an escaped selector esquery resolves to the one node it names', () => {
+      // Arrange
+      const indexed = indexSource('const a = "q\'and\\\\b"\n', 'x.ts')
+      const [node] = indexed.byType.get('Literal') ?? []
+
+      if (!node) throw new Error('no Literal in the source')
+
+      const { count } = counting(indexed)
+
+      // Act
+      const { at } = pin(indexed, node, count)
+
+      // Assert
+      assertEquals(matchAll(indexed.ast, parseSelector(at)).length, 1)
+    })
+
+    // The visitor list names left and right but not operator, so only SCALAR_KEYS reaches it.
+    it('names a comparison by its operator where both operands are shared', () => {
+      // Arrange
+      const source = 'const f = (a: number, b: number): boolean => a < b || a > b\n'
+
+      // Act
+      const at = pinOf(source, 'BinaryExpression')
+
+      // Assert
+      assertEquals(at, "BinaryExpression[operator='<']")
+    })
+
+    // An attribute two keys deep is what REACH allows, and it takes both descents to build.
+    it('names a node by an attribute two keys below it', () => {
+      // Arrange
+      const source = 'const f = (o: { a: { b: number } }): number => {\n  if (o.a.b === 7) return 1\n  return 2\n}\n'
+
+      // Act
+      const at = pinOf(source, 'IfStatement')
+
+      // Assert
+      assertEquals(at, 'IfStatement[test.right.value=7]')
+    })
+
+    // A deeper chain still pins at the reach, so the prefix never grows a third key.
+    it('names a node by an attribute no deeper than the reach allows', () => {
+      // Arrange
+      const source = 'const f = (o: { a: { b: { c: number } } }): number => {\n  if (o.a.b.c) return 1\n  return 2\n}\n'
+
+      // Act
+      const at = pinOf(source, 'IfStatement')
+
+      // Assert
+      assertEquals(at, "IfStatement[test.property.name='c']")
+    })
+
     // Two literals of the same value share every attribute, so the path is what separates them.
     it('falls back to the path where content names more than one node', () => {
       // Arrange

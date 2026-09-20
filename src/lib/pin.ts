@@ -20,8 +20,6 @@ const scalar = (value: unknown): string | null => {
   return null
 }
 
-// Every attribute a node can be named by, as the selector text and the value it pins.
-// Collected by walking single-valued keys, so a path here is one esquery can follow.
 // The keys carrying a scalar that the visitor list does not name, where an identifier's name and
 // a literal's value live.
 const SCALAR_KEYS: readonly string[] = ['name', 'value', 'operator']
@@ -32,16 +30,10 @@ const facts = (node: TSESTree.Node): string[] => {
   const gather = (current: TSESTree.Node, prefix: string, depth: number): void => {
     if (!isNode(current)) return
 
+    // A visitor key names a child or a list of them, never a scalar, so the walk only descends.
     for (const key of known[current.type] ?? []) {
       const value = current[key]
-
-      if (isNode(value)) {
-        if (depth < REACH) gather(value, `${prefix}${key}.`, depth + 1)
-        continue
-      }
-
-      const pinned = scalar(value)
-      if (pinned) found.push(`[${prefix}${key}=${pinned}]`)
+      if (isNode(value) && depth < REACH) gather(value, `${prefix}${key}.`, depth + 1)
     }
 
     for (const key of SCALAR_KEYS) {
@@ -103,25 +95,14 @@ export const counter = (indexed: Indexed): Counter => {
 // Content comes first because an attribute is answered from the node itself, where a path makes
 // esquery walk, so the cheapest selector that resolves is also the one a reader learns most from.
 export const pin = (indexed: Indexed, node: TSESTree.Node, count: Counter): Pin => {
-  const own = facts(node)
-
-  for (const fact of own) {
+  for (const fact of facts(node)) {
     const at = `${node.type}${fact}`
     if (count(at) === 1) return { at, matches: 1 }
   }
 
-  const steps = path(indexed, node)
-
-  // The path alone, which is enough wherever every step carries a position.
-  const chain = steps.join(' > ')
-  if (count(chain) === 1) return { at: chain, matches: 1 }
-
-  // A path that still ties names a node under a single-valued key, so its own content is the
-  // only thing left. The two together is the last thing this vocabulary can say.
-  for (const fact of own) {
-    const at = [...steps.slice(0, -1), `${node.type}${fact}`].join(' > ')
-    if (count(at) === 1) return { at, matches: 1 }
-  }
+  // Every step of the path is a list position or a single-valued key, so the chain from the root
+  // names one node wherever the tree the index describes is the tree being asked.
+  const chain = path(indexed, node).join(' > ')
 
   return { at: chain, matches: count(chain) }
 }
