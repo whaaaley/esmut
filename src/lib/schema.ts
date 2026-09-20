@@ -24,7 +24,8 @@ export const planSchema = z.strictObject({
   // Empty from stub, since a guessed command that cannot run reports every mutation as caught.
   cmd: z.string(),
   // A plan whose ops a script chose records that, since no author's judgment stands behind them.
-  filledBy: z.literal('sweep').optional(),
+  // stub writes it because it fills the op it can derive, leaving the rest null for an author.
+  filledBy: z.enum(['stub', 'sweep']).optional(),
   mutations: z.array(mutationSchema),
 })
 

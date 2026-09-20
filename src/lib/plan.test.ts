@@ -48,6 +48,50 @@ describe('All Plan Tests', () => {
       assertEquals(merged.kept, 1)
     })
 
+    // An entry nobody filled is a site waiting on an op, so the one the stub derived is written.
+    // The alternative leaves a plan that cannot run until someone fills every entry by hand.
+    it('fills an entry nobody chose an op for from the one the stub derived', () => {
+      // Arrange
+      const existing = plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: null }])
+      const found = stubbed([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '0' }])
+
+      // Act
+      const merged = mergePlan(existing, found, 'src/a.ts')
+
+      // Assert
+      assertEquals(merged.plan.mutations[0]?.op, 'value')
+      assertEquals(merged.plan.mutations[0]?.to, '0')
+    })
+
+    // A derived op is a guess, so the plan says so rather than reading as an author's judgment.
+    it('marks a plan whose ops the stub derived, and leaves one it did not alone', () => {
+      // Arrange
+      const unfilled = plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: null }])
+      const chosen = plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '2' }])
+      const found = stubbed([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '0' }])
+
+      // Act
+      const derived = mergePlan(unfilled, found, 'src/a.ts')
+      const judged = mergePlan(chosen, found, 'src/a.ts')
+
+      // Assert: the marker follows whether the stub supplied an op, not whether one is present.
+      assertEquals(derived.plan.filledBy, 'stub')
+      assertEquals(judged.plan.filledBy, undefined)
+    })
+
+    // sweep records itself, and a later stub must not relabel that plan as its own guess.
+    it('leaves a marker an earlier fill wrote rather than claiming the plan', () => {
+      // Arrange
+      const swept: Plan = { ...plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: null }]), filledBy: 'sweep' }
+      const found = stubbed([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '0' }])
+
+      // Act
+      const merged = mergePlan(swept, found, 'src/a.ts')
+
+      // Assert
+      assertEquals(merged.plan.filledBy, 'sweep')
+    })
+
     it('refreshes the structure it recorded, so a later drift report is honest about it', () => {
       // Arrange
       const existing = plan([{ at: 'Literal[value=1]', shape: 'deadbeef', op: 'value', to: '2' }])

@@ -8,7 +8,7 @@ import { parseSelector, select } from './select.ts'
 import type { Op } from './schema.ts'
 import { pin } from './pin.ts'
 import { shapeHash } from './shape.ts'
-import { opsFor, sites, stubPlan } from './stub.ts'
+import { chooseOp, opsFor, sites, stubPlan } from './stub.ts'
 
 const FIXTURES = fromFileUrl(new URL('../../tests/fixtures/', import.meta.url))
 
@@ -178,6 +178,53 @@ describe('All Stub Tests', () => {
 
       // Act & Assert
       assertEquals(node && opsFor(node, undefined), [])
+    })
+  })
+
+  describe('chooseOp', () => {
+    const chosenFor = (source: string, type: string): ReturnType<typeof chooseOp> => {
+      const indexed = indexSource(source, 'x.ts')
+      const [node] = indexed.byType.get(type) ?? []
+
+      if (!node) throw new Error(`no ${type} in the source`)
+
+      return chooseOp(node, (indexed.ancestry.get(node) ?? [])[0])
+    }
+
+    // An op needing no replacement cannot fail to produce a mutant, so it is preferred where legal.
+    it('prefers the op that needs no replacement', () => {
+      // Act & Assert
+      assertEquals(chosenFor('const f = (a: number): void => {\n  if (a) go()\n}\n', 'IfStatement'), { op: 'invert' })
+      assertEquals(chosenFor('const f = (): number => {\n  return 1\n}\n', 'ReturnStatement'), { op: 'remove' })
+      assertEquals(chosenFor('const a = [1, 2]\n', 'ArrayExpression'), { op: 'empty' })
+    })
+
+    // A comparison takes invert, which opsFor offers beside operator and which needs no replacement.
+    // The boundary swap is what an author reaches for where inverting says less about the code.
+    it('inverts a comparison rather than swapping its operator', () => {
+      // Act & Assert
+      assertEquals(chosenFor('const a = b > 0\n', 'BinaryExpression'), { op: 'invert' })
+      assertEquals(chosenFor('const a = b === 0\n', 'BinaryExpression'), { op: 'invert' })
+    })
+
+    it('replaces a literal with a value the code never holds there', () => {
+      // Act & Assert
+      assertEquals(chosenFor("const a = { b: 'ok' }\n", 'Literal'), { op: 'empty' })
+      assertEquals(chosenFor('const a = { b: 5 }\n', 'Literal'), { op: 'value', to: '0' })
+      assertEquals(chosenFor('const a = { b: 0 }\n', 'Literal'), { op: 'value', to: '1' })
+    })
+
+    // A null reads as undefined to every check but a strict one, which is the bug worth testing.
+    it('reads a null literal as undefined rather than leaving it unfilled', () => {
+      // Act & Assert
+      assertEquals(chosenFor('const a = { b: null }\n', 'Literal'), { op: 'value', to: 'undefined' })
+    })
+
+    // A regex has no other literal of its kind to read as, so an author is left to say what to do.
+    it('chooses nothing where no replacement can be written', () => {
+      // Act & Assert
+      assertEquals(chosenFor('const a = { b: /x/ }\n', 'Literal'), null)
+      assertEquals(chosenFor('const a = (b: number): number => b\n', 'Identifier'), null)
     })
   })
 
@@ -367,7 +414,9 @@ describe('All Stub Tests', () => {
   })
 
   describe('stubPlan', () => {
-    it('leaves op null, since the tool locates a site but cannot say which mutation means something', () => {
+    // The op a site takes is derived where the node says what it can be, so a plan runs unedited.
+    // A site whose op cannot be derived keeps null, which is what an author is asked to fill.
+    it('fills the op it can derive from the node', () => {
       // Arrange
       const found = fixture('14-single-expression.ts')
 
@@ -375,7 +424,8 @@ describe('All Stub Tests', () => {
       const { mutations } = stubPlan(found.source, found.path)
 
       // Assert
-      assertEquals(mutations.map((mutation) => mutation.op), [null])
+      assertEquals(mutations.map((mutation) => mutation.op), ['value'])
+      assertEquals(mutations.map((mutation) => mutation.to), ['0'])
     })
 
     // The structure is recorded rather than the source, so a later drift report names a real change.

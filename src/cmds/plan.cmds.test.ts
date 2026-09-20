@@ -60,7 +60,9 @@ describe('All Plan Command Tests', () => {
     })
 
     // stub leaves every op for a person, and filling one puts a machine where judgment belongs.
-    it('leaves every op it wrote for a person to fill', async () => {
+    // The op is derived where the node says what it can be, and the plan records that a script
+    // chose it. The cmd is still left empty, since no stub can guess which suite covers the file.
+    it('writes the op it derived and says the plan was filled by the stub', async () => {
       // Arrange
       const path = written()
 
@@ -69,7 +71,8 @@ describe('All Plan Command Tests', () => {
       const plan = await readPlan(planPath(path))
 
       // Assert
-      assertEquals(plan?.mutations.every((mutation) => mutation.op === null), true)
+      assertEquals(plan?.mutations.every((mutation) => mutation.op !== null), true)
+      assertEquals(plan?.filledBy, 'stub')
       assertEquals(plan?.cmd, '')
     })
 

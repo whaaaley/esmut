@@ -85,6 +85,46 @@ export const opsFor = (node: TSESTree.Node, parent: TSESTree.Node | undefined): 
   return []
 }
 
+// A value the code never holds here, so the mutant differs from the original for every input.
+const swapped = (node: TSESTree.Node): string | null => {
+  const value = field(node, 'value')
+
+  if (typeof value === 'string') return value === '' ? "'mutated'" : "''"
+  if (typeof value === 'number') return value === 0 ? '1' : '0'
+  if (typeof value === 'boolean') return String(!value)
+
+  // A null literal reads as undefined to every check but a strict one, which is the bug to test.
+  if (value === null && field(node, 'raw') === 'null') return 'undefined'
+
+  // A regex carries no value another literal of its kind would read as, and a bigint is written
+  // with a suffix a plain number would lose.
+  return null
+}
+
+export type Chosen = {
+  op: Op
+  to?: string
+}
+
+// The op a site takes where nobody has said which, picked from what opsFor allows.
+// One that needs no replacement comes first, since it cannot fail to produce a mutant, and a plan
+// recording these says filledBy so a reader knows no author's judgment stands behind them.
+export const chooseOp = (node: TSESTree.Node, parent: TSESTree.Node | undefined): Chosen | null => {
+  const legal = opsFor(node, parent)
+
+  // Every type offering operator offers invert beside it, so no site reaches this without one.
+  const bare = legal.find((op) => op === 'invert' || op === 'remove' || op === 'empty')
+  if (bare) return { op: bare }
+
+  if (legal.includes('value')) {
+    const to = swapped(node)
+    if (to) return { op: 'value', to }
+  }
+
+  // Every remaining op needs a replacement this cannot write, so the site is left for an author.
+  return null
+}
+
 export type Site = {
   node: TSESTree.Node
   ops: Op[]
@@ -129,8 +169,10 @@ export const stubPlan = (source: string, path: string): Stubbed => {
   for (const site of sites(indexed)) {
     const { node } = site
     const { at } = pin(indexed, node, count)
+    const parents = indexed.ancestry.get(node) ?? []
+    const chosen = chooseOp(node, parents[0])
 
-    mutations.push({ at, shape: shapeHash(node), op: null })
+    mutations.push({ at, shape: shapeHash(node), op: chosen?.op ?? null, ...(chosen?.to ? { to: chosen.to } : {}) })
   }
 
   return { mutations }

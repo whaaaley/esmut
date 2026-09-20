@@ -159,6 +159,9 @@ export const mergePlan = (existing: Plan | null, stubbed: Stubbed, source: strin
   const stale: Mutation[] = []
   const drifted: Drift[] = []
 
+  // How many ops the stub derived rather than an author choosing them, which is what filledBy says.
+  let supplied = 0
+
   for (const mutation of previous) {
     const match = found.get(mutation.at)
 
@@ -171,17 +174,29 @@ export const mergePlan = (existing: Plan | null, stubbed: Stubbed, source: strin
     // The new structure is written and the old reported, since the plan records and the report tells.
     if (match.shape !== mutation.shape) drifted.push({ at: mutation.at, before: mutation.shape, after: match.shape })
 
-    kept.push({ ...mutation, shape: match.shape })
+    // An entry nobody has filled takes whatever the stub derived, where one carrying an op keeps it.
+    // The op is the whole of an author's judgment, so overwriting a chosen one would discard it.
+    const unfilled = mutation.op === null
+    const carried = unfilled ? { op: match.op, ...(match.to ? { to: match.to } : {}) } : {}
+
+    if (unfilled && match.op !== null) supplied += 1
+
+    kept.push({ ...mutation, ...carried, shape: match.shape })
     found.delete(mutation.at)
   }
 
   const added = [...found.values()]
 
+  // An op the stub derived is recorded as the stub's, so a reader knows to judge it before trusting
+  // a verdict. An author's own marker stands, since sweep filling a plan outranks the stub's guess.
+  const derived = supplied > 0 || added.some((mutation) => mutation.op !== null)
+  const filledBy = existing?.filledBy ?? (derived ? 'stub' as const : undefined)
+
   return {
     plan: {
       source,
       cmd: existing?.cmd ?? '',
-      ...(existing?.filledBy ? { filledBy: existing.filledBy } : {}),
+      ...(filledBy ? { filledBy } : {}),
       mutations: [...kept, ...stale, ...added],
     },
     kept: kept.length,
