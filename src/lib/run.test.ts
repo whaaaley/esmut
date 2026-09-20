@@ -1,6 +1,7 @@
-import { assertEquals, assertRejects } from '@std/assert'
+import { assert, assertEquals, assertRejects, assertStringIncludes } from '@std/assert'
 import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
+import { CliError } from '../utils/error.utils.ts'
 import { judge, prepare, runPlan, suiteFails, SuiteTimeout } from './run.ts'
 import type { Mutation, Plan } from './schema.ts'
 
@@ -121,6 +122,35 @@ describe('All Run Tests', () => {
       // Assert
       assertEquals(afterRun, SOURCE)
       assertEquals(Deno.readTextFileSync(path), SOURCE)
+    })
+
+    // The loop restores after each suite, so finally is the only restore where that write failed.
+    // A source the run cannot write to is how that happens, and an unguarded write there throws
+    // before the listeners come off, which leaves the handlers registered and the mutant on disk.
+    it('names the file it could not restore rather than leaving a mutant unreported', async () => {
+      // Arrange
+      const path = write(SOURCE)
+      let asked = 0
+
+      // The file goes read-only during the first suite, so the restore after it cannot write.
+      const hostile = async (): Promise<boolean> => {
+        asked += 1
+        if (asked === 1) await Deno.chmod(path, 0o400)
+
+        return true
+      }
+
+      // Act & Assert
+      const refusal = await assertRejects(
+        () => runPlan(path, planning([mutation(), mutation({ to: '600' })]), hostile),
+        CliError,
+      )
+
+      assertStringIncludes(refusal.message, 'Cannot restore')
+      assert(refusal.suggestions.some((line) => line.includes('mutant')), `${refusal.suggestions} names no mutant`)
+
+      // The file is left writable for the runner that follows, whatever the run did to it.
+      await Deno.chmod(path, 0o600)
     })
 
     // A signal does not unwind the stack, so finally never runs and the mutant outlives the run.

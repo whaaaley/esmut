@@ -172,15 +172,22 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
       verdicts.push({ mutation, outcome: caught ? 'killed' : 'survived' })
     }
   } finally {
-    // The loop above restores after each suite, so this write is reached with the source already
-    // back. It stays for the path where judge or a write throws between the mutant and the restore,
-    // which no test can drive, so a mutation of this line is a mutant nothing catches.
-    await Deno.writeTextFile(path, source)
+    // The loop restores after each suite, so this is usually reached with the source already back.
+    // It is the only restore where that write threw, such as a source the run cannot write to, and
+    // a throw from here would skip the listeners below and leave the mutant on disk.
+    const { error: unrestored } = await safeAsync(() => Deno.writeTextFile(path, source))
 
-    // Deno exposes no listener count and refuses nothing for a listener it does not hold, so a run
-    // that left these behind is invisible from inside the process.
     Deno.removeSignalListener('SIGINT', restore)
     Deno.removeSignalListener('SIGTERM', restore)
+
+    // Named rather than swallowed, since a mutant left on disk is the one failure that outlives the
+    // run, and a verdict list is worth less than knowing the source was not put back.
+    if (unrestored) {
+      throw new CliError(`Cannot restore ${path}`, [
+        unrestored.message,
+        'The file holds a mutant rather than the source it was read from',
+      ])
+    }
   }
 
   return verdicts
