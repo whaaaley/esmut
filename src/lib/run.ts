@@ -145,7 +145,10 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
   Deno.addSignalListener('SIGINT', restore)
   Deno.addSignalListener('SIGTERM', restore)
 
+  let unrestored: Error | null = null
+
   // The restore runs on a throw as well as a return, so no interrupted run leaves a mutant on disk.
+  // It is reported after the try rather than from the finally, which would replace the loop's throw.
   try {
     for (const mutation of plan.mutations) {
       const outcome = judge(judged, mutation)
@@ -159,9 +162,10 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
       const { data: caught, error: ran } = await safeAsync(() => suite(plan.cmd))
 
       // Restored per mutation rather than once at the end, so the next suite reads the source and
-      // not the mutant before it. The finally below covers the same ground on the way out, which
-      // makes a mutation of this line a mutant no test can catch: the other restore answers for it.
-      await Deno.writeTextFile(path, source)
+      // not the mutant before it. A failure here is left to the finally and the report after it,
+      // since a raw throw would reach the caller as whatever the filesystem said.
+      const { error: unwritten } = await safeAsync(() => Deno.writeTextFile(path, source))
+      if (unwritten) break
 
       // A mutant that hangs the suite is this mutation's verdict rather than the whole plan's error,
       // so the run carries on. It reads as invalid because no exit code said whether it was caught,
@@ -177,24 +181,26 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
     }
   } finally {
     // The loop restores after each suite, so this is usually reached with the source already back.
-    // It is the only restore where that write threw, such as a source the run cannot write to, and
-    // a throw from here would skip the listeners below and leave the mutant on disk.
-    const { error: unrestored } = await safeAsync(() => Deno.writeTextFile(path, source))
+    // It is the only restore where that write threw, such as a source the run cannot write to.
+    // The failure is held rather than thrown, since a throw from a finally replaces whatever the
+    // loop was already throwing and loses it.
+    const { error } = await safeAsync(() => Deno.writeTextFile(path, source))
+    unrestored = error
 
     // The SIGTERM removal is tested by the exit code a later signal gives: 143 by default against
     // 130 from a handler left behind. SIGINT has no such tell, since Deno's own default for it also
     // exits 130, so a mutation of the line below is a mutant no test can catch.
     Deno.removeSignalListener('SIGINT', restore)
     Deno.removeSignalListener('SIGTERM', restore)
+  }
 
-    // Named rather than swallowed, since a mutant left on disk is the one failure that outlives the
-    // run, and a verdict list is worth less than knowing the source was not put back.
-    if (unrestored) {
-      throw new CliError(`Cannot restore ${path}`, [
-        unrestored.message,
-        'The file holds a mutant rather than the source it was read from',
-      ])
-    }
+  // Named rather than swallowed, since a mutant left on disk is the one failure that outlives the
+  // run, and a verdict list is worth less than knowing the source was not put back.
+  if (unrestored) {
+    throw new CliError(`Cannot restore ${path}`, [
+      unrestored.message,
+      'The file holds a mutant rather than the source it was read from',
+    ])
   }
 
   return verdicts

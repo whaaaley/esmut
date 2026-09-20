@@ -86,6 +86,12 @@ describe('All Plan Tests', () => {
       assertEquals(planPath('./lib/a.ts'), '.esmut/lib.a.json')
     })
 
+    it('names the same plan for an absolute path as for the relative one', () => {
+      // Act & Assert
+      assertEquals(planPath('/src/lib/plan.ts'), planPath('src/lib/plan.ts'))
+      assertEquals(planPath('/src/lib/plan.ts'), '.esmut/lib.plan.json')
+    })
+
     it('takes off only the final extension, so a dotted stem survives', () => {
       // Act & Assert
       assertEquals(planPath('src/a.test.ts'), '.esmut/a.test.json')
@@ -181,6 +187,25 @@ describe('All Plan Tests', () => {
       // Assert
       assertEquals(merged.plan.filledBy, undefined)
       assertEquals(merged.plan.mutations[0]?.op, null)
+    })
+
+    // A site the plan never held arrives as added rather than kept, and the stub may still have
+    // derived nothing for it, which is no more the stub's guess than an unfilled kept entry is.
+    it('leaves a plan unmarked where a site it gained carries no derived op', () => {
+      // Arrange
+      const authored = plan([{ at: 'Literal[value=1]', shape: 'aaaa1111', op: 'invert' }])
+
+      const gained = stubbed([
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: 'invert' },
+        { at: 'Literal[value=/x/]', shape: 'bbbb2222', op: null },
+      ])
+
+      // Act
+      const merged = mergePlan(authored, gained, 'src/a.ts')
+
+      // Assert
+      assertEquals(merged.added, 1)
+      assertEquals(merged.plan.filledBy, undefined)
     })
 
     // sweep records itself, and a later stub must not relabel that plan as its own guess.
