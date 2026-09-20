@@ -2,6 +2,47 @@
 
 Selector-addressed mutation testing for TypeScript and JavaScript.
 
+**A proof of concept.** It works and it is self-hosted, but [Stryker](https://stryker-mutator.io)
+is the better tool for this job today, and the honest comparison is below.
+
+## Use Stryker instead, unless you want a plan
+
+Measured on one file, same suite command, same machine:
+
+| | Stryker | esmut |
+|---|---|---|
+| wall time | **32s** | 93.6s (four workers) |
+| mutants run | 166 | 206 |
+| survivors found | **13** | 0 |
+| mutants refused for not compiling | 0 | **30** |
+| setup | none | a plan per source |
+
+Stryker is faster because it instruments a file once with every mutant behind a switch and selects
+one per run, where this writes a mutant and reruns from cold.
+It finds more because it has 19 mutator classes to these seven ops.
+
+Two things here are still worth something:
+
+**The type gate.** Stryker has no compiler check, so a mutant that does not compile fails the suite
+and is counted as killed. That is a false kill. The 30 above are mutants it would have miscounted.
+
+**A plan is a reviewable artifact.** A mutation names a site, an op, and the behavior it probes, and
+it is committed. Stryker's mutants are regenerated each run and cannot be curated.
+
+That second one is also where the cost is. Selectors do not rot less than line numbers, they rot
+differently: a selector breaks when code moves **or** when an unrelated sibling appears, and the
+repair needs judgment where a line shift is mechanical. `check`, `--prune`, `shape` hashing, drift,
+and two of the five verdicts exist to service that.
+
+A sibling project, `es_oasis`, asks a different question with none of this machinery: which of your
+tests fails to distinguish anything.
+
+`src/lib/sandbox.ts` and `src/lib/pool.ts` run suites in throwaway copies of the tree, so a mutant
+never reaches the source. `run` does not use them yet: parallelism measured at **0.96x** on a
+12 core machine, where four workers overlap 3.71x and each suite slows by almost exactly four.
+The sandbox is worth keeping for the isolation alone, since the serial runner writes a deliberate
+defect into the tree and relies on a `finally` and two signal handlers to take it back out.
+
 ## What mutation testing is
 
 [Mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) introduces a deliberate bug, called a mutant, and reruns the suite.
