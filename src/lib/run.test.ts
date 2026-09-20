@@ -1,7 +1,7 @@
-import { assertEquals } from '@std/assert'
+import { assertEquals, assertRejects } from '@std/assert'
 import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
-import { judge, prepare, runPlan } from './run.ts'
+import { judge, prepare, runPlan, suiteFails, SuiteTimeout } from './run.ts'
 import type { Mutation, Plan } from './schema.ts'
 
 const SOURCE = 'export const status = (ok: boolean): number => ok ? 200 : 400\n'
@@ -181,6 +181,53 @@ describe('All Run Tests', () => {
       // Assert
       assertEquals(verdicts.map((verdict) => verdict.outcome), ['stale'])
       assertEquals(asked, 0)
+    })
+
+    // Inverting a loop guard is one of the seven ops, so a mutant that never returns is a shape
+    // this tool produces. A run waiting on one waits forever, and the rest of the plan never runs.
+    it('reads a suite that never finishes as invalid and keeps going', async () => {
+      // Arrange
+      const plan: Plan = {
+        source: 'status.ts',
+        cmd: 'ignored, since the suite is the stand-in below',
+        mutations: [mutation(), mutation({ to: '600' })],
+      }
+
+      const path = `${Deno.makeTempDirSync()}/status.ts`
+      Deno.writeTextFileSync(path, SOURCE)
+
+      // A suite that hangs on the first mutation and answers on the second.
+      let asked = 0
+
+      const hangs = async (): Promise<boolean> => {
+        asked += 1
+        if (asked === 1) throw new SuiteTimeout(10)
+
+        return await Promise.resolve(true)
+      }
+
+      // Act
+      const verdicts = await runPlan(path, plan, hangs)
+
+      // Assert: the hang is the first mutation's verdict, and the second still ran.
+      assertEquals(verdicts.map((verdict) => verdict.outcome), ['invalid', 'killed'])
+      assertEquals(verdicts[0]?.because?.includes('did not finish'), true)
+      assertEquals(Deno.readTextFileSync(path), SOURCE)
+    })
+  })
+
+  describe('suiteFails', () => {
+    // The bound is what stops one mutant holding a run open, so it has to actually fire.
+    it('refuses a command that does not return within the bound', async () => {
+      // Act & Assert
+      await assertRejects(() => suiteFails('sleep 30', 250), SuiteTimeout)
+    })
+
+    // A command that answers inside the bound is read by its exit code, as it always was.
+    it('reads an exit code where the command finishes in time', async () => {
+      // Act & Assert
+      assertEquals(await suiteFails('true', 30_000), false)
+      assertEquals(await suiteFails('false', 30_000), true)
     })
   })
 })

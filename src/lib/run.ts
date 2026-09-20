@@ -19,8 +19,21 @@ export type Verdict = {
 
 export type Suite = (cmd: string) => Promise<boolean>
 
+// Inverting a loop guard is one of the seven ops, and a loop whose guard never goes false does not
+// return, so a mutant that hangs the suite is a shape this tool produces rather than an oddity.
+// A run waiting on one waits forever, which is why the wait is bounded and the timeout is a verdict.
+const SUITE_TIMEOUT_MS = 120_000
+
+export class SuiteTimeout extends Error {
+  constructor(readonly ms: number) {
+    super(`The suite did not finish within ${ms}ms`)
+    this.name = this.constructor.name
+  }
+}
+
 // A caught mutation is one the suite failed on, so a suite that cannot run catches everything.
-export const suiteFails = async (cmd: string): Promise<boolean> => {
+// A suite that never finishes throws instead, since no exit code says whether it caught anything.
+export const suiteFails = async (cmd: string, timeoutMs = SUITE_TIMEOUT_MS): Promise<boolean> => {
   const [bin, ...rest] = cmd.split(' ')
 
   if (!bin) {
@@ -29,10 +42,23 @@ export const suiteFails = async (cmd: string): Promise<boolean> => {
     ])
   }
 
-  const command = new Deno.Command(bin, { args: rest, stdout: 'null', stderr: 'null' })
-  const { code } = await command.output()
+  // The child is killed on the signal rather than left running, since a hung mutant holds a port
+  // or a lock the next mutation needs, and an orphan outlives the run that started it.
+  const stop = new AbortController()
+  const timer = setTimeout(() => stop.abort(), timeoutMs)
 
-  return code !== 0
+  const command = new Deno.Command(bin, { args: rest, stdout: 'null', stderr: 'null', signal: stop.signal })
+  const { data, error } = await safeAsync(() => command.output())
+
+  clearTimeout(timer)
+
+  if (error) throw error
+
+  // Killing the child resolves with its signal rather than throwing, and the code it carries is
+  // non-zero. Reading that as a failing suite would report a mutant nothing caught as killed.
+  if (stop.signal.aborted) throw new SuiteTimeout(timeoutMs)
+
+  return data.code !== 0
 }
 
 export type Judged = {
@@ -130,8 +156,18 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
       }
 
       await Deno.writeTextFile(path, outcome.mutant)
-      const caught = await suite(plan.cmd)
+      const { data: caught, error: ran } = await safeAsync(() => suite(plan.cmd))
       await Deno.writeTextFile(path, source)
+
+      // A mutant that hangs the suite is this mutation's verdict rather than the whole plan's error,
+      // so the run carries on. It reads as invalid because no exit code said whether it was caught,
+      // which is the same reason a mutant refused by the type gate reads that way.
+      if (ran instanceof SuiteTimeout) {
+        verdicts.push({ mutation, outcome: 'invalid', because: ran.message })
+        continue
+      }
+
+      if (ran) throw ran
 
       verdicts.push({ mutation, outcome: caught ? 'killed' : 'survived' })
     }
