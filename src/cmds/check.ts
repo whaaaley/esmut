@@ -1,8 +1,9 @@
 import { CliError } from '../utils/error.utils.ts'
 import { safeAsync } from '../utils/safe.utils.ts'
+import { ignored } from '../lib/ignore.ts'
 import { planPath, readPlan, writePlan } from '../lib/plan.ts'
 import { formatCheck, formatPruned } from '../lib/report.ts'
-import { select } from '../lib/select.ts'
+import { parseSource, select } from '../lib/select.ts'
 
 export type CheckOptions = {
   prune?: boolean
@@ -29,23 +30,27 @@ export const check = async (path: string, options: CheckOptions = {}): Promise<v
     ])
   }
 
-  const resolved = plan.mutations.map((mutation) => ({
-    mutation,
-    matches: select(source, path, mutation.at).length,
-  }))
+  const excused = ignored(parseSource(source, path).comments ?? [])
+
+  const resolved = plan.mutations.map((mutation) => {
+    const found = select(source, path, mutation.at)
+
+    return { mutation, matches: found.length, excused: found.some((match) => excused.has(match.line)) }
+  })
 
   console.log(formatCheck(path, resolved))
 
   if (!options.prune) return
 
-  // Only an entry matching nothing is dropped. An ambiguous one names a node that is still there,
-  // so it is a selector to narrow rather than work to delete.
-  const gone = resolved.filter((entry) => entry.matches === 0)
+  // An entry matching nothing is dropped, and so is one whose site an author has excused, since a
+  // marker says no test can catch it. An ambiguous one names a node that is still there, so it is a
+  // selector to narrow rather than work to delete.
+  const gone = resolved.filter((entry) => entry.matches === 0 || entry.excused)
   if (gone.length === 0) return
 
-  const kept = resolved.filter((entry) => entry.matches !== 0).map((entry) => entry.mutation)
+  const kept = resolved.filter((entry) => entry.matches !== 0 && !entry.excused).map((entry) => entry.mutation)
 
   await writePlan(target, { ...plan, mutations: kept })
 
-  console.log(formatPruned(gone.map((entry) => entry.mutation)))
+  console.log(formatPruned(gone.map((entry) => entry.mutation), gone.filter((entry) => entry.excused).length))
 }

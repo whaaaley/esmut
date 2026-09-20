@@ -7,6 +7,8 @@ import type { Mutation } from './schema.ts'
 export type Resolved = {
   mutation: Mutation
   matches: number
+  // Whether an author marked the site, which prune drops the same way it drops a stale entry.
+  excused: boolean
 }
 
 // Every line of a node, the first on the line the caller built and the rest indented under it.
@@ -104,7 +106,12 @@ export const formatVerdicts = (path: string, verdicts: Verdict[]): string => {
 export const formatCheck = (path: string, resolved: Resolved[]): string => {
   const lines = [`  ${basename(path)}`]
 
-  for (const { mutation, matches } of resolved) {
+  for (const { mutation, matches, excused } of resolved) {
+    if (excused) {
+      lines.push(`    excused    ${mutation.at}`)
+      continue
+    }
+
     if (matches === 1) continue
 
     const verdict = matches === 0 ? 'stale    ' : 'ambiguous'
@@ -112,14 +119,24 @@ export const formatCheck = (path: string, resolved: Resolved[]): string => {
   }
 
   const bad = resolved.filter((entry) => entry.matches !== 1).length
+  const marked = resolved.filter((entry) => entry.excused).length
+  const counted = `${resolved.length} resolved, ${bad} refused`
 
-  return `${lines.join('\n')}\n    ${resolved.length} resolved, ${bad} refused`
+  return `${lines.join('\n')}\n    ${marked > 0 ? `${counted}, ${marked} excused` : counted}`
 }
 
 // What a prune deleted, named by what an author wrote rather than by the selector alone.
 // The op and the name are their work, so the print is the only record the entry existed.
-export const formatPruned = (dropped: Mutation[]): string => {
-  const lines = [`    ${dropped.length} dropped, naming code that is gone`]
+// The two reasons are counted apart, since a stale entry names code that left and an excused one
+// names code that stayed.
+export const formatPruned = (dropped: Mutation[], excused: number): string => {
+  const stale = dropped.length - excused
+  const reasons: string[] = []
+
+  if (stale > 0) reasons.push(`${stale} naming code that is gone`)
+  if (excused > 0) reasons.push(`${excused} excused by a marker`)
+
+  const lines = [`    ${dropped.length} dropped, ${reasons.join(' and ')}`]
 
   for (const mutation of dropped) {
     lines.push(`      ${mutation.name ?? mutation.at}`)

@@ -330,11 +330,11 @@ describe('All Report Tests', () => {
         // Three resolving against one of each refusal, which is the only shape where the refused
         // count differs for every number the check could compare against and for either sense of
         // the comparison. Two resolving makes counting the refused agree with counting the resolved.
-        { mutation: { at: 'Literal[value=1]', shape: 'aaaa1111', op: null }, matches: 1 },
-        { mutation: { at: 'Literal[value=7]', shape: 'bbbb7777', op: null }, matches: 1 },
-        { mutation: { at: 'Literal[value=9]', shape: 'cccc9999', op: null }, matches: 1 },
-        { mutation: { at: 'Gone', shape: 'eeee0004', op: null }, matches: 0 },
-        { mutation: { at: 'Literal', shape: 'eeee0005', op: null }, matches: 3 },
+        { mutation: { at: 'Literal[value=1]', shape: 'aaaa1111', op: null }, matches: 1, excused: false },
+        { mutation: { at: 'Literal[value=7]', shape: 'bbbb7777', op: null }, matches: 1, excused: false },
+        { mutation: { at: 'Literal[value=9]', shape: 'cccc9999', op: null }, matches: 1, excused: false },
+        { mutation: { at: 'Gone', shape: 'eeee0004', op: null }, matches: 0, excused: false },
+        { mutation: { at: 'Literal', shape: 'eeee0005', op: null }, matches: 3, excused: false },
       ]
 
       // Act
@@ -347,6 +347,23 @@ describe('All Report Tests', () => {
       assertEquals(printed.includes('Literal[value=1]'), false)
       assertEquals(printed.includes('Literal[value=7]'), false)
       assertEquals(printed.split('\n').length, 4)
+    })
+
+    // An excused entry resolves like any other, so saying only the count would read as healthy.
+    it('names an excused selector apart from the count of what resolved', () => {
+      // Arrange
+      const resolved = [
+        { mutation: { at: 'Literal[value=1]', shape: 'aaaa1111', op: null }, matches: 1, excused: false },
+        { mutation: { at: 'Marked', shape: 'bbbb2222', op: null }, matches: 1, excused: true },
+      ]
+
+      // Act
+      const printed = formatCheck('report.ts', resolved)
+
+      // Assert
+      assertStringIncludes(printed, 'excused    Marked')
+      assertStringIncludes(printed, '2 resolved, 0 refused, 1 excused')
+      assertEquals(printed.includes('Literal[value=1]'), false)
     })
   })
 
@@ -362,7 +379,7 @@ describe('All Report Tests', () => {
       ]
 
       // Act
-      const printed = formatPruned(dropped)
+      const printed = formatPruned(dropped, 0)
 
       // Assert: the header and one row each, so three lines rather than one.
       assertEquals(printed.split('\n').length, 3)
@@ -374,7 +391,7 @@ describe('All Report Tests', () => {
       const dropped = [{ at: 'Gone', shape: 'eeee0004', op: 'remove' as const, name: 'the guard nobody tests' }]
 
       // Act
-      const printed = formatPruned(dropped)
+      const printed = formatPruned(dropped, 0)
 
       // Assert
       assertStringIncludes(printed, '1 dropped')
@@ -387,10 +404,25 @@ describe('All Report Tests', () => {
       const dropped = [{ at: "Literal[value='gone']", shape: 'eeee0005', op: null }]
 
       // Act
-      const printed = formatPruned(dropped)
+      const printed = formatPruned(dropped, 0)
 
       // Assert
       assertStringIncludes(printed, "Literal[value='gone']")
+    })
+
+    // The two reasons read differently, since one names code that left and one code that stayed.
+    it('counts an excused drop apart from a stale one', () => {
+      // Arrange
+      const dropped = [
+        { at: 'Gone', shape: 'eeee0004', op: 'remove' as const },
+        { at: 'Marked', shape: 'eeee0005', op: 'remove' as const },
+      ]
+
+      // Act
+      const printed = formatPruned(dropped, 1)
+
+      // Assert
+      assertStringIncludes(printed, '2 dropped, 1 naming code that is gone and 1 excused by a marker')
     })
   })
 })
