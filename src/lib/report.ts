@@ -14,15 +14,17 @@ export type Resolved = {
 // The lines are kept apart rather than joined, which would read as source that does not parse.
 // Read as one list rather than a head and a tail, so no line is reached by an index that needs a
 // fallback for an element split always answers with.
-const asLines = (text: string, indent: string): string[] => {
+// The prefix goes on the first row and the indent under it, so the caller pushes what it is given
+// rather than splitting a head from a tail, which needs a default for a row always there.
+const asLines = (text: string, prefix: string, indent: string): string[] => {
   const lines = text.split('\n').map((line) => line.trimEnd())
 
   // Trailing blank lines carry nothing, so they are dropped rather than printed as empty rows.
-  // The last line holding something bounds the list, and no line at all leaves the first.
+  // A node of only blank lines keeps its first, since every match prints at least one row.
   const last = lines.findLastIndex((line) => line !== '')
-  const kept = lines.slice(0, Math.max(last + 1, 1))
+  const kept = last === -1 ? lines.slice(0, 1) : lines.slice(0, last + 1)
 
-  return kept.map((line, index) => index === 0 ? line : `${indent}${line}`)
+  return kept.map((line, index) => index === 0 ? `${prefix}${line}` : `${indent}${line}`)
 }
 
 // Leads with the count because that is the signal: 0 is stale, 1 is usable, more is ambiguous.
@@ -40,9 +42,8 @@ export const formatMatches = (path: string, matches: Match[]): string => {
 
   for (const { match, at } of located) {
     const indent = ' '.repeat(4 + width + 2)
-    const [head = '', ...tail] = asLines(match.text, indent)
 
-    lines.push(`    ${at.padEnd(width + 2)}${head}`, ...tail)
+    lines.push(...asLines(match.text, `    ${at.padEnd(width + 2)}`, indent))
   }
 
   return lines.join('\n')
