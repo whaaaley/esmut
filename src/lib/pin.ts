@@ -1,5 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { known } from './keys.ts'
+import { matchAll } from './query.ts'
+import { parseSelector } from './select.ts'
 import { type Indexed, isNode } from './walk.ts'
 
 // A scalar reachable from a node by a chain of single-valued keys, which is what an attribute
@@ -79,6 +81,22 @@ export type Pin = {
 
 // Counts how many of a node's own kind a selector names, which is the only question pin asks.
 export type Counter = (at: string) => number
+
+// One count per selector, since nodes of a kind try the same attributes as each other.
+// A caller addressing a whole file asks the same selector once per twin without this.
+export const counter = (indexed: Indexed): Counter => {
+  const counted = new Map<string, number>()
+
+  return (at: string): number => {
+    const seen = counted.get(at)
+    if (seen !== undefined) return seen
+
+    const hits = matchAll(indexed.ast, parseSelector(at)).length
+    counted.set(at, hits)
+
+    return hits
+  }
+}
 
 // Names a node by what separates it from its peers, computed rather than searched.
 // Content comes first because an attribute is answered from the node itself, where a path makes

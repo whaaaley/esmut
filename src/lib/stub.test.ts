@@ -3,10 +3,9 @@ import { describe, it } from 'node:test'
 import { fromFileUrl } from '@std/path'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { indexSource } from './walk.ts'
-import { matchAll } from './query.ts'
-import { parseSelector, select } from './select.ts'
+import { select } from './select.ts'
 import type { Op } from './schema.ts'
-import { pin } from './pin.ts'
+import { counter, pin } from './pin.ts'
 import { shapeHash } from './shape.ts'
 import { chooseOp, opsFor, sites, stubPlan } from './stub.ts'
 
@@ -329,10 +328,6 @@ describe('All Stub Tests', () => {
 
   describe('pin', () => {
     // The counter is the only thing pin asks about a selector, so the tests drive the real matcher.
-    const counter = (indexed: ReturnType<typeof indexSource>) => (at: string): number => (
-      matchAll(indexed.ast, parseSelector(at)).length
-    )
-
     const addressOf = (name: string, snippet: string): { at: string; matches: number; found: Fixture } => {
       const { fixture: found, indexed } = parse(name)
       const site = sites(indexed).find((candidate) => text(found, candidate.node) === snippet)

@@ -1,9 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { type Indexed, indexSource, isNode } from './walk.ts'
-import { pin } from './pin.ts'
-import { matchAll } from './query.ts'
+import { counter, pin } from './pin.ts'
 import { shapeHash } from './shape.ts'
-import { parseSelector } from './select.ts'
 import type { Mutation, Op } from './schema.ts'
 
 export type Stubbed = {
@@ -151,19 +149,7 @@ export const stubPlan = (source: string, path: string): Stubbed => {
   const indexed = indexSource(source, path)
 
   const mutations: Mutation[] = []
-
-  // One count per selector, since sites of a type ask about the same shapes as each other.
-  const counted = new Map<string, number>()
-
-  const count = (at: string): number => {
-    const seen = counted.get(at)
-    if (seen !== undefined) return seen
-
-    const hits = matchAll(indexed.ast, parseSelector(at)).length
-    counted.set(at, hits)
-
-    return hits
-  }
+  const count = counter(indexed)
 
   for (const { node, ops } of sites(indexed)) {
     const { at } = pin(indexed, node, count)

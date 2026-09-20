@@ -1,7 +1,5 @@
 import { fromFileUrl } from '@std/path'
-import { pin } from './pin.ts'
-import { matchAll } from './query.ts'
-import { parseSelector } from './select.ts'
+import { counter, pin } from './pin.ts'
 import { sites, stubPlan } from './stub.ts'
 import { indexSource } from './walk.ts'
 
@@ -22,21 +20,6 @@ const INDEXED = HARDEST.map((name) => {
   const { path, source } = read(name)
   return { name, indexed: indexSource(source, path) }
 })
-
-// One count per selector, which is what stubPlan gives pin so a shape is matched once per file.
-const counter = (indexed: ReturnType<typeof indexSource>): (at: string) => number => {
-  const counted = new Map<string, number>()
-
-  return (at: string): number => {
-    const seen = counted.get(at)
-    if (seen !== undefined) return seen
-
-    const hits = matchAll(indexed.ast, parseSelector(at)).length
-    counted.set(at, hits)
-
-    return hits
-  }
-}
 
 Deno.bench('address every site in the three hardest fixtures', () => {
   for (const { indexed } of INDEXED) {

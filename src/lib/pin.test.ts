@@ -1,6 +1,6 @@
 import { assertEquals } from '@std/assert'
 import { describe, it } from 'node:test'
-import { pin } from './pin.ts'
+import { counter, pin } from './pin.ts'
 import { matchAll } from './query.ts'
 import { parseSelector } from './select.ts'
 import { indexSource } from './walk.ts'
@@ -85,6 +85,19 @@ describe('All Pin Tests', () => {
 
       // Assert
       assertEquals(matches, 1)
+    })
+
+    // A counter answers for the tree it was built from, so two of them disagree on the same
+    // selector. That is what makes the cache safe to keep for a whole file and no longer.
+    it('counts against the tree it was built from rather than the last one asked', () => {
+      // Arrange
+      const one = counter(indexSource('const a = 1\n', 'x.ts'))
+      const two = counter(indexSource('const a = 1\nconst b = 1\n', 'y.ts'))
+
+      // Act & Assert
+      assertEquals(one('Literal[value=1]'), 1)
+      assertEquals(two('Literal[value=1]'), 2)
+      assertEquals(one('Literal[value=1]'), 1)
     })
 
     // Two nodes of a kind try the same attributes, so the second asks what the first already did.
