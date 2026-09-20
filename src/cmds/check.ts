@@ -1,11 +1,16 @@
 import { CliError } from '../utils/error.utils.ts'
 import { safeAsync } from '../utils/safe.utils.ts'
-import { planPath, readPlan } from '../lib/plan.ts'
-import { formatCheck } from '../lib/report.ts'
+import { planPath, readPlan, writePlan } from '../lib/plan.ts'
+import { formatCheck, formatPruned } from '../lib/report.ts'
 import { select } from '../lib/select.ts'
 
+export type CheckOptions = {
+  prune?: boolean
+}
+
 // Resolves every selector a plan names and reports what no longer matches, running no suite.
-export const check = async (path: string): Promise<void> => {
+// With prune it also drops the entries naming nothing, which is the one thing it writes.
+export const check = async (path: string, options: CheckOptions = {}): Promise<void> => {
   const target = planPath(path)
   const plan = await readPlan(target)
 
@@ -30,4 +35,17 @@ export const check = async (path: string): Promise<void> => {
   }))
 
   console.log(formatCheck(path, resolved))
+
+  if (!options.prune) return
+
+  // Only an entry matching nothing is dropped. An ambiguous one names a node that is still there,
+  // so it is a selector to narrow rather than work to delete.
+  const gone = resolved.filter((entry) => entry.matches === 0)
+  if (gone.length === 0) return
+
+  const kept = resolved.filter((entry) => entry.matches !== 0).map((entry) => entry.mutation)
+
+  await writePlan(target, { ...plan, mutations: kept })
+
+  console.log(formatPruned(gone.map((entry) => entry.mutation)))
 }

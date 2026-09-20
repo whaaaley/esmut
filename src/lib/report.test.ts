@@ -2,7 +2,7 @@ import { assertEquals, assertStringIncludes } from '@std/assert'
 import { describe, it } from 'node:test'
 import type { Merged } from './plan.ts'
 import type { Verdict } from './run.ts'
-import { formatCheck, formatMatches, formatStub, formatVerdicts } from './report.ts'
+import { formatCheck, formatMatches, formatPruned, formatStub, formatVerdicts } from './report.ts'
 import { type Match, select } from './select.ts'
 
 type Counts = {
@@ -208,6 +208,33 @@ describe('All Report Tests', () => {
       assertStringIncludes(printed, '3 resolved, 2 refused')
       assertEquals(printed.includes('Literal[value=1]'), false)
       assertEquals(printed.split('\n').length, 4)
+    })
+  })
+
+  describe('formatPruned', () => {
+    // A prune deletes an op and a name somebody wrote, so the print is the only record of it.
+    it('names a dropped entry by what its author called it', () => {
+      // Arrange
+      const dropped = [{ at: 'Gone', shape: 'eeee0004', op: 'remove' as const, name: 'the guard nobody tests' }]
+
+      // Act
+      const printed = formatPruned(dropped)
+
+      // Assert
+      assertStringIncludes(printed, '1 dropped')
+      assertStringIncludes(printed, 'the guard nobody tests')
+    })
+
+    // An entry nobody named has only its selector, which still says which site was lost.
+    it('falls back to the selector where the entry carries no name', () => {
+      // Arrange
+      const dropped = [{ at: "Literal[value='gone']", shape: 'eeee0005', op: null }]
+
+      // Act
+      const printed = formatPruned(dropped)
+
+      // Assert
+      assertStringIncludes(printed, "Literal[value='gone']")
     })
   })
 })

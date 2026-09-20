@@ -109,6 +109,7 @@ esmut query <file> "<selector>"   matches, with file:line:col and the source lin
 esmut stub <file>                 emit a plan with selectors filled and ops empty
 esmut <file|dir>                  run the planned mutations
 esmut check <file|dir>            resolve selectors, report stale and ambiguous, run nothing
+esmut check <file> --prune        also drop the entries whose selector matches nothing
 ```
 
 ```
@@ -144,9 +145,35 @@ stub -> read the ops -> run -> fix survivors -> run
 3. `esmut <file>` runs them.
 4. Fix each survivor by asserting the behavior it broke, never by deleting the mutation.
 5. `esmut check <file>` after a refactor, to see which selectors stopped resolving.
+6. `esmut check <file> --prune` once you have read them and know the code is gone rather than moved.
 
 A survivor is the finding.
 Deleting the mutation to make a run clean hides the gap it found.
+
+## Pruning
+
+A stale entry names a node no selector reaches any more, and a stale selector still counts toward a
+score, so a plan keeping one reports depth for code nobody can mutate.
+
+`check` reports them and writes nothing. `--prune` drops them:
+
+```
+esmut check src/rank.ts --prune
+
+  rank.ts
+    stale      Literal[value='gone']
+    8 resolved, 1 refused
+    1 dropped, naming code that is gone
+      a behavior nobody can reach
+```
+
+Read the report before pruning. A selector goes stale when the code it named was deleted and also
+when it merely moved, and only a person can tell those apart. Pruning a moved site throws away the
+op and the name somebody wrote for a behavior that still exists, so the entries are printed by name
+as they go.
+
+An ambiguous entry is kept. It names a node that is still there, so it is a selector to narrow
+rather than work to delete.
 
 ## Drift
 

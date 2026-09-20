@@ -62,6 +62,14 @@ describe('All Esmut Tests', () => {
       assertThrows(() => dispatch('check', []), CliError)
     })
 
+    // Only check prunes, and a run given the flag would write nothing while looking like it had.
+    it('refuses prune on any verb but check', () => {
+      // Act & Assert
+      assertThrows(() => dispatch('stub', ['a.ts'], { prune: true }), CliError)
+      assertThrows(() => dispatch('query', ['a.ts', 'Literal'], { prune: true }), CliError)
+      assertThrows(() => dispatch('src/a.ts', [], { prune: true }), CliError)
+    })
+
     // Each verb reaches its own command, and a misrouted verb runs what the caller did not ask for.
     // The absent file is what proves the route: the error names the command that was reached.
     it('routes each verb to the command that names it', async () => {

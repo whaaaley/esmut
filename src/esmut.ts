@@ -9,7 +9,7 @@ import { CliError } from './utils/error.utils.ts'
 import { safeAsync } from './utils/safe.utils.ts'
 
 const args = parseArgs(Deno.args, {
-  boolean: ['help'],
+  boolean: ['help', 'prune'],
   alias: { h: 'help' },
 })
 
@@ -22,11 +22,12 @@ const printHelp = (): void => {
     '',
     'Commands:',
     '  query <file> <selector>  Print matches, with file:line:col and the source line',
-    '  stub <file>              Emit a plan with selectors filled and ops empty',
+    '  stub <file>              Emit a plan, addressing every site and deriving the op it can',
     '  check <file|dir>         Resolve selectors, report stale and ambiguous, run nothing',
     '  <file|dir>               Run the planned mutations',
     '',
     'Options:',
+    '  --prune                  With check, drop the entries whose selector matches nothing',
     '  --help, -h               Show this help',
     '',
     'Mutations are planned in a json file under .esmut, each naming a node with a',
@@ -49,11 +50,22 @@ const SOURCES = new Set(['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '
 // Anything carrying a path separator or a source extension reads as a target.
 export const isTarget = (verb: string): boolean => verb.includes('/') || SOURCES.has(extname(verb))
 
-export const dispatch = (verb: string | undefined, rest: string[]): Promise<void> => {
+export type Flags = {
+  prune?: boolean
+}
+
+export const dispatch = (verb: string | undefined, rest: string[], flags: Flags = {}): Promise<void> => {
   if (verb === undefined) {
     throw new CliError('Missing command', [
       'Name a file or directory to run, or a command',
       'Run with --help for usage',
+    ])
+  }
+
+  // check is the only verb that prunes, so the flag on any other is a typo rather than a request.
+  if (flags.prune && verb !== 'check') {
+    throw new CliError('--prune applies to check', [
+      'Usage: esmut check <file|dir> --prune',
     ])
   }
 
@@ -93,7 +105,7 @@ export const dispatch = (verb: string | undefined, rest: string[]): Promise<void
       ])
     }
 
-    return check(target)
+    return check(target, { prune: flags.prune })
   }
 
   if (isTarget(verb)) return run(verb)
@@ -114,7 +126,7 @@ if (import.meta.main) {
 
   const [verb, ...rest] = args._.map(String)
 
-  const { error } = await safeAsync(() => dispatch(verb, rest))
+  const { error } = await safeAsync(() => dispatch(verb, rest, { prune: args.prune }))
   if (error) handleCliError(error)
 
   Deno.exit(0)

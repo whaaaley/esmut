@@ -121,6 +121,86 @@ describe('All Plan Command Tests', () => {
       // Act & Assert
       await assertRejects(() => check(written()), CliError)
     })
+
+    // A stale entry names code that is gone, and a stale selector still scores, so a plan keeping
+    // one reports depth for code nobody can mutate. Pruning is asked for rather than assumed.
+    it('drops a stale entry when asked to prune and keeps the rest', async () => {
+      // Arrange
+      const path = written()
+      await stub(path)
+
+      const target = planPath(path)
+      const before = await readPlan(target)
+      const resolving = before?.mutations ?? []
+      const stale = { at: 'Literal[value=999]', shape: 'dddd9990', op: 'value' as const, to: '1' }
+      Deno.writeTextFileSync(target, JSON.stringify({ ...before, mutations: [...resolving, stale] }, null, 2))
+
+      // Act
+      await printed(() => check(path, { prune: true }))
+      const after = await readPlan(target)
+
+      // Assert
+      assertEquals(after?.mutations.length, resolving.length)
+      assertEquals(after?.mutations.some((mutation) => mutation.at === stale.at), false)
+    })
+
+    // The op and the name are an author's work, so what a prune deletes is printed rather than
+    // dropped silently, which is the only record the entry ever existed.
+    it('names what it dropped, since an entry carries an op somebody chose', async () => {
+      // Arrange
+      const path = written()
+      await stub(path)
+
+      const target = planPath(path)
+      const before = await readPlan(target)
+      const stale = { at: 'Literal[value=999]', shape: 'dddd9990', op: 'value' as const, to: '1', name: 'the gap nobody covers' }
+      Deno.writeTextFileSync(target, JSON.stringify({ ...before, mutations: [stale] }, null, 2))
+
+      // Act
+      const output = await printed(() => check(path, { prune: true }))
+
+      // Assert
+      assertStringIncludes(output, 'the gap nobody covers')
+    })
+
+    // An ambiguous selector names a node that is still there, so the entry is a selector to narrow
+    // rather than work to delete. Dropping it would lose an op over a fixable address.
+    it('keeps an ambiguous entry, which names code that still exists', async () => {
+      // Arrange
+      const path = written()
+      await stub(path)
+
+      const target = planPath(path)
+      const before = await readPlan(target)
+      const ambiguous = { at: 'Literal', shape: 'dddd9990', op: 'value' as const, to: '1' }
+      Deno.writeTextFileSync(target, JSON.stringify({ ...before, mutations: [ambiguous] }, null, 2))
+
+      // Act
+      await printed(() => check(path, { prune: true }))
+      const after = await readPlan(target)
+
+      // Assert
+      assertEquals(after?.mutations.length, 1)
+    })
+
+    // Checking without the flag is the report it has always been, so a plan is never rewritten.
+    it('leaves the plan alone where no prune was asked for', async () => {
+      // Arrange
+      const path = written()
+      await stub(path)
+
+      const target = planPath(path)
+      const before = await readPlan(target)
+      const stale = { at: 'Literal[value=999]', shape: 'dddd9990', op: null }
+      Deno.writeTextFileSync(target, JSON.stringify({ ...before, mutations: [stale] }, null, 2))
+
+      // Act
+      await printed(() => check(path))
+      const after = await readPlan(target)
+
+      // Assert
+      assertEquals(after?.mutations.length, 1)
+    })
   })
 
   describe('run', () => {

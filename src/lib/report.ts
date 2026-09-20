@@ -112,3 +112,15 @@ export const formatCheck = (path: string, resolved: Resolved[]): string => {
 
   return `${lines.join('\n')}\n    ${resolved.length} resolved, ${bad} refused`
 }
+
+// What a prune deleted, named by what an author wrote rather than by the selector alone.
+// The op and the name are their work, so the print is the only record the entry existed.
+export const formatPruned = (dropped: Mutation[]): string => {
+  const lines = [`    ${dropped.length} dropped, naming code that is gone`]
+
+  for (const mutation of dropped) {
+    lines.push(`      ${mutation.name ?? mutation.at}`)
+  }
+
+  return lines.join('\n')
+}
