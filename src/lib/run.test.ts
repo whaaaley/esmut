@@ -352,21 +352,21 @@ describe('All Run Tests', () => {
     // The bound is what stops one mutant holding a run open, so it has to actually fire.
     it('refuses a command that does not return within the bound', async () => {
       // Act & Assert
-      await assertRejects(() => suiteFails('sleep 30', 250), SuiteTimeout)
+      await assertRejects(() => suiteFails('sleep 30', { timeoutMs: 250 }), SuiteTimeout)
     })
 
     // A command that answers inside the bound is read by its exit code, as it always was.
     it('reads an exit code where the command finishes in time', async () => {
       // Act & Assert
-      assertEquals(await suiteFails('true', 30_000), false)
-      assertEquals(await suiteFails('false', 30_000), true)
+      assertEquals(await suiteFails('true', { timeoutMs: 30_000 }), false)
+      assertEquals(await suiteFails('false', { timeoutMs: 30_000 }), true)
     })
 
     // The timeout is told apart from any other failure by its name, which runPlan reads to decide
     // whether the hang is this mutation's verdict or the whole plan's error.
     it('names the timeout, since a run tells it from any other failure by that', async () => {
       // Act
-      const refusal = await assertRejects(() => suiteFails('sleep 30', 200), SuiteTimeout)
+      const refusal = await assertRejects(() => suiteFails('sleep 30', { timeoutMs: 200 }), SuiteTimeout)
 
       // Assert
       assertEquals(refusal.name, 'SuiteTimeout')
@@ -378,7 +378,7 @@ describe('All Run Tests', () => {
     it('kills the command it bounded rather than leaving it running', async () => {
       // Act: a sleep long enough that only a kill ends it inside the assertion below.
       const started = Date.now()
-      await assertRejects(() => suiteFails('sleep 30', 250), SuiteTimeout)
+      await assertRejects(() => suiteFails('sleep 30', { timeoutMs: 250 }), SuiteTimeout)
       const waited = Date.now() - started
 
       // Assert: the wait ended near the bound rather than after the sleep, so the child was killed.

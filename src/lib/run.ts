@@ -17,7 +17,15 @@ export type Verdict = {
   because?: string
 }
 
-export type Suite = (cmd: string) => Promise<boolean>
+// Where a suite runs and how long it may take, which a worker sets to its own sandbox.
+export type SuiteOptions = {
+  cwd: string
+  timeoutMs: number
+}
+
+// A suite answers whether it failed, which is what says a mutation was caught.
+// A caller in the tree names neither option, where a worker names the sandbox it owns.
+export type Suite = (cmd: string, options: Partial<SuiteOptions>) => Promise<boolean>
 
 // Inverting a loop guard is one of the seven ops, and a loop whose guard never goes false does not
 // return, so a mutant that hangs the suite is a shape this tool produces rather than an oddity.
@@ -33,7 +41,8 @@ export class SuiteTimeout extends Error {
 
 // A caught mutation is one the suite failed on, so a suite that cannot run catches everything.
 // A suite that never finishes throws instead, since no exit code says whether it caught anything.
-export const suiteFails = async (cmd: string, timeoutMs = SUITE_TIMEOUT_MS): Promise<boolean> => {
+export const suiteFails = async (cmd: string, options: Partial<SuiteOptions> = {}): Promise<boolean> => {
+  const { cwd, timeoutMs = SUITE_TIMEOUT_MS } = options
   const [bin, ...rest] = cmd.split(' ')
 
   if (!bin) {
@@ -47,7 +56,13 @@ export const suiteFails = async (cmd: string, timeoutMs = SUITE_TIMEOUT_MS): Pro
   const stop = new AbortController()
   const timer = setTimeout(() => stop.abort(), timeoutMs)
 
-  const command = new Deno.Command(bin, { args: rest, stdout: 'null', stderr: 'null', signal: stop.signal })
+  const command = new Deno.Command(bin, {
+    args: rest,
+    stdout: 'null',
+    stderr: 'null',
+    signal: stop.signal,
+    ...(cwd ? { cwd } : {}),
+  })
   const { data, error } = await safeAsync(() => command.output())
 
   clearTimeout(timer)
@@ -159,7 +174,7 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
       }
 
       await Deno.writeTextFile(path, outcome.mutant)
-      const { data: caught, error: ran } = await safeAsync(() => suite(plan.cmd))
+      const { data: caught, error: ran } = await safeAsync(() => suite(plan.cmd, {}))
 
       // Restored per mutation rather than once at the end, so the next suite reads the source and
       // not the mutant before it. A failure here is left to the finally and the report after it,
