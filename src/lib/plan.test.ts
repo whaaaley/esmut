@@ -1,6 +1,6 @@
-import { assertEquals, assertRejects, assertStringIncludes, assertThrows } from '@std/assert'
+import { assert, assertEquals, assertExists, assertRejects, assertStringIncludes, assertThrows } from '@std/assert'
 import { describe, it } from 'node:test'
-import { assertResolves, assertRunnable, mergePlan, planPath, readPlan, writePlan } from './plan.ts'
+import { assertResolves, assertRunnable, mergePlan, parsePlan, planPath, readPlan, writePlan } from './plan.ts'
 import { CliError } from '../utils/error.utils.ts'
 import type { Plan } from './schema.ts'
 import type { Stubbed } from './stub.ts'
@@ -10,6 +10,58 @@ const plan = (mutations: Plan['mutations'], cmd = 'deno task test'): Plan => ({ 
 const stubbed = (mutations: Stubbed['mutations']): Stubbed => ({ mutations })
 
 describe('All Plan Tests', () => {
+  describe('parsePlan', () => {
+    const written = (over: Record<string, unknown> = {}): string =>
+      JSON.stringify({
+        source: 'src/a.ts',
+        cmd: 'deno test',
+        mutations: [{ at: 'Literal', shape: 'aaaa1111', op: 'value', to: '2' }],
+        ...over,
+      })
+
+    it('reads a plan naming a source, a cmd, and its mutations', () => {
+      // Act
+      const plan = parsePlan(written(), 'a.json')
+
+      // Assert
+      assertEquals(plan.source, 'src/a.ts')
+      assertEquals(plan.mutations.length, 1)
+    })
+
+    // A plan is hand-edited, so a trailing comma or a missing brace is the common mistake.
+    // The parser's own message names the position, which a restatement of the shape would not.
+    it('names what the json parser objected to', () => {
+      // Act
+      const refusal = assertThrows(() => parsePlan('{ "source": ', 'a.json'), CliError)
+
+      // Assert
+      assertStringIncludes(refusal.message, 'Cannot read the plan at a.json')
+      assert(refusal.suggestions.length > 0, 'the refusal carried no reason')
+    })
+
+    // A misspelled key is the other common mistake, and the field that failed is what a reader fixes.
+    // Restating the whole shape instead would leave them to find the one field that is wrong.
+    it('names the field a plan got wrong rather than restating the shape', () => {
+      // Act
+      const missing = assertThrows(() => parsePlan(written({ mutations: undefined }), 'a.json'), CliError)
+      const wrongOp = assertThrows(() => parsePlan(written({ mutations: [{ at: 'Literal', shape: 'a', op: 'nope' }] }), 'a.json'), CliError)
+
+      // Assert
+      assertStringIncludes(missing.message, 'is not the shape a run reads')
+      assert(missing.suggestions.some((line) => line.startsWith('mutations:')), `${missing.suggestions} names no field`)
+      assert(wrongOp.suggestions.some((line) => line.includes('op')), `${wrongOp.suggestions} names no op`)
+    })
+
+    // A failure at the top of the plan has no field to name, so it reads as the plan itself.
+    it('names the plan where the failure sits above any field', () => {
+      // Act
+      const refusal = assertThrows(() => parsePlan('[]', 'a.json'), CliError)
+
+      // Assert
+      assert(refusal.suggestions.some((line) => line.startsWith('plan:')), `${refusal.suggestions} names no plan`)
+    })
+  })
+
   describe('planPath', () => {
     // A plan records intent rather than code, so it sits in one directory, not beside each source.
     it('names the plan under .esmut rather than beside the source', () => {
@@ -296,9 +348,14 @@ describe('All Plan Tests', () => {
       // Act
       const refusal = assertThrows(() => assertResolves(mixed, SOURCE, 'status.ts', 'status.mut.json'), CliError)
 
-      // Assert
-      assertEquals(refusal.suggestions.some((line) => line.startsWith('stale')), true)
-      assertEquals(refusal.suggestions.some((line) => line.startsWith('ambiguous')), true)
+      // Assert: each label sits on its own selector, so swapping the two would fail here.
+      const staleLine = refusal.suggestions.find((line) => line.includes('Literal[value=999]'))
+      const ambiguousLine = refusal.suggestions.find((line) => line.trimEnd().endsWith('Literal'))
+
+      assertExists(staleLine)
+      assertExists(ambiguousLine)
+      assertEquals(staleLine.startsWith('stale'), true)
+      assertEquals(ambiguousLine.startsWith('ambiguous'), true)
     })
 
     // One selector reads as singular, which a substring check misses since selector prefixes selectors.

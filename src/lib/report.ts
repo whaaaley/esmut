@@ -12,6 +12,9 @@ export type Resolved = {
 // Every line of a node, the first on the line the caller built and the rest indented under it.
 // Nothing is withheld, since a reader deciding whether a site is theirs needs all of it.
 // The lines are kept apart rather than joined, which would read as source that does not parse.
+// The two fallbacks below are unreachable: split always answers with one string, and at(-1) inside
+// a non-empty guard always finds one. noUncheckedIndexedAccess demands them anyway, so a mutation of
+// either is a mutant no test can catch, and both are left rather than worked around.
 const asLines = (text: string, indent: string): string[] => {
   const [first = '', ...rest] = text.split('\n')
   const kept = [first.trimEnd()]
