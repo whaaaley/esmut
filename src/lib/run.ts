@@ -157,6 +157,10 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
 
       await Deno.writeTextFile(path, outcome.mutant)
       const { data: caught, error: ran } = await safeAsync(() => suite(plan.cmd))
+
+      // Restored per mutation rather than once at the end, so the next suite reads the source and
+      // not the mutant before it. The finally below covers the same ground on the way out, which
+      // makes a mutation of this line a mutant no test can catch: the other restore answers for it.
       await Deno.writeTextFile(path, source)
 
       // A mutant that hangs the suite is this mutation's verdict rather than the whole plan's error,
@@ -177,6 +181,9 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
     // a throw from here would skip the listeners below and leave the mutant on disk.
     const { error: unrestored } = await safeAsync(() => Deno.writeTextFile(path, source))
 
+    // The SIGTERM removal is tested by the exit code a later signal gives: 143 by default against
+    // 130 from a handler left behind. SIGINT has no such tell, since Deno's own default for it also
+    // exits 130, so a mutation of the line below is a mutant no test can catch.
     Deno.removeSignalListener('SIGINT', restore)
     Deno.removeSignalListener('SIGTERM', restore)
 
