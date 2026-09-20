@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import type { Selector } from 'esquery'
+import { ignored } from './ignore.ts'
 import { known } from './keys.ts'
 import { matchesNode } from './query.ts'
 import { parseSource } from './select.ts'
@@ -20,6 +21,8 @@ export type Indexed = {
   // The ladder offers the same selector to a node and its peers across tiers, and a :has() bait
   // costs esquery a walk of the subtree every time, so the repeats are what a stub waits on.
   answered: Map<Selector, Map<TSESTree.Node, boolean>>
+  // The lines an author excused with a marker, and the reason each one gives.
+  excused: Map<number, string>
 }
 
 export const isNode = (value: unknown): value is KeyedNode => {
@@ -74,7 +77,7 @@ export const indexSource = (source: string, path: string): Indexed => {
   // The root arrives typed as a plain node, and the same guard that admits a child admits it.
   if (isNode(ast)) walk(ast, [])
 
-  return { ast, byType, ancestry, field, index, answered }
+  return { ast, byType, ancestry, field, index, answered, excused: ignored(ast.comments ?? []) }
 }
 
 // True when the selector matches this node and nothing else.

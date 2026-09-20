@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { type Indexed, indexSource, isNode } from './walk.ts'
+import { excuses } from './ignore.ts'
 import { counter, pin } from './pin.ts'
 import { shapeHash } from './shape.ts'
 import type { Mutation, Op } from './schema.ts'
@@ -132,6 +133,8 @@ export const sites = (indexed: Indexed): Site[] => {
 
   for (const nodes of indexed.byType.values()) {
     for (const node of nodes) {
+      if (excuses(indexed.excused, node)) continue
+
       const parents = indexed.ancestry.get(node) ?? []
       if (describes(parents)) continue
 

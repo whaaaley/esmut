@@ -15,8 +15,10 @@ export type Match = {
   text: string
 }
 
-export const parseSource = (source: string, path: string): TSESTree.Node => {
-  const { data, error } = safe(() => parse(source, { loc: true, range: true, jsx: path.endsWith('.tsx') }))
+// Returns the Program, since the comments an ignore marker lives in hang off the root alone.
+export const parseSource = (source: string, path: string): TSESTree.Program => {
+  const options = { loc: true, range: true, comment: true, jsx: path.endsWith('.tsx') }
+  const { data, error } = safe(() => parse(source, options))
 
   if (error) {
     throw new CliError(`Cannot parse ${path}`, [
