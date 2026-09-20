@@ -19,10 +19,11 @@ Each mutation names a node with an [ESQuery](https://github.com/estools/esquery)
 {
   "source": "src/auth/session.ts",
   "cmd": "deno test --allow-read src/auth/session.test.ts",
+  "filledBy": "stub",
   "mutations": [
     {
       "at": "IfStatement > BinaryExpression[operator='<']",
-      "was": "expiresAt < now",
+      "shape": "b78119ea",
       "op": "invert",
       "name": "an expired session is accepted"
     }
@@ -30,10 +31,15 @@ Each mutation names a node with an [ESQuery](https://github.com/estools/esquery)
 }
 ```
 
-`esmut stub` writes this file with the selectors filled in and the ops left empty.
+`esmut stub` writes this file with a selector for every site and the op it can derive from the node.
+Where no op can be derived, such as a regex literal that has no other value to read as, `op` stays null for an author to fill.
+A plan whose ops came from the stub rather than from a person says `filledBy`, since a derived op is a guess about what is worth testing.
 
-A site it cannot address with a selector matching exactly one node goes into a `skipped` array instead, carrying its line and column so the anchor can be written by hand.
-Re-running `stub` keeps every op and name already filled, adds newly found sites, and reports any selector that has gone stale or now reads differently.
+`shape` is a hash of the node's structure, which is what drift is judged by.
+It is never used to find the node.
+
+Every site gets a selector, so nothing is left out of a plan.
+Re-running `stub` keeps every op and name already filled, adds newly found sites, and reports any selector that has gone stale or now names a different structure.
 
 ## Selectors
 
@@ -53,6 +59,18 @@ esmut query src/auth/session.ts "IfStatement > BinaryExpression[operator='<']"
 ```
 
 Matching nothing is `stale`, matching more than one is `ambiguous`, and both are refused.
+
+`stub` writes its own selectors, naming a node by what separates it from the others of its type.
+An attribute does it where the node's own content is distinctive, and a path does it where the content repeats:
+
+```
+BinaryExpression[right.value=9]
+ConditionalExpression > ArrayExpression.consequent
+Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='safe'] > ArrowFunctionExpression > BlockStatement > TryStatement > BlockStatement > ReturnStatement
+```
+
+The middle one is a field selector, `Type.field`, which names which key a node sits under.
+It is the only thing that separates the two sides of a ternary, since neither carries content and `nth-child` counts only within a key that holds a list.
 
 ## Ops
 
@@ -113,37 +131,51 @@ Exit code stays 0 whether or not a mutation survived.
 Progress goes to stderr and the summary to stdout.
 
 A run refuses a plan whose `cmd` is missing, whose ops are unfilled, or whose selectors no longer resolve, rather than reporting a verdict for a mutation that never ran.
+A `cmd` is the one field no stub can write, since nothing in a source file says which suite covers it.
 
 ## The loop
 
 ```
-stub -> fill ops -> run -> fix survivors -> run
+stub -> read the ops -> run -> fix survivors -> run
 ```
 
-1. `esmut stub <file>` writes the plan, then fill in an op and a name for each mutation.
-2. `esmut <file>` runs them.
-3. Fix each survivor by asserting the behavior it broke, never by deleting the mutation.
-4. `esmut check <file>` after a refactor, to see which selectors stopped resolving.
+1. `esmut stub <file>` writes the plan with an op already derived for most sites.
+2. Read them, since a derived op says nothing about which mutation is worth testing, and name the ones that matter.
+3. `esmut <file>` runs them.
+4. Fix each survivor by asserting the behavior it broke, never by deleting the mutation.
+5. `esmut check <file>` after a refactor, to see which selectors stopped resolving.
 
 A survivor is the finding.
 Deleting the mutation to make a run clean hides the gap it found.
 
 ## Drift
 
-A selector can still resolve while the node it names reads differently, which means the op chosen for it may no longer mean what its author meant.
-`stub` reports that as drift, with a diff of what the node used to be.
-
-Set `ESMUT_DIFF` to use a different differ:
+A selector can still resolve while the node it names has changed, which means the op chosen for it may no longer mean what its author meant.
+`stub` reports that as drift, naming the structure the plan recorded and the one there now.
 
 ```
-ESMUT_DIFF="git diff --no-index" esmut stub src/auth/session.ts
+esmut stub src/rank.ts
+
+  wrote rank.json
+    7 sites
+    7 kept, op and name intact
+    drifted  IfStatement[test.left.name='kept']
+      81ffa987 became fb1eced8
+    drifted  BinaryExpression[left.name='kept']
+      12360f12 became da19e6fd
 ```
+
+The op and the name survive, and the plan records the new structure, so the drift is reported once rather than on every later stub.
+
+Drift is judged by structure rather than by source text, so a formatter is not a change.
+Rewrapping a line, swapping quote style, and adding a trailing comma all leave the hash alone, where comparing the source would report every reformatted block as drifted.
+Changing an operator, a value, or a name does change it.
 
 ## Developing
 
 ```
 deno task test          unit tests, about a second
-deno task test:corpus   the fixture sweep, which stubs 15 files
+deno task test:corpus   the fixture sweep, which stubs every file under tests/fixtures
 deno task test:all      both
 ```
 
