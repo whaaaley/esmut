@@ -255,6 +255,49 @@ describe('All Run Tests', () => {
       assertEquals(status.code, 130)
     })
 
+    // Both signals are registered, and a run listening to only one leaves the mutant on disk for
+    // the other. Ctrl-C is the interrupt a person actually sends, so SIGINT gets its own case.
+    it('restores the source when the run is interrupted rather than terminated', async () => {
+      // Arrange
+      const directory = Deno.makeTempDirSync()
+      const path = `${directory}/target.ts`
+      Deno.writeTextFileSync(path, SOURCE)
+      const written = { source: 'target.ts', cmd: 'sleep 30', mutations: [mutation()] }
+      Deno.writeTextFileSync(`${directory}/plan.mut.json`, JSON.stringify(written))
+
+      const config = fromFileUrl(new URL('../../deno.json', import.meta.url))
+      const script = `${directory}/run.ts`
+      const entry = new URL('./run.ts', import.meta.url).href
+      const parse = new URL('./plan.ts', import.meta.url).href
+      Deno.writeTextFileSync(
+        script,
+        `import { runPlan } from '${entry}'\nimport { parsePlan } from '${parse}'\n` +
+          `await runPlan('${path}', parsePlan(Deno.readTextFileSync('${directory}/plan.mut.json'), 'p'))\n`,
+      )
+
+      const child = new Deno.Command(Deno.execPath(), {
+        args: ['run', '--config', config, ...PERMISSIONS, script],
+        stdout: 'null',
+        stderr: 'null',
+      }).spawn()
+
+      // Act: wait for the mutant to reach disk, then interrupt rather than terminate.
+      let during = ''
+
+      for (let waited = 0; waited < 40 && !during.includes('500'); waited += 1) {
+        await new Promise((resolve) => setTimeout(resolve, 250))
+        during = Deno.readTextFileSync(path)
+      }
+
+      child.kill('SIGINT')
+      const status = await child.status
+
+      // Assert
+      assertEquals(during.includes('500'), true)
+      assertEquals(Deno.readTextFileSync(path), SOURCE)
+      assertEquals(status.code, 130)
+    })
+
     // A verdict needing no suite costs no disk, so a stale selector never writes anything.
     it('judges a stale selector without writing or running anything', async () => {
       // Arrange
