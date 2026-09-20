@@ -188,8 +188,8 @@ export const runPlan = async (path: string, plan: Plan, suite: Suite = suiteFail
     unrestored = error
 
     // The SIGTERM removal is tested by the exit code a later signal gives: 143 by default against
-    // 130 from a handler left behind. SIGINT has no such tell, since Deno's own default for it also
-    // exits 130, so a mutation of the line below is a mutant no test can catch.
+    // 130 from a handler left behind.
+    // esmut-ignore SIGINT has no such tell, since Deno's own default for it also exits 130
     Deno.removeSignalListener('SIGINT', restore)
     Deno.removeSignalListener('SIGTERM', restore)
   }

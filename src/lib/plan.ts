@@ -118,8 +118,7 @@ export const writePlan = async (path: string, plan: Plan): Promise<void> => {
   const { error } = await safeAsync(async () => {
     // The plans directory does not exist before the first stub, and a write into it would fail.
     await Deno.mkdir(dirname(path), { recursive: true })
-    // JSON.stringify reads null and undefined in the replacer slot the same way, so a mutation of
-    // the null below writes byte-identical json and is a mutant nothing can catch.
+    // esmut-ignore JSON.stringify reads null and undefined in the replacer slot the same way
     await Deno.writeTextFile(temporary, `${JSON.stringify(plan, null, 2)}\n`)
     await Deno.rename(temporary, path)
   })

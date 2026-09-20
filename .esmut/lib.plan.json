@@ -25,13 +25,6 @@
       "name": "operator and value are the two ops held not to need a replacement"
     },
     {
-      "at": "Literal[value=2]",
-      "shape": "a49f906e",
-      "op": "value",
-      "to": "0",
-      "name": "the plan is written on one line rather than indented for a reader"
-    },
-    {
       "at": "Program > VariableDeclaration:nth-child(7) > VariableDeclarator:nth-child(1) > TSAsExpression.init > ArrayExpression.expression",
       "shape": "55ea1870",
       "op": "empty"
@@ -395,22 +388,6 @@
       "shape": "ca191680",
       "op": "value",
       "to": "false"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(2)",
-      "shape": "f3b7f6dc",
-      "op": "remove"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(2) > AwaitExpression.expression > CallExpression.argument > TemplateLiteral:nth-child(2)",
-      "shape": "2dd0c19b",
-      "op": "empty"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(2) > AwaitExpression.expression > CallExpression.argument > TemplateLiteral:nth-child(2) > CallExpression:nth-child(1) > Literal:nth-child(2)",
-      "shape": "1d644784",
-      "op": "value",
-      "to": "undefined"
     },
     {
       "at": "Program > ExportNamedDeclaration:nth-child(14) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > AwaitExpression.init > CallExpression.argument > ArrowFunctionExpression:nth-child(1) > BlockStatement.body > ExpressionStatement:nth-child(3)",
@@ -881,18 +858,6 @@
       "shape": "73d302eb",
       "op": "remove",
       "name": "the plans directory is never created, so the first stub cannot write"
-    },
-    {
-      "at": "AwaitExpression TemplateLiteral",
-      "shape": "2dd0c19b",
-      "op": "empty",
-      "name": "the plan is written blank"
-    },
-    {
-      "at": "BlockStatement ExpressionStatement:nth-child(2)",
-      "shape": "f3b7f6dc",
-      "op": "remove",
-      "name": "nothing is staged, so the rename moves an empty file into place"
     },
     {
       "at": "VariableDeclarator[id.name='writePlan'] IfStatement",

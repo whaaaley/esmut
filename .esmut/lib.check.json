@@ -216,21 +216,6 @@
       "op": "remove"
     },
     {
-      "at": "Property[key.name='readFile']",
-      "shape": "0ee4aae8",
-      "op": "remove"
-    },
-    {
-      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > ObjectExpression.body > Property:nth-child(3) > ArrowFunctionExpression.value > ConditionalExpression.body > BinaryExpression.test",
-      "shape": "f0398c65",
-      "op": "invert"
-    },
-    {
-      "at": "ConditionalExpression[test.left.name='name']",
-      "shape": "077b05e7",
-      "op": "invert"
-    },
-    {
       "at": "Property[key.name='data']",
       "shape": "e867e073",
       "op": "remove"

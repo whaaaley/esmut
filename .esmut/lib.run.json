@@ -705,16 +705,6 @@
       "op": "remove"
     },
     {
-      "at": "Program > ExportNamedDeclaration:nth-child(20) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(9) > BlockStatement.finalizer > ExpressionStatement:nth-child(3)",
-      "shape": "d806b816",
-      "op": "remove"
-    },
-    {
-      "at": "Program > ExportNamedDeclaration:nth-child(20) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(9) > BlockStatement.finalizer > ExpressionStatement:nth-child(3) > CallExpression.expression > Literal:nth-child(1)",
-      "shape": "44553fd6",
-      "op": "empty"
-    },
-    {
       "at": "Program > ExportNamedDeclaration:nth-child(20) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > TryStatement:nth-child(9) > BlockStatement.finalizer > ExpressionStatement:nth-child(4)",
       "shape": "f0733f9b",
       "op": "remove"
@@ -823,11 +813,6 @@
     {
       "at": "ConditionalExpression Literal[value='survived']",
       "shape": "0c8290e2",
-      "op": "empty"
-    },
-    {
-      "at": "TryStatement Literal[value='SIGINT']",
-      "shape": "44553fd6",
       "op": "empty"
     },
     {

@@ -1,0 +1,527 @@
+{
+  "source": "src/lib/pin.ts",
+  "cmd": "deno test --allow-read --allow-write --allow-env --allow-run --allow-sys src/lib/pin.test.ts src/lib/stub.test.ts tests/corpus.test.ts",
+  "filledBy": "stub",
+  "mutations": [
+    {
+      "at": "Literal[value=2]",
+      "shape": "a49f906e",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Literal[value=40]",
+      "shape": "f1356b2c",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(8) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > MemberExpression.callee > CallExpression.object > Literal:nth-child(1)",
+      "shape": "1d644784",
+      "op": "value",
+      "to": "/\\u0000/g",
+      "name": "a backslash in a pinned value goes unescaped"
+    },
+    {
+      "at": "Literal[value='\\\\\\\\']",
+      "shape": "160f9ec0",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(8) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > CallExpression.body > Literal:nth-child(1)",
+      "shape": "1d644784",
+      "op": "value",
+      "to": "/\\u0000/g",
+      "name": "a quote in a pinned value goes unescaped"
+    },
+    {
+      "at": "Literal[value='\\\\\\'']",
+      "shape": "110f96e1",
+      "op": "empty"
+    },
+    {
+      "at": "IfStatement[test.right.value='string']",
+      "shape": "5afe9397",
+      "op": "invert"
+    },
+    {
+      "at": "BinaryExpression[right.value='string']",
+      "shape": "8d5c0ab4",
+      "op": "invert"
+    },
+    {
+      "at": "Literal[value='string']",
+      "shape": "15f34111",
+      "op": "empty"
+    },
+    {
+      "at": "ReturnStatement[argument.test.operator='<=']",
+      "shape": "47733b61",
+      "op": "remove"
+    },
+    {
+      "at": "BinaryExpression[left.object.name='value']",
+      "shape": "1cb42aa3",
+      "op": "invert"
+    },
+    {
+      "at": "ConditionalExpression[test.right.name='LONGEST']",
+      "shape": "feb0ca36",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent > ConditionalExpression.argument > TemplateLiteral.consequent",
+      "shape": "d490c151",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(1) > ReturnStatement.consequent > ConditionalExpression.argument > Literal.alternate",
+      "shape": "1d644784",
+      "op": "value",
+      "to": "undefined"
+    },
+    {
+      "at": "IfStatement[test.left.operator='===']",
+      "shape": "f40ca7ac",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > LogicalExpression.test > BinaryExpression.left",
+      "shape": "ff329c8c",
+      "op": "invert"
+    },
+    {
+      "at": "LogicalExpression[left.left.operator='typeof']",
+      "shape": "05811075",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > LogicalExpression.test > BinaryExpression.left > Literal.right",
+      "shape": "0e2c6e19",
+      "op": "empty"
+    },
+    {
+      "at": "BinaryExpression[right.value='boolean']",
+      "shape": "cd494779",
+      "op": "invert"
+    },
+    {
+      "at": "Literal[value='boolean']",
+      "shape": "f9e777d4",
+      "op": "empty"
+    },
+    {
+      "at": "ReturnStatement[argument.callee.name='String']",
+      "shape": "3c169047",
+      "op": "remove"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3)",
+      "shape": "7c0729ab",
+      "op": "remove"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(9) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3) > Literal.argument",
+      "shape": "1d644784",
+      "op": "value",
+      "to": "undefined"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(10) > VariableDeclarator:nth-child(1) > ArrayExpression.init",
+      "shape": "245c4346",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='name']",
+      "shape": "762ba94b",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='value']",
+      "shape": "f31c9b19",
+      "op": "empty"
+    },
+    {
+      "at": "Literal[value='operator']",
+      "shape": "3e46e5d8",
+      "op": "empty"
+    },
+    {
+      "at": "IfStatement[test.operator='!']",
+      "shape": "33c84f60",
+      "op": "invert"
+    },
+    {
+      "at": "UnaryExpression[argument.callee.name='isNode']",
+      "shape": "4510c91e",
+      "op": "invert"
+    },
+    {
+      "at": "LogicalExpression[left.object.name='known']",
+      "shape": "0a1b6ec3",
+      "op": "invert"
+    },
+    {
+      "at": "IfStatement[test.callee.name='isNode']",
+      "shape": "ed6771d8",
+      "op": "invert"
+    },
+    {
+      "at": "IfStatement[test.left.name='depth']",
+      "shape": "5ec12ded",
+      "op": "invert"
+    },
+    {
+      "at": "BinaryExpression[right.name='REACH']",
+      "shape": "5c0f31f4",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(1) > ExpressionStatement.consequent",
+      "shape": "92b26acf",
+      "op": "remove"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(1) > ExpressionStatement.consequent > CallExpression.expression > TemplateLiteral:nth-child(2)",
+      "shape": "4358af1a",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(1) > ExpressionStatement.consequent > CallExpression.expression > BinaryExpression:nth-child(3)",
+      "shape": "04bf2249",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > BlockStatement.consequent > IfStatement:nth-child(1) > ExpressionStatement.consequent > CallExpression.expression > BinaryExpression:nth-child(3) > Literal.right",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(4)",
+      "shape": "6e41b15a",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(4) > ExpressionStatement.consequent",
+      "shape": "0a7c36a8",
+      "op": "remove"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(4) > ExpressionStatement.consequent > CallExpression.expression > TemplateLiteral:nth-child(1)",
+      "shape": "492d5499",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(3) > BlockStatement.body > IfStatement:nth-child(2)",
+      "shape": "6e41b15a",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(3) > BlockStatement.body > IfStatement:nth-child(2) > ExpressionStatement.consequent",
+      "shape": "0a7c36a8",
+      "op": "remove"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(3) > BlockStatement.body > IfStatement:nth-child(2) > ExpressionStatement.consequent > CallExpression.expression > TemplateLiteral:nth-child(1)",
+      "shape": "492d5499",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(3)",
+      "shape": "3a88dabb",
+      "op": "remove"
+    },
+    {
+      "at": "Literal[value='']",
+      "shape": "d801aaa8",
+      "op": "value",
+      "to": "'mutated'"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(11) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ExpressionStatement:nth-child(3) > CallExpression.expression > Literal:nth-child(3)",
+      "shape": "a29f8d48",
+      "op": "value",
+      "to": "1"
+    },
+    {
+      "at": "ReturnStatement[argument.name='found']",
+      "shape": "e53cef41",
+      "op": "remove"
+    },
+    {
+      "at": "IfStatement[test.right.value='number']",
+      "shape": "7d413cd8",
+      "op": "invert"
+    },
+    {
+      "at": "BinaryExpression[left.argument.name='position']",
+      "shape": "588bd48e",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test > Literal.right",
+      "shape": "0e2c6e19",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "shape": "d17a12ce",
+      "op": "remove"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > TemplateLiteral.argument",
+      "shape": "e304da4f",
+      "op": "empty"
+    },
+    {
+      "at": "BinaryExpression[left.name='position']",
+      "shape": "a8a33403",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > TemplateLiteral.argument > BinaryExpression:nth-child(2) > Literal.right",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "ReturnStatement[argument.test.name='field']",
+      "shape": "3e6ee93e",
+      "op": "remove"
+    },
+    {
+      "at": "ConditionalExpression[test.name='field']",
+      "shape": "355404b7",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(12) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(4) > ConditionalExpression.argument > TemplateLiteral.consequent",
+      "shape": "6b8431a0",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > LogicalExpression.init",
+      "shape": "9b0e590f",
+      "op": "invert"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(2) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > ArrayExpression.object",
+      "shape": "1bdbcc83",
+      "op": "empty"
+    },
+    {
+      "at": "Program > VariableDeclaration:nth-child(13) > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(3)",
+      "shape": "6f2a5f7a",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(16) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(2)",
+      "shape": "8f220f96",
+      "op": "remove"
+    },
+    {
+      "at": "IfStatement[test.left.name='seen']",
+      "shape": "44502982",
+      "op": "invert"
+    },
+    {
+      "at": "BinaryExpression[left.name='seen']",
+      "shape": "c507bdfc",
+      "op": "invert"
+    },
+    {
+      "at": "ReturnStatement[argument.name='seen']",
+      "shape": "89673b3c",
+      "op": "remove"
+    },
+    {
+      "at": "ReturnStatement[argument.name='hits']",
+      "shape": "a0acb3bf",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > TemplateLiteral.init",
+      "shape": "fbc77820",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2)",
+      "shape": "80c6cff2",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test",
+      "shape": "112d8616",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test > Literal.right",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "shape": "8fda0cf2",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument",
+      "shape": "923fbb8b",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
+      "shape": "00eec389",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(2)",
+      "shape": "75305c71",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(2) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(2) > Literal.value",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > VariableDeclaration:nth-child(4) > VariableDeclarator:nth-child(1) > CallExpression.init > Literal:nth-child(1)",
+      "shape": "cd0cf1f6",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5)",
+      "shape": "e896a232",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BinaryExpression.test",
+      "shape": "826eb026",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > BinaryExpression.test > Literal.right",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent",
+      "shape": "edf8d8b8",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument",
+      "shape": "f237e8a5",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
+      "shape": "ae1a5cc1",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(2)",
+      "shape": "75305c71",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > IfStatement:nth-child(5) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(2) > Literal.value",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > ArrayExpression.object",
+      "shape": "8cf9286b",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > ArrayExpression.object > SpreadElement:nth-child(1) > CallExpression.argument > Literal:nth-child(1)",
+      "shape": "a29f8d48",
+      "op": "value",
+      "to": "1"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > ArrayExpression.object > SpreadElement:nth-child(1) > CallExpression.argument > UnaryExpression:nth-child(2) > Literal.argument",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > MemberExpression.callee > ArrayExpression.object > TemplateLiteral:nth-child(2)",
+      "shape": "fbc77820",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > VariableDeclaration:nth-child(1) > VariableDeclarator:nth-child(1) > CallExpression.init > Literal:nth-child(1)",
+      "shape": "cd0cf1f6",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2)",
+      "shape": "80c6cff2",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test",
+      "shape": "112d8616",
+      "op": "invert"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > BinaryExpression.test > Literal.right",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent",
+      "shape": "8fda0cf2",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument",
+      "shape": "923fbb8b",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(1)",
+      "shape": "00eec389",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(2)",
+      "shape": "75305c71",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ForOfStatement:nth-child(6) > BlockStatement.body > IfStatement:nth-child(2) > ReturnStatement.consequent > ObjectExpression.argument > Property:nth-child(2) > Literal.value",
+      "shape": "a39f8edb",
+      "op": "value",
+      "to": "0"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(7)",
+      "shape": "eafb484f",
+      "op": "remove"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(7) > ObjectExpression.argument",
+      "shape": "9f296008",
+      "op": "empty"
+    },
+    {
+      "at": "Program > ExportNamedDeclaration:nth-child(17) > VariableDeclaration.declaration > VariableDeclarator:nth-child(1) > ArrowFunctionExpression.init > BlockStatement.body > ReturnStatement:nth-child(7) > ObjectExpression.argument > Property:nth-child(1)",
+      "shape": "ae1a5cc1",
+      "op": "remove"
+    },
+    {
+      "at": "Property[value.callee.name='count']",
+      "shape": "948a02ba",
+      "op": "remove"
+    }
+  ]
+}

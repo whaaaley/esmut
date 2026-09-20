@@ -92,6 +92,7 @@ export const counter = (indexed: Indexed): Counter => {
     if (seen !== undefined) return seen
 
     const hits = matchAll(indexed.ast, parseSelector(at)).length
+    // esmut-ignore the store changes no answer, only the match count
     counted.set(at, hits)
 
     return hits
