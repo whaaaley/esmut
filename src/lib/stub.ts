@@ -89,7 +89,8 @@ export const opsFor = (node: TSESTree.Node, parent: TSESTree.Node | undefined): 
 const swapped = (node: TSESTree.Node): string | null => {
   const value = field(node, 'value')
 
-  if (typeof value === 'string') return value === '' ? "'mutated'" : "''"
+  // A non-empty string is offered empty, which chooseOp prefers, so only the empty one reaches here.
+  if (typeof value === 'string') return "'mutated'"
   if (typeof value === 'number') return value === 0 ? '1' : '0'
   if (typeof value === 'boolean') return String(!value)
 
@@ -109,9 +110,7 @@ export type Chosen = {
 // The op a site takes where nobody has said which, picked from what opsFor allows.
 // One that needs no replacement comes first, since it cannot fail to produce a mutant, and a plan
 // recording these says filledBy so a reader knows no author's judgment stands behind them.
-export const chooseOp = (node: TSESTree.Node, parent: TSESTree.Node | undefined): Chosen | null => {
-  const legal = opsFor(node, parent)
-
+export const chooseOp = (node: TSESTree.Node, legal: Op[]): Chosen | null => {
   // Every type offering operator offers invert beside it, so no site reaches this without one.
   const bare = legal.find((op) => op === 'invert' || op === 'remove' || op === 'empty')
   if (bare) return { op: bare }
@@ -166,11 +165,9 @@ export const stubPlan = (source: string, path: string): Stubbed => {
     return hits
   }
 
-  for (const site of sites(indexed)) {
-    const { node } = site
+  for (const { node, ops } of sites(indexed)) {
     const { at } = pin(indexed, node, count)
-    const parents = indexed.ancestry.get(node) ?? []
-    const chosen = chooseOp(node, parents[0])
+    const chosen = chooseOp(node, ops)
 
     mutations.push({ at, shape: shapeHash(node), op: chosen?.op ?? null, ...(chosen?.to ? { to: chosen.to } : {}) })
   }

@@ -188,7 +188,7 @@ describe('All Stub Tests', () => {
 
       if (!node) throw new Error(`no ${type} in the source`)
 
-      return chooseOp(node, (indexed.ancestry.get(node) ?? [])[0])
+      return chooseOp(node, opsFor(node, (indexed.ancestry.get(node) ?? [])[0]))
     }
 
     // An op needing no replacement cannot fail to produce a mutant, so it is preferred where legal.
@@ -212,6 +212,19 @@ describe('All Stub Tests', () => {
       assertEquals(chosenFor("const a = { b: 'ok' }\n", 'Literal'), { op: 'empty' })
       assertEquals(chosenFor('const a = { b: 5 }\n', 'Literal'), { op: 'value', to: '0' })
       assertEquals(chosenFor('const a = { b: 0 }\n', 'Literal'), { op: 'value', to: '1' })
+    })
+
+    // An empty string is the one string emptying cannot change, so it takes a value nobody wrote.
+    it('fills an empty string with a value rather than emptying what is already empty', () => {
+      // Act & Assert
+      assertEquals(chosenFor("const a = { b: '' }\n", 'Literal'), { op: 'value', to: "'mutated'" })
+    })
+
+    // Either boolean swaps to the other, so the mutant differs from the original for every input.
+    it('swaps a boolean to the value it is not', () => {
+      // Act & Assert
+      assertEquals(chosenFor('const a = { b: true }\n', 'Literal'), { op: 'value', to: 'false' })
+      assertEquals(chosenFor('const a = { b: false }\n', 'Literal'), { op: 'value', to: 'true' })
     })
 
     // A null reads as undefined to every check but a strict one, which is the bug worth testing.
