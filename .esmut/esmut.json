@@ -129,7 +129,7 @@
       "op": "invert"
     },
     {
-      "at": "Literal[value='check']",
+      "at": "BinaryExpression[operator='==='] > Literal[value='check']",
       "shape": "93883ad0",
       "op": "empty"
     },
