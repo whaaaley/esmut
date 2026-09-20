@@ -77,6 +77,15 @@ describe('All Plan Tests', () => {
       assertEquals(planPath('src/cmds/run.ts'), '.esmut/cmds.run.json')
     })
 
+    // A plan names a source the caller gave it, and a bare filename or a leading ./ has a directory
+    // part that is empty or a dot. Carried into the name, either would double the separator.
+    it('drops a path part that names no directory', () => {
+      // Act & Assert
+      assertEquals(planPath('status.ts'), '.esmut/status.json')
+      assertEquals(planPath('./status.ts'), '.esmut/status.json')
+      assertEquals(planPath('./lib/a.ts'), '.esmut/lib.a.json')
+    })
+
     it('takes off only the final extension, so a dotted stem survives', () => {
       // Act & Assert
       assertEquals(planPath('src/a.test.ts'), '.esmut/a.test.json')
@@ -157,6 +166,21 @@ describe('All Plan Tests', () => {
       // Assert
       assertEquals(one.plan.filledBy, 'stub')
       assertEquals(none.plan.filledBy, undefined)
+    })
+
+    // A site the stub could not derive an op for, such as a regex literal, arrives with op null.
+    // Counting that as supplied would mark the plan as the stub's guess when it guessed nothing.
+    it('leaves a plan unmarked where the stub could derive no op either', () => {
+      // Arrange
+      const unfilled = plan([{ at: 'Literal[value=/x/]', shape: 'aaaa1111', op: null }])
+      const derivedNothing = stubbed([{ at: 'Literal[value=/x/]', shape: 'aaaa1111', op: null }])
+
+      // Act
+      const merged = mergePlan(unfilled, derivedNothing, 'src/a.ts')
+
+      // Assert
+      assertEquals(merged.plan.filledBy, undefined)
+      assertEquals(merged.plan.mutations[0]?.op, null)
     })
 
     // sweep records itself, and a later stub must not relabel that plan as its own guess.
