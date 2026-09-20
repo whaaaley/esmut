@@ -175,7 +175,8 @@ describe('All Report Tests', () => {
     })
 
     // An unfilled op is the one thing a stub leaves for a person, so the line counts them.
-    it('counts the mutations still awaiting an op', () => {
+    // Each count is reported only above zero, so the boundary is what says the line appears at all.
+    it('counts the mutations still awaiting an op, and says nothing at none', () => {
       // Arrange
       const waiting = merge({ mutations: [{ at: 'Literal', shape: '400a400a', op: null }] })
       const filled = merge({ mutations: [{ at: 'Literal', shape: '400a400a', op: 'value', to: '200' }] })
@@ -183,6 +184,12 @@ describe('All Report Tests', () => {
       // Act & Assert
       assertStringIncludes(formatStub('plan.json', waiting), '1 awaiting an op')
       assertEquals(formatStub('plan.json', filled).includes('awaiting'), false)
+
+      // Kept and added read the same way, so the boundary is pinned on all three rather than one.
+      assertStringIncludes(formatStub('plan.json', merge({ kept: 1 })), '1 kept')
+      assertEquals(formatStub('plan.json', merge({ kept: 0 })).includes('kept'), false)
+      assertStringIncludes(formatStub('plan.json', merge({ added: 1 })), '1 added')
+      assertEquals(formatStub('plan.json', merge({ added: 0 })).includes('added'), false)
     })
 
     // The site count is what says a stub found anything, so a blank one reads as a file with no sites.
