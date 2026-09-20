@@ -130,6 +130,21 @@ describe('All Check Tests', () => {
       assertEquals(broken.map((one) => one.code), [2304])
     })
 
+    // The host answers readFile as well as getSourceFile, and the mutant is what both must return
+    // for the target. A file on disk that differs is what tells the substitution from a plain read.
+    it('reads the mutant for the target even where the file on disk says otherwise', () => {
+      // Arrange: the file on disk compiles, and the source handed in does not.
+      const path = `${Deno.makeTempDirSync()}/target.ts`
+      Deno.writeTextFileSync(path, 'export const ok = 1\n')
+
+      // Act
+      const found = diagnose(openGate(path), 'export const bad: number = missing\n')
+
+      // Assert: the diagnostic belongs to the source handed in, not to the one on disk.
+      assertEquals(found.map((one) => one.code), [2304])
+      assertEquals(Deno.readTextFileSync(path), 'export const ok = 1\n')
+    })
+
     // A diagnostic can carry a chain of messages, and the separator keeps them one readable line.
     it('joins a chained diagnostic with a space rather than running the parts together', () => {
       // Arrange: assigning a mismatched object yields a message with a nested explanation.

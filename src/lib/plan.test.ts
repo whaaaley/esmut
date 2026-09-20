@@ -131,6 +131,34 @@ describe('All Plan Tests', () => {
       assertEquals(judged.plan.filledBy, undefined)
     })
 
+    // The marker follows the count of ops the stub supplied, so it must fire on the first one and
+    // not on none. A plan whose every entry an author filled is the case that must stay unmarked.
+    it('marks a plan on one supplied op and leaves one on none', () => {
+      // Arrange: the stub supplies an op for the first entry only, since the second already has one.
+      const oneUnfilled = plan([
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: null },
+        { at: 'Literal[value=7]', shape: 'bbbb7777', op: 'value', to: '8' },
+      ])
+
+      const noneUnfilled = plan([
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: 'value', to: '2' },
+        { at: 'Literal[value=7]', shape: 'bbbb7777', op: 'value', to: '8' },
+      ])
+
+      const found = stubbed([
+        { at: 'Literal[value=1]', shape: 'aaaa1111', op: 'invert' },
+        { at: 'Literal[value=7]', shape: 'bbbb7777', op: 'invert' },
+      ])
+
+      // Act
+      const one = mergePlan(oneUnfilled, found, 'src/a.ts')
+      const none = mergePlan(noneUnfilled, found, 'src/a.ts')
+
+      // Assert
+      assertEquals(one.plan.filledBy, 'stub')
+      assertEquals(none.plan.filledBy, undefined)
+    })
+
     // sweep records itself, and a later stub must not relabel that plan as its own guess.
     it('leaves a marker an earlier fill wrote rather than claiming the plan', () => {
       // Arrange
