@@ -314,6 +314,9 @@ describe('All Report Tests', () => {
       // Arrange
       const resolved = [
         { mutation: { at: 'Literal[value=1]', shape: 'aaaa1111', op: null }, matches: 1 },
+        // A second resolving entry, so the refused count differs for every number the check could
+        // read as resolved. One of each would make a count against 0 and a count against 1 agree.
+        { mutation: { at: 'Literal[value=7]', shape: 'bbbb7777', op: null }, matches: 1 },
         { mutation: { at: 'Gone', shape: 'eeee0004', op: null }, matches: 0 },
         { mutation: { at: 'Literal', shape: 'eeee0005', op: null }, matches: 3 },
       ]
@@ -324,8 +327,9 @@ describe('All Report Tests', () => {
       // Assert
       assertStringIncludes(printed, 'stale')
       assertStringIncludes(printed, 'ambiguous  Literal')
-      assertStringIncludes(printed, '3 resolved, 2 refused')
+      assertStringIncludes(printed, '4 resolved, 2 refused')
       assertEquals(printed.includes('Literal[value=1]'), false)
+      assertEquals(printed.includes('Literal[value=7]'), false)
       assertEquals(printed.split('\n').length, 4)
     })
   })
